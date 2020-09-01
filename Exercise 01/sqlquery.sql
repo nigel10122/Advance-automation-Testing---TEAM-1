@@ -1,0 +1,1 @@
+SELECT * FROM company_management.company WHERE phone LIKE '%817%' ORDER BY company_name;
