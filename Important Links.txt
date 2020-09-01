@@ -1,0 +1,12 @@
+https://www.eclipse.org/downloads/packages/release/2018-09/r  Eclipse EE
+
+https://dev.mysql.com/downloads/mysql/  -- My sql workbench
+
+https://dev.mysql.com/downloads/mysql/5.7.html#downloads -- My sql workbench
+
+https://dev.mysql.com/downloads/connector/j/ -- Connector Java
+
+https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.0.M11/bin/apache-tomcat-9.0.0.M11-windows-x64.zip  -- Tomcat (Windows users)
+
+https://tomcat.apache.org/download-90.cgi#9.0.30
+http://www.ntu.edu.sg/home/ehchua/programming/howto/MacUsers_HowTo.html  Tomcat(Mac users)
