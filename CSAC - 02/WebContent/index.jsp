@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.java.user.LoginServlet"%>
+<%@page import="com.java.user.RegisterServlet"%>
 <%@page import="com.java.user.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -41,9 +42,9 @@
 		
 		<br>
   <h2 class="text-center" id="title">WELCOME</h2>
-			 <p class="text-center">
-				<small id="passwordHelpInline" class="text-muted">Log in. Not Registered ? Register Now. </small>
-			</p>
+			 <h4 class="text-center">
+				   <%=session.getAttribute("successmessage") == null ? "" : session.getAttribute("successmessage") %>
+			</h4>
  			<hr>
                 
  <div class = "Loginform">               

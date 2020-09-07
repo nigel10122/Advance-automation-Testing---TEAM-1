@@ -170,6 +170,7 @@ public class RegisterServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String number = request.getParameter("number");
 		String roomnumber = request.getParameter("roomnumber");
+		String successmessage = "User registered successfully";
 		int Roomnumber=Integer.parseInt(roomnumber);  
 		int length_roomnumber = String.valueOf(Roomnumber).length();
 		String decknumber = request.getParameter("decknumber");
@@ -183,7 +184,7 @@ public class RegisterServlet extends HttpServlet {
 		//create a database model
 		UserDAO regUser = new UserDAO(ConnectionPro.getConnection());
 		HttpSession errorSession = request.getSession();
-		
+		HttpSession SuccessfullSession = request.getSession();
 		
 		
 		
@@ -225,6 +226,8 @@ public class RegisterServlet extends HttpServlet {
 			
 			regUser.saveUser(userModel); 
 			response.sendRedirect("index.jsp");
+			
+			SuccessfullSession.setAttribute("successmessage", successmessage);
 			errorSession.removeAttribute("usernameError");	
 			errorSession.removeAttribute("passwordError");	
 			errorSession.removeAttribute("lastnameError");	
@@ -236,8 +239,7 @@ public class RegisterServlet extends HttpServlet {
 		}		
 		
 	
-		
-		
+	
 	}
 
 }

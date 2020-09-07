@@ -76,10 +76,12 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String InvalidError = "Invalid Username or Password";
+        String successmessage = "User registered successfully";
         HttpSession errorSession = request.getSession();
         UserDAO db =  new UserDAO(ConnectionPro.getConnection());
         User user = db.login(username, password);
         HttpSession invalidsession = request.getSession();
+        HttpSession SuccessfullSession = request.getSession();
         
         if(!stringSize(username,8,16) || 
      		   !stringSize(password,8,10) || Character.isLowerCase(password.charAt(0))) 
@@ -96,10 +98,13 @@ public class LoginServlet extends HttpServlet {
         if(user!=null){
         	HttpSession session = request.getSession();
             session.setAttribute("logUser", user);
+            SuccessfullSession.setAttribute("successmessage", successmessage);
+            SuccessfullSession.removeAttribute("successmessage");
             errorSession.removeAttribute("usernameError");	
 			errorSession.removeAttribute("passwordError");	
 			errorSession.removeAttribute("InvalidError");	
             response.sendRedirect("welcome.jsp");
+            
         }else
         	
         {	
