@@ -1,0 +1,18 @@
+@charset "ISO-8859-1";
+
+.errorPane {background-color: white; color: red; border: none ; border-style:none; width:1200px; disabled:disabled; type:text; textarea:focus,inputfocus{ outline:none}}
+.errorMsg {background-color: white; color: red; border: none ; width:1200px; border-style:none; disabled:disabled; type:text; maxlength:120; textarea:focus,inputfocus{ outline:none}}
+.text5     { type:text; maxlength:5}
+.text16 { type:text; maxlength:16}
+.text45 { type:text; maxlength:45}
+.myTable20 { padding-right: 20px; text-align: left; }
+.myTable30 { padding-right: 30px; text-align: left; }
+.myTable35 { padding-right: 35px; text-align: left; }
+.myTableRadio { width:20; text-align: center; }
+.logoutLblPos{
+
+	
+   position:fixed;
+   right:10px;
+   top:5px;
+}
