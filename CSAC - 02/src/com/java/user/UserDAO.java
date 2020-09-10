@@ -107,6 +107,10 @@ public class UserDAO {
        
     }
     
+    public static Boolean NameCombination(String firstname, String lastname)  {  
+		return (ReturnMatchingUsersList(" SELECT * from USER WHERE firstname = '"+firstname+"' AND lastname = '"+lastname+"' ORDER BY roomnumber").isEmpty());
+}
+    
 	//determine if username is unique
 	public static Boolean Usernameunique(String username)  {  
 			return (ReturnMatchingUsersList(" SELECT * from USER WHERE username = '"+username+"' ORDER BY username").isEmpty());

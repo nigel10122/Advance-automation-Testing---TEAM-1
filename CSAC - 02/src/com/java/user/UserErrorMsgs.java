@@ -13,6 +13,7 @@ public class UserErrorMsgs {
 	private String numberError;
 	private String roomnumberError;
 	private String decknumberError;
+	private String nameCombinationError;
 	
 	
 	public UserErrorMsgs() {
@@ -25,6 +26,7 @@ public class UserErrorMsgs {
 		this.numberError = "";
 		this.roomnumberError = "";
 		this.decknumberError = "";
+		this.nameCombinationError = "";
 	
 	}
 
@@ -38,8 +40,9 @@ public class UserErrorMsgs {
 //			of the principles learned in CSE 5321 only.
 //	
 public void setErrorMsg() {
-		if (!usernameError.equals("") || !passwordError.equals("") || !lastnameError.equals("") || !firstnameError.equals("")
-		||  !emailError.equals("")|| !numberError.equals("")|| !roomnumberError.equals("")|| !decknumberError.equals(""))
+	if (!usernameError.equals("") || !numberError.equals("") || !roomnumberError.equals("") || !lastnameError.equals("") 
+			|| !firstnameError.equals("") || !emailError.equals("") || !decknumberError.equals("") || !passwordError.equals("")
+			|| !nameCombinationError.equals(""))
 			this.errorMsg = "Please correct the following errors";
 	}
 	public String getUsernameError() {
@@ -95,6 +98,13 @@ public void setErrorMsg() {
 	}
 	public void setDecknumberError(String decknumberError) {
 		this.decknumberError = decknumberError;
+	}
+	
+	public String getNameCombinationError() {
+		return nameCombinationError;
+	}
+	public void setNameCombinationError(String nameCombinationError) {
+		this.nameCombinationError = nameCombinationError;
 	}
 
 }

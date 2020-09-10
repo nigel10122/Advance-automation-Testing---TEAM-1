@@ -1,12 +1,8 @@
 <%@page import="com.java.user.User"%>
-<%@page import="com.java.connection.ConnectionPro"%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% User user = (User) session.getAttribute("logUser");
-    if(user==null){
-        response.sendRedirect("index.jsp");
-    }
-%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,7 +18,7 @@
     </head>
     <body class = "body">
 
-    <%= user.getFirstname() %>
+
     
         <div class="main_container">
             <div class="box">
@@ -36,7 +32,7 @@
       <li class="active"><a href="#">Home</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="#"><span class="glyphicon glyphicon-user"></span> <c:out value='${sessionScope.lastname}'/> </a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
       <li><a href="LogoutServlet"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
     </ul>
   </div>
@@ -46,7 +42,7 @@
 </div>
 		
 		<br>
-  <h2 class="text-center" id="title">Welcome, <c:out value='${sessionScope.lastname}'/></h2>
+  <h2 class="text-center" id="title">Welcome, </h2>
 			 <p class="text-center">
 				<small id="passwordHelpInline" class="text-muted"> HOME PAGE </small>
 			</p>

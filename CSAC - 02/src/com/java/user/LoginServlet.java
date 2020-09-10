@@ -29,31 +29,7 @@ public class LoginServlet extends HttpServlet {
         
     }
     
-    private String validateUsername( String username) {
-		String result="";
-			
-				if (!stringSize(username,8,16))
-					result= "Your Username must between 8 and 16 digits";
-			
-			
-		return result;
-	}
-	
-    
-	private String validatePassword(String password) {
-		String result="";
-		if (!stringSize(password,8,10))
-			result= "Your password must between 8 and 10 characters";
-		else
-			if (Character.isLowerCase(password.charAt(0)))
-				result="Your password must start with a capital letter";
-		return result;		
-	}
-	
-	private boolean stringSize(String string, int min, int max) {
-		return string.length()>=min && string.length()<=max;
-	}
-	
+ 
 
 	
 
@@ -83,19 +59,29 @@ public class LoginServlet extends HttpServlet {
         HttpSession invalidsession = request.getSession();
         HttpSession SuccessfullSession = request.getSession();
         
-        if(!stringSize(username,8,16) || 
-     		   !stringSize(password,8,10) || Character.isLowerCase(password.charAt(0))) 
+        Validation val = new Validation();
+        
+        String usernameError = val.validateUsername_Login(username);
+ 		String passwordError = val.validatePassword(password);
+        
+        if(!usernameError.equals("") || !passwordError.equals("") ) 
      		{
-     		String usernameError = validateUsername(username);
-     		String passwordError = validatePassword(password);
-     
-     		errorSession.setAttribute("usernameError", usernameError);
+     		
+        	
+        	errorSession.setAttribute("usernameError", usernameError);
      		errorSession.setAttribute("passwordError", passwordError);
      		requestDispatcher.forward(request, response);
+     	
+     		
      		}
-        
         else 
-        if(user!=null){
+        	if(username.equals("coordinator10122") && password.equals("Plmqaz@098")){
+        	
+            response.sendRedirect("coordinatorhome.jsp");
+           
+        	}
+        else 
+        	if(user!=null){
         	HttpSession session = request.getSession();
             session.setAttribute("logUser", user);
             SuccessfullSession.setAttribute("successmessage", successmessage);
@@ -104,6 +90,7 @@ public class LoginServlet extends HttpServlet {
 			errorSession.removeAttribute("passwordError");	
 			errorSession.removeAttribute("InvalidError");	
             response.sendRedirect("welcome.jsp");
+            session.setAttribute("lastname", user.getLastname());
             
         }else
         	
@@ -111,6 +98,8 @@ public class LoginServlet extends HttpServlet {
         
             invalidsession.setAttribute("InvalidError",InvalidError);
             requestDispatcher.forward(request, response);
+            errorSession.removeAttribute("usernameError");	
+			errorSession.removeAttribute("passwordError");	
         
         }
 
