@@ -187,9 +187,19 @@
 	<td></td>
 </tr>
 <tr>
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>link=Click here to login again</td>
 	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=td.login_title</td>
+	<td>Existing User Login - Build 1</td>
 </tr>
 </tbody></table>
 </body>
