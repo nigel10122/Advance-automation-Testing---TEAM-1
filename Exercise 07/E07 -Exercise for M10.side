@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://adactinhotelapp.com/" />
+<title>E07 - Exercise for M10</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">E07 - Exercise for M10</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/index.php</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>nigel10122</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>Plmqaz@098</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=location</td>
+	<td>label=Sydney</td>
+</tr>
+<tr>
+	<td>storeValue</td>
+	<td>id=location</td>
+	<td>location</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=hotels</td>
+	<td>label=Hotel Creek</td>
+</tr>
+<tr>
+	<td>storeValue</td>
+	<td>id=hotels</td>
+	<td>hotel</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=room_type</td>
+	<td>label=Standard</td>
+</tr>
+<tr>
+	<td>storeValue</td>
+	<td>id=room_type</td>
+	<td>room_type</td>
+</tr>
+<tr>
+	<td>storeValue</td>
+	<td>id=datepick_in</td>
+	<td>datepick_in</td>
+</tr>
+<tr>
+	<td>storeValue</td>
+	<td>id=datepick_out</td>
+	<td>datepick_out</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=room_nos</td>
+	<td>label=1 - One</td>
+</tr>
+<tr>
+	<td>storeValue</td>
+	<td>id=room_nos</td>
+	<td>room_nos</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=adult_room</td>
+	<td>label=1 - One</td>
+</tr>
+<tr>
+	<td>storeValue</td>
+	<td>id=adult_room</td>
+	<td>adult_room</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=child_room</td>
+	<td>label=0 - None</td>
+</tr>
+<tr>
+	<td>storeValue</td>
+	<td>id=child_room</td>
+	<td>child_room</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=Submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=radiobutton_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>id=hotel_name_0</td>
+	<td>${hotel}</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>id=location_0</td>
+	<td>${location}</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>id=arr_date_0</td>
+	<td>${datepick_in}</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>id=dep_date_0</td>
+	<td>${datepick_out}</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>id=room_type_0</td>
+	<td>${room_type}</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=continue</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//form[@id='book_hotel_form']/table/tbody/tr[2]/td</td>
+	<td>Book A Hotel</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=cancel</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=cancel</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=location</td>
+	<td>label=Sydney</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=hotels</td>
+	<td>label=Hotel Creek</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=room_type</td>
+	<td>label=Standard</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=room_nos</td>
+	<td>label=1 - One</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=adult_room</td>
+	<td>label=1 - One</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=child_room</td>
+	<td>label=0 - None</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=Submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Search Hotel</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=td.login_title</td>
+	<td>Search Hotel (Fields marked with Red asterix (*) are mandatory)</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=location</td>
+	<td>label=Sydney</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=hotels</td>
+	<td>label=Hotel Creek</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=room_type</td>
+	<td>label=Standard</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=room_nos</td>
+	<td>label=1 - One</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=adult_room</td>
+	<td>label=1 - One</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=child_room</td>
+	<td>label=0 - None</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=Submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Booked Itinerary</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=td.login_title</td>
+	<td>Booked Itinerary</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Search Hotel</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=location</td>
+	<td>label=Sydney</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=hotels</td>
+	<td>label=Hotel Creek</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=room_type</td>
+	<td>label=Standard</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=room_nos</td>
+	<td>label=1 - One</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=adult_room</td>
+	<td>label=1 - One</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=child_room</td>
+	<td>label=0 - None</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=Submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Change Password</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=strong</td>
+	<td>Change Password</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Search Hotel</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=location</td>
+	<td>label=Sydney</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=hotels</td>
+	<td>label=Hotel Creek</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=room_type</td>
+	<td>label=Standard</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=room_nos</td>
+	<td>label=1 - One</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=adult_room</td>
+	<td>label=1 - One</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=child_room</td>
+	<td>label=0 - None</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=Submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=td.reg_success</td>
+	<td>You have successfully logged out. Click here to login again</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Click here to login again</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=td.login_title</td>
+	<td>Existing User Login - Build 1</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
+© 2020 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+50 results found.
