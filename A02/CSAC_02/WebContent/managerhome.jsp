@@ -18,7 +18,7 @@
 
     
         <div class="main_container">
-            <div class="box">
+        
             
             <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -29,7 +29,7 @@
       <li class="active"><a href="#">Home</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span><c:out value="${sessionScope.firstname} " /></a></li>
       <li><a href="LogoutServlet"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
     </ul>
   </div>
@@ -39,19 +39,21 @@
 </div>
 		
 		<br>
-  <h2 class="text-center" id="title">Welcome Manager</h2>
-			 <p class="text-center">
-				<small id="passwordHelpInline" class="text-muted"> HOME PAGE </small>
-			</p>
+  <h2 class="text-center" id="title">Welcome <c:out value="${sessionScope.firstname} ${sessionScope.lastname} " /></h2>
+			 <div class="text-center">
+				<h4 id="passwordHelpInline" class="text-muted"> MANAGER HOME PAGE </h4>
+			</div>
       <ul class="nav nav-tabs">
       <li class = "active"><a data-toggle="tab" href="#eventssummaryform">View Events Summary</a></li>
       </ul>
       <br>
-      <div class="tab-content">
-      	<div id="home" class="tab-pane fade in active">
- <div id = "eventssummaryform" class ="form">     	
+     
+ 
+ <div class = "boxshadow">
+ <h3>View Events</h3>
+ <hr>
 <form  action="ManagerEventSearchServlet" method = "post">
-<table>
+<table style = "margin-left:300px;">
 <tr>
  <td><label for="Date">Event Date:</label></td> 
 </tr>
@@ -80,14 +82,14 @@
    <button type="submit" class="btn btn-primary">Submit</button>
 <br><br>
 </form>
- </div>     
-      	</div>
+    
+</div>
       
-      </div>
+
       
       
 
- </div>
+
  </div>
  </body>
  </html>

@@ -18,7 +18,7 @@
 
     
         <div class="main_container">
-            <div class="box">
+           
             
             <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -29,7 +29,7 @@
       <li class="active"><a href="#">Home</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-user"><c:out value='${sessionScope.firstname}'/></span></a></li>
       <li><a href="LogoutServlet"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
     </ul>
   </div>
@@ -39,54 +39,22 @@
 </div>
 		
 		<br>
-  <h2 class="text-center" id="title">Welcome Manager</h2>
-			 <p class="text-center">
-				<small id="passwordHelpInline" class="text-muted"> HOME PAGE </small>
-			</p>
+  <h2 class="text-center" id="title">Welcome <c:out value="${sessionScope.firstname} ${sessionScope.lastname} " /></h2>
+			 <div class="text-center">
+				<h4 id="passwordHelpInline" class="text-muted"> MANAGER HOME PAGE </h4>
+			</div>
       <ul class="nav nav-tabs">
       <li class = "active"><a data-toggle="tab" href="#eventssummaryform">View Events Summary</a></li>
       </ul>
-      <br>
-      <div class="tab-content">
-
-<div id="home" class="tab-pane fade in active">
- <div id = "eventssummaryform" class ="form">    
- <div class = "row">
- <div class = "col-lg-3"> 	
-<form  action="ManagerEventSearchServlet" method = "post">
-<table>
-<tr>
- <td><label for="Date">Event Date:</label></td> 
-</tr>
-<tr> 
-<td><input class = "form-control" name="eventdate" id="currentDate" value = "<c:out value='${sessionScope.currentdate}'/>" ></td>
-<!-- <td> Validation for date here </td>-->
-</tr>
-
-<tr>
-    <td>
-        &nbsp;
-       
-    </td>
-</tr>
-
-<tr>
-<td><label for="Time">Event Time:</label></td>
-</tr>
-<tr>
-<td><input class ="form-control" name = "starttime" value = "<c:out value='${sessionScope.currenttime}'/>"></td>
-<!-- <td> Validation for time here </td>-->
-</tr>
-
-</table>  
-<br><br>	
-   <button type="submit" class="btn btn-primary">Submit</button>
-<br><br>
-</form>
-</div>
-<div class = "col-lg-3">
-
-<table class="table table-striped table-bordered table-hover table-condensed"> 
+<br>
+<div class = "boxshadow">
+<h3>Selected Event Details</h3>
+<hr>
+<table class="table table-hover"> 
+	<tr>
+	<td><b>About Event</b></td>
+	<td><b>Event Details</b></td>
+	</tr>
     <tr>
     <td> Event ID: </td>
     <td> <c:out value="${EVENTS.eventid}" /> </td>
@@ -144,6 +112,13 @@
 
    
 </table>
+<hr>
+<a href = "<c:url value='/GetCoordinatorListModify' />"><input class = "btn btn-default" type = "submit" value = "Modify Event"></a><a href = "<c:url value='/GetCoordinatorList_Assign' />"><input style = "margin-left:100px;" class = "btn btn-default" type = "submit" value = "Assign Event Coordinator"></a>
+<hr>
+
+<a><input style = "background-color: transparent;" type="button" value="Go back to Event Summary page" onclick="history.back()"></a>
+<br><br>
+</div>
 
 
 
@@ -151,15 +126,5 @@
 
 </div>
 
-</div>
- </div>     
-      	</div>
-      
-      </div>
-      
-      
-
- </div>
- </div>
  </body>
  </html>

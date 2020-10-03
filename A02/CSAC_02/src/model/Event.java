@@ -27,7 +27,8 @@ public class Event {
 	 String type;
 	 String estattendees;
 	 DateFormat dateformat = new SimpleDateFormat("MM/dd/yyyy");
-	 DateFormat timeformat = new SimpleDateFormat("hh:mm aa");
+	 DateFormat timeformat = new SimpleDateFormat("hh:mm a");
+	 DateFormat timeformat24 = new SimpleDateFormat("HH:mm");
 	 String currentDate = new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime());
 	 String currentTime = new SimpleDateFormat("hh:mm aa").format(Calendar.getInstance().getTime());
 	 
@@ -44,6 +45,8 @@ public class Event {
         this.starttime = starttime;
         this.type = type;
     }
+    
+ 
 
 
     public Event(int eventid, String eventname, String eventdate, String starttime, String duration,
@@ -63,6 +66,8 @@ public class Event {
         
        
     }
+    
+    
 
     public Event(String eventname,String eventdate, String starttime, String duration , String location, String numberofattendees, String capacity, String eventcoordinator, String type, String estattendees) {
         this.eventname = eventname;
@@ -191,6 +196,46 @@ public class Event {
 		
 	}
 	
+	public void SetEvent_Summary( String eventname, String eventdate, String starttime, String duration, String location, String estattendees) {
+		
+		setEventname(eventname);
+		setEventdate(eventdate);
+		setStarttime(starttime);
+		setDuration(duration);
+		setLocation(location);
+		setEstattendees(estattendees);
+		
+	}
+	
+	
+	
+	public Date ConvertedStartTimeLimit()
+	{
+		
+		Date StartTimeLimit = null;
+		try {
+			StartTimeLimit = timeformat24.parse("07:00");
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		} 
+		return StartTimeLimit;
+	}
+	
+	public Date ConvertedEndTimeLimit()
+	{
+		
+		Date EndTimeLimit = null;
+		try {
+			EndTimeLimit = timeformat24.parse("22:00");
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		} 
+		return EndTimeLimit;
+	}
+	
+	
 	
 	public Date ConvertedEnteredDate(String Entereddate)
 	{
@@ -233,6 +278,23 @@ public class Event {
 		return EnteredTime;
 	}
 	
+	
+	public Date ConvertedEnteredTime24(String Enteredtime)
+	{
+		
+		Date EnteredTime = null;
+		try {
+			EnteredTime = timeformat24.parse(Enteredtime);
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		} 
+		return EnteredTime;
+	}
+	
+	
+
+	
 	public Date ConvertedCurrentTime()
 	{
 		Event event = new Event();
@@ -268,28 +330,12 @@ public String validateDate(String Date)
 		
 		return result;
 	}
-	
-	public String validateTime(String Time) 
-	{
-		String result = "";
-		Event event = new Event();
 
-	if(!isTimeValid(Time))
-	{
-		result = "Invalid Time format";
-	}
-	else
-		if(event.ConvertedEnteredDate(Time).before(event.ConvertedCurrentDate()))
-		{
-			result =  "Time cannot be in the past";
-		}
-		
-		return result;
-		
-	}
 	
 	public String validateDateTime(String Date, String Time)
 	{
+	
+		
 		String result = "";
 		if(!isTimeValid(Time))
 		{
@@ -301,11 +347,17 @@ public String validateDate(String Date)
 				result = " Time cannot be in the past";
 			}
 			else
-				if(ConvertedEnteredDate(Date).after(ConvertedCurrentDate())  || ConvertedEnteredDate(Date).equals(ConvertedCurrentDate())) 
+				if(ConvertedEnteredTime(Time).before(ConvertedStartTimeLimit()) && ConvertedEnteredTime(Time).after(ConvertedEndTimeLimit()))
+				{
+					result = "Event Timings must be between 7:00 AM(inclusive) and 10:00 PM(inclusive)";
+				}
+			else
+				if(ConvertedEnteredDate(Date).equals(ConvertedCurrentDate())) 
 					if( ConvertedEnteredTime(Time).before(ConvertedCurrentTime()))
 						{
 						result = "Time cannot be in the past";
 						}
+		
 		return result;
 	}
 

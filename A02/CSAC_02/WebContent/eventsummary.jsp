@@ -22,7 +22,7 @@
         <div class="main_container">
          
             
-            <nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#">Cruise Ship Activity Co-ordination System</a>
@@ -46,275 +46,58 @@
 				<small id="passwordHelpInline" class="text-muted"> HOME PAGE </small>
 			</p>
   <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#home">View Passenger Event Summary</a></li>
-    <li><a data-toggle="tab" href="#menu1">List All Events</a></li>
-    <li><a data-toggle="tab" href="#menu2">View Profile</a></li>
+    <li class="active"><a data-toggle="tab" href="#home"> Event Summary</a></li>
   </ul>
   <br>
 
-  <div class="tab-content">
   
-  
-<div id="home" class="tab-pane fade in active form">
-<div class = "row">
-<div class = "col-lg-5">
-      <form  action="EventServlet" method="post">
-<table>
-<tr>
- <td><label for="Date">Event Date:</label></td> 
-</tr>
-<tr> 
-<td><input class = "form-control"  name="eventdate" id="currentDate" value = "<c:out value='${sessionScope.currentdate}'/>" ></td>
-<!-- <td> Validation for date here </td>-->
-</tr>
-
-<tr>
-    <td>
-        &nbsp;
-       
-    </td>
-</tr>
-
-<tr>
-<td><label for="Time">Event Time:</label></td>
-</tr>
-<tr>
-<td><input class ="form-control"  name = "starttime" value = "<c:out value='${sessionScope.currenttime}'/>"></td>
-<!-- <td> Validation for time here </td>-->
-</tr>
-
-</table>  
-<br><br>	
-   <button type="submit" class="btn btn-primary">Submit</button>
-<br><br>
-</form>
-</div>
 
 
 
-<div class = "col-lg-5">
 
- <form action="EventListServlet" method="post">         
-       <table class="table table-striped table-bordered table-hover table-condensed"> 
+<div class = "boxshadow">
+
+<h3> EVENTS SUMMARY </h3>
+<hr>
+ <form action="<c:url value='/EventListServlet?action=ListSpecificEventRadio&eventid=${item.eventid}' />"  method="post">         
+       <table class="table  table-hover table-dark"> 
+			  <thead>
 			<tr> 
-				<th>Select row</th>
-				<th>Event Name</th>
-				<th>Event Date</th> 
-				<th>Start Time</th>
-				<th>Duration</th> 
-				<th>Location</th>
-				<th>Estimated Attendees</th>
-
+			
+				<th><b>Event Name</b></th>
+				<th><b>Event Date</b></th> 
+				<th><b>Start Time</b></th>
+				<th><b>Duration</b></th> 
+				<th><b>Location</b></th>
+				<th><b>Estimated Attendees</b></th>
+				<th><b>View Event Details</b></th>
+			
 				
 			</tr>
-
- 		<c:forEach items="${EVENTS}" var="item" varStatus="status">
+		</thead>
+ 		<c:forEach items="${EVENTS}" var="item" >
+			<tbody>
 			<tr>
-			<td><input type="radio" id="radioEvent${status.count}" name="radioEvent" value="<c:out value="${status.count}" />"></td> 	
+		
 			<td><c:out value="${item.eventname}" /></td>
 			<td><c:out value="${item.eventdate}" /></td>
 			<td><c:out value="${item.starttime}" /></td>
 			<td><c:out value="${item.duration}" /></td>
 			<td><c:out value="${item.location}" /></td>
 			<td><c:out value="${item.estattendees}" /></td>
+			<td><b><i><a href="<c:url value='/EventListServlet?action=listSpecificCompany&eventid=${item.eventid}' />">View</a></i></b></td>
          
 			</tr>
+			</tbody>
 		</c:forEach>
  </table>
-<input name="ListSelectedEventButton"  class="btn btn-default" type="submit" value="View selected">
+
  </form>
 
-
-</div>
-</div>
-
-
-</div>   
-    
-    <div id="menu1" class="tab-pane fade form">
-<form  action="">
-<table>
-<tr>
- <td><label for="Date">Event Date:</label></td> 
-</tr>
-<tr> 
-<td><input class = "form-control" name="eventdate" id="currentDate" value = "<c:out value='${sessionScope.currentdate}'/>" ></td>
-<!-- <td> Validation for date here </td>-->
-</tr>
-
-<tr>
-    <td>
-        &nbsp;
-       
-    </td>
-</tr>
-
-<tr>
-<td><label for="Time">Event Time:</label></td>
-</tr>
-<tr>
-<td><input class ="form-control"  value = "<c:out value='${sessionScope.currenttime}'/>"></td>
-<!-- <td> Validation for time here </td>-->
-</tr>
-<tr>
-    <td>
-        &nbsp;
-       
-    </td>
-</tr>
-
-<tr>
-<td><label for="Event">Event Type:</label></td>
-</tr>
-<tr>
-<td><select class ="form-control">
-	<option> Show </option>
-	<option> Athletic </option>
-	</select>
-</td>
-<!-- <td> Validation for time here </td>-->
-</tr>
-
-</table>  
-<br><br>	
-   <button type="submit" class="btn btn-primary">Submit</button>
-<br><br>
-</form>
-    </div>
-    
-    
-    <div id="menu2" class="tab-pane fade form">
-    <form action="RegisterServlet" method="post">
-                   <p>
-<table class="padding-table-columns">
-<tr>
-<td><label for="username">Username:</label></td>
-</tr>
-<tr>
-<td><input class = "form-control" type="text" value="<c:out value='${sessionScope.username}'/>" name="username" required></td>
-<td><p class = "errorPane"></p></td>
-</tr>
-                       <tr>
-    <td>
-        &nbsp;
-       
-    </td>
-</tr>
-<tr>
-<td><label for="password">Password:</label></td>
-</tr>
-<tr>
-<td><input class = "form-control" type="password" value="<c:out value='${sessionScope.password}'/>" name="password" required></td>
-<td><p class = "errorPane"></p></td>
-</tr>
-                       <tr>
-    <td>
-        &nbsp;
-       
-    </td>
-</tr>
-<tr>
-<td><label for="lastname">Lastname:</label></td>
-</tr>
-<tr>
-<td><input class = "form-control" type="text" value="<c:out value='${sessionScope.lastname}'/>" name="lastname" required></td>
-<td><p class = "errorPane"></p></td>
-</tr>
-                       <tr>
-    <td>
-        &nbsp;
-       
-    </td>
-</tr>
-<tr>
-<td><label for="firstname">Firstname:</label></td>
-</tr>
-<tr>
-<td><input class = "form-control" type="text" value="<c:out value='${sessionScope.firstname}'/>" name="firstname" required></td>
-<td><p class = "errorPane"></p></td>
-</tr>
-                       <tr>
-    <td>
-        &nbsp;
-       
-    </td>
-</tr>
-<tr>
-<td><label for="email">Email:</label></td>
-</tr>
-<tr>
-<td><input class = "form-control" type="text" value="<c:out value='${sessionScope.email}'/>" name="email" required></td>
-<td><p class = "errorPane"></p></td>
-</tr>
-                       <tr>
-    <td>
-        &nbsp;
-       
-    </td>
-</tr>
-<tr>
-<td><label for="number">Number:</label></td>
-</tr>
-<tr>
-<td><input class = "form-control" type="number" value="<c:out value='${sessionScope.number}'/>" name="number" required></td>
-<td><p class = "errorPane"></p></td>
-</tr>
-                       <tr>
-    <td>
-        &nbsp;
-       
-    </td>
-</tr>
-<tr>
-<td><label for="roomnumber">Roomnumber:</label></td>
-</tr>
-<tr>
-<td><input class = "form-control" type="number" value="<c:out value='${sessionScope.roomnumber}'/>" name="roomnumber" required></td>
-<td><p class = "errorPane"></p></td>
-</tr>
-                       <tr>
-    <td>
-        &nbsp;
-       
-    </td>
-</tr>
-<tr>
-<td><label for="decknumber">Decknumber:</label></td>
-</tr>
-<tr>
-<td><input class = "form-control" type="number" value="<c:out value='${sessionScope.decknumber}'/>" name="decknumber" required></td>
-<td><p class = "errorPane"></p></td>
-                     <tr>
-    <td>
-        &nbsp;
-       
-    </td>
-</tr>
-<tr>
-<td><label for="membership">Membership :</label></td>
-</tr>
-<tr>
-<td><select class = "form-control" name="membership"  required>
-	<option>Current Membership: <c:out value='${sessionScope.membership}'/></option>
-	<option disabled>-- CHANGE MEMBERSHIP--</option>
-	<option>None</option>
-	<option>Standard</option>
-	<option>Superior</option>
-	<option>Premium</option> 
-	</select></td>
-</table>
 <br>
-
-                   <input class="btn btn-default" type="submit" value="Update Profile">
-                 
-                </form>
-    </div>
- 
- </div>
-
+<b><a href = "welcome.jsp"> Go back to Home Page</a></b>
 
 </div>
-
 </div>
 </body>
 </html> 			

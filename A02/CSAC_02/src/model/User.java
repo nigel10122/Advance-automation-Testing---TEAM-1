@@ -21,6 +21,7 @@ public class User {
 	 int roomnumber;
 	 int decknumber;
 	 String membership;
+	 String role;
 	 String currentDate = new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime());
 	 String currentTime = new SimpleDateFormat("hh:mm aa").format(Calendar.getInstance().getTime());
 
@@ -36,19 +37,7 @@ public class User {
     }
 
 
-    public User(int id, String username,String password, String lastname, String firstname , String email, String number, int roomnumber, int decknumber, String membership) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.lastname = lastname;
-        this.firstname = firstname;
-        this.email = email;
-        this.number = number;
-        this.roomnumber = roomnumber;
-        this.decknumber = decknumber;
-        this.membership = membership;
-       
-    }
+
 
     public User(String username,String password, String lastname, String firstname , String email, String number, int roomnumber, int decknumber, String membership) {
     	this.username = username;
@@ -62,18 +51,29 @@ public class User {
         this.membership = membership;
     }
 
+
+    public User(String username,String password, String lastname, String firstname , String email, String number, int roomnumber, int decknumber, String membership,String role) {
+    	this.username = username;
+        this.password = password;
+        this.lastname = lastname;
+        this.firstname = firstname;
+        this.email = email;
+        this.number = number;
+        this.roomnumber = roomnumber;
+        this.decknumber = decknumber;
+        this.membership = membership;
+        this.role = role;
+    }
     public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public int getId() {
-        return id;
+    public User(String role)
+    {
+    	this.role = role;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+ 
 
     public String getUsername() {
 		return username;
@@ -158,6 +158,13 @@ public class User {
 		this.currentDate = currentDate;
 	}
 	
+	public String getRole() {
+		return role;
+	}
+	
+	public void setRole(String role) {
+		this.role = role;
+	}
 	
 	
 	// Validation

@@ -4,6 +4,8 @@ package data;
 import java.sql.*;
 import java.util.ArrayList;
 
+
+
 import util.ConnectionPro;
 import model.*;
 
@@ -46,13 +48,14 @@ public class UserDAO {
 	}
     
 
+
     
     //for register user 
     public boolean saveUser(User user){
         boolean set = false;
         try{
             //Insert register data to database
-            String query = "insert into user(username,password,lastname,firstname,email,number,roomnumber,decknumber,membership) values(?,?,?,?,?,?,?,?,?)";
+            String query = "insert into user(username,password,lastname,firstname,email,number,roomnumber,decknumber,membership,role) values(?,?,?,?,?,?,?,?,?,?)";
            
            PreparedStatement pt = this.con.prepareStatement(query);
            pt.setString(1, user.getUsername());
@@ -64,6 +67,8 @@ public class UserDAO {
            pt.setInt(7, user.getRoomnumber());
            pt.setInt(8, user.getDecknumber());
            pt.setString(9, user.getMembership());
+           pt.setString(10, user.getRole());
+         
       
            
            pt.executeUpdate();
@@ -73,6 +78,35 @@ public class UserDAO {
         }
         return set;
     }
+    
+    //for register user  
+    public boolean updateUser(User user){
+        boolean set = false;
+        try{
+            //Insert register data to database
+            String query = "Update user set lastname=?, firstname=?, password=?, email=?, number=?, roomnumber=?, decknumber=?, membership=? where username=?";
+           
+           PreparedStatement pt = this.con.prepareStatement(query);
+           pt.setString(1, user.getLastname());
+           pt.setString(2, user.getFirstname());
+           pt.setString(3, user.getPassword());
+           pt.setString(4, user.getEmail());
+           pt.setString(5, user.getNumber());
+           pt.setInt(6, user.getRoomnumber());
+           pt.setInt(7, user.getDecknumber());
+           pt.setString(8, user.getMembership());
+           pt.setString(9, user.getUsername());
+      
+           
+           pt.executeUpdate();
+           set = true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return set;
+    }
+   
+   
     
   //user login
     public User login(String username, String pass){
@@ -87,7 +121,6 @@ public class UserDAO {
             
             if(rs.next()){
                 usr = new User();
-                usr.setId(rs.getInt("id"));
                 usr.setUsername(rs.getString("username"));
                 usr.setPassword(rs.getString("password"));
                 usr.setLastname(rs.getString("lastname"));
@@ -97,6 +130,7 @@ public class UserDAO {
                 usr.setRoomnumber(rs.getInt("roomnumber"));
                 usr.setDecknumber(rs.getInt("decknumber"));
                 usr.setMembership(rs.getString("membership"));
+                usr.setRole(rs.getString("role"));
              
                 
             }
@@ -107,6 +141,11 @@ public class UserDAO {
         return usr;
        
     }
+
+	public static ArrayList<User>  getCoordinatornames() {  
+		return ReturnMatchingUsersList(" SELECT * from USER WHERE role = 'Coordinator'");
+}
+    
     
     public static Boolean NameCombination(String firstname, String lastname)  {  
 		return (ReturnMatchingUsersList(" SELECT * from USER WHERE firstname = '"+firstname+"' AND lastname = '"+lastname+"' ORDER BY roomnumber").isEmpty());

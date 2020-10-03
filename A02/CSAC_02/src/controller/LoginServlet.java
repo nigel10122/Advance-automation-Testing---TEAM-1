@@ -78,21 +78,10 @@ public class LoginServlet extends HttpServlet {
      		
      		}
         else 
-        	if(username.equals("coordinator10122") && password.equals("Plmqaz@098")){
-                
-            response.sendRedirect("coordinatorhome.jsp");
-           
-        	}
-            else 
-            	if(username.equals("manager10122") && password.equals("Plmqaz@098")){
-                    
-                response.sendRedirect("managerhome.jsp");
-               
-            	}
-        else 
-        	if(user!=null){
+        	if(user!=null && user.getRole().equals("Passenger"))
+        	{
         	HttpSession session = request.getSession();
-            session.setAttribute("logUser", user);
+            session.setAttribute("logUser", user);	
             SuccessfullSession.setAttribute("successmessage", successmessage);
             SuccessfullSession.removeAttribute("successmessage");
             errorSession.removeAttribute("usernameError");	
@@ -110,18 +99,59 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("membership", user.getMembership());
             session.setAttribute("currentdate", user.getCurrentDate());
             session.setAttribute("currenttime", user.getCurrentTime());
-            
-            
-        }else
-        	
-        {	
-        
-            invalidsession.setAttribute("InvalidError",InvalidError);
-            requestDispatcher.forward(request, response);
-            errorSession.removeAttribute("usernameError");	
-			errorSession.removeAttribute("passwordError");	
-        
-        }
+          }else
+        	if(user!=null && user.getRole().equals("Coordinator"))
+        	{
+            	HttpSession session = request.getSession();
+                session.setAttribute("logUser", user);
+                SuccessfullSession.setAttribute("successmessage", successmessage);
+                SuccessfullSession.removeAttribute("successmessage");
+                errorSession.removeAttribute("usernameError");	
+    			errorSession.removeAttribute("passwordError");	
+    			errorSession.removeAttribute("InvalidError");	
+                response.sendRedirect("coordinatorhome.jsp");
+                session.setAttribute("username", user.getUsername());
+                session.setAttribute("password", user.getPassword());
+                session.setAttribute("lastname", user.getLastname());
+                session.setAttribute("firstname", user.getFirstname());
+                session.setAttribute("email", user.getEmail());
+                session.setAttribute("number", user.getNumber());
+                session.setAttribute("roomnumber", user.getRoomnumber());
+                session.setAttribute("decknumber", user.getDecknumber());
+                session.setAttribute("membership", user.getMembership());
+                session.setAttribute("currentdate", user.getCurrentDate());
+                session.setAttribute("currenttime", user.getCurrentTime());
+        	}
+        	else
+        		if(user!=null && user.getRole().equals("Manager"))
+        		{
+                	HttpSession session = request.getSession();
+                    session.setAttribute("logUser", user);
+                    SuccessfullSession.setAttribute("successmessage", successmessage);
+                    SuccessfullSession.removeAttribute("successmessage");
+                    errorSession.removeAttribute("usernameError");	
+        			errorSession.removeAttribute("passwordError");	
+        			errorSession.removeAttribute("InvalidError");	
+                    response.sendRedirect("managerhome.jsp");
+                    session.setAttribute("username", user.getUsername());
+                    session.setAttribute("password", user.getPassword());
+                    session.setAttribute("lastname", user.getLastname());
+                    session.setAttribute("firstname", user.getFirstname());
+                    session.setAttribute("email", user.getEmail());
+                    session.setAttribute("number", user.getNumber());
+                    session.setAttribute("roomnumber", user.getRoomnumber());
+                    session.setAttribute("decknumber", user.getDecknumber());
+                    session.setAttribute("membership", user.getMembership());
+                    session.setAttribute("currentdate", user.getCurrentDate());
+                    session.setAttribute("currenttime", user.getCurrentTime());
+        		}
+        		else
+        			{	
+        				invalidsession.setAttribute("InvalidError",InvalidError);
+        				requestDispatcher.forward(request, response);
+        				errorSession.removeAttribute("usernameError");	
+        				errorSession.removeAttribute("passwordError");	
+        			}
 
 	}
 

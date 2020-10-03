@@ -29,7 +29,7 @@
                         <c:out value='${sessionScope.firstname}'/>
                      </a>
                   </li>
-                  <li><a href="LogoutServlet"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                  <li><a href="LogoutServlet"><span class="glyphicon glyphicon-log-in"></span>Logout</a></li>
                </ul>
             </div>
          </nav>
@@ -41,9 +41,12 @@
             Welcome, 
             <c:out value='${sessionScope.firstname}'/>
          </h2>
-         <p class="text-center">
-            <small id="passwordHelpInline" class="text-muted"> HOME PAGE </small>
-         </p>
+         <div class="text-center">
+            <p><small id="passwordHelpInline" class="text-muted"> HOME PAGE </small></p>
+            <h5><c:out value='${sessionScope.reservationsuccessmsg}'/></h5>
+            <h5><c:out value='${sessionScope.successmessage}'/></h5>
+         </div>
+         
          <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#home">View Passenger Event Summary</a></li>
             <li><a data-toggle="tab" href="#menu1">List All Events</a></li>
@@ -51,9 +54,11 @@
          </ul>
          <br>
          <div class="tab-content">
-            <div id="home" class="tab-pane fade in active form">
+            <div id="home" class="tab-pane fade in active form boxshadow">
+            <h3>View Reserved Events</h3>
+            <hr>
              <form  action="EventServlet" method="post">
-                        <table class="padding-table-columns">
+                        <table class="padding-table-columns" style = "margin-left:300px;">
                            <tr>
                               <td><label for="Date">Event Date:</label></td>
                            </tr>
@@ -82,15 +87,17 @@
                   </div>
                   
               
-               <div id="menu1" class="tab-pane fade form">
-                  <form  action="">
-                     <table>
+               <div id="menu1" class="tab-pane fade form boxshadow">
+               <h3>Search for Events</h3>
+               <hr>
+                  <form  action="PassengerEventTypeServlet">
+                     <table class="padding-table-columns" style = "margin-left:300px;">
                         <tr>
                            <td><label for="Date">Event Date:</label></td>
                         </tr>
                         <tr>
                            <td><input class = "form-control" name="eventdate" id="currentDate" value = "<c:out value='${sessionScope.currentdate}'/>" ></td>
-                           <!-- <td> Validation for date here </td>-->
+                           <td><p class = "errorPane"><c:out value='${sessionScope.eventdateError}'/></p></td>
                         </tr>
                         <tr>
                            <td>
@@ -101,8 +108,8 @@
                            <td><label for="Time">Event Time:</label></td>
                         </tr>
                         <tr>
-                           <td><input class ="form-control"  value = "<c:out value='${sessionScope.currenttime}'/>"></td>
-                           <!-- <td> Validation for time here </td>-->
+                           <td><input class ="form-control" name = "starttime" value = "<c:out value='${sessionScope.currenttime}'/>"></td>
+                           <td><p class = "errorPane"><c:out value='${sessionScope.eventtimeError}'/></p></td>
                         </tr>
                         <tr>
                            <td>
@@ -114,12 +121,12 @@
                         </tr>
                         <tr>
                            <td>
-                              <select class ="form-control">
+                              <select name = "type" class ="form-control">
                                  <option> Show </option>
                                  <option> Athletic </option>
                               </select>
                            </td>
-                           <!-- <td> Validation for time here </td>-->
+                           
                         </tr>
                      </table>
                      <br><br>	
@@ -128,15 +135,17 @@
                   </form>
                </div>
                
-               <div id="menu2" class="tab-pane fade form">
-                  <form action="RegisterServlet" method="post">
+               <div id="menu2" class="tab-pane fade form boxshadow">
+               <h3>PROFILE</h3>
+               <hr>
+                  <form method="get" action="passengerupdateprofile.jsp">
                      <p>
-                     <table class="padding-table-columns">
+                     <table class="padding-table-columns" style = "margin-left:280px;">
                         <tr>
                            <td><label for="username">Username:</label></td>
                         </tr>
                         <tr>
-                           <td><input class = "form-control" type="text" value="<c:out value='${sessionScope.username}'/>" name="username" required></td>
+                           <td><input disabled class = "form-control" type="text" value="<c:out value='${sessionScope.username}'/>" name="username" required></td>
                            <td>
                               <p class = "errorPane"></p>
                            </td>
@@ -150,7 +159,7 @@
                            <td><label for="password">Password:</label></td>
                         </tr>
                         <tr>
-                           <td><input class = "form-control" type="password" value="<c:out value='${sessionScope.password}'/>" name="password" required></td>
+                           <td><input disabled class = "form-control" type="password" value="<c:out value='${sessionScope.password}'/>" name="password" required></td>
                            <td>
                               <p class = "errorPane"></p>
                            </td>
@@ -164,7 +173,7 @@
                            <td><label for="lastname">Lastname:</label></td>
                         </tr>
                         <tr>
-                           <td><input class = "form-control" type="text" value="<c:out value='${sessionScope.lastname}'/>" name="lastname" required></td>
+                           <td><input disabled class = "form-control" type="text" value="<c:out value='${sessionScope.lastname}'/>" name="lastname" required></td>
                            <td>
                               <p class = "errorPane"></p>
                            </td>
@@ -178,7 +187,7 @@
                            <td><label for="firstname">Firstname:</label></td>
                         </tr>
                         <tr>
-                           <td><input class = "form-control" type="text" value="<c:out value='${sessionScope.firstname}'/>" name="firstname" required></td>
+                           <td><input disabled class = "form-control" type="text" value="<c:out value='${sessionScope.firstname}'/>" name="firstname" required></td>
                            <td>
                               <p class = "errorPane"></p>
                            </td>
@@ -192,7 +201,7 @@
                            <td><label for="email">Email:</label></td>
                         </tr>
                         <tr>
-                           <td><input class = "form-control" type="text" value="<c:out value='${sessionScope.email}'/>" name="email" required></td>
+                           <td><input disabled class = "form-control" type="text" value="<c:out value='${sessionScope.email}'/>" name="email" required></td>
                            <td>
                               <p class = "errorPane"></p>
                            </td>
@@ -206,7 +215,7 @@
                            <td><label for="number">Number:</label></td>
                         </tr>
                         <tr>
-                           <td><input class = "form-control" type="number" value="<c:out value='${sessionScope.number}'/>" name="number" required></td>
+                           <td><input disabled class = "form-control" type="number" value="<c:out value='${sessionScope.number}'/>" name="number" required></td>
                            <td>
                               <p class = "errorPane"></p>
                            </td>
@@ -220,7 +229,7 @@
                            <td><label for="roomnumber">Roomnumber:</label></td>
                         </tr>
                         <tr>
-                           <td><input class = "form-control" type="number" value="<c:out value='${sessionScope.roomnumber}'/>" name="roomnumber" required></td>
+                           <td><input disabled class = "form-control" type="number" value="<c:out value='${sessionScope.roomnumber}'/>" name="roomnumber" required></td>
                            <td>
                               <p class = "errorPane"></p>
                            </td>
@@ -234,7 +243,7 @@
                            <td><label for="decknumber">Decknumber:</label></td>
                         </tr>
                         <tr>
-                           <td><input class = "form-control" type="number" value="<c:out value='${sessionScope.decknumber}'/>" name="decknumber" required></td>
+                           <td><input disabled class = "form-control" type="number" value="<c:out value='${sessionScope.decknumber}'/>" name="decknumber" required></td>
                            <td>
                               <p class = "errorPane"></p>
                            </td>
@@ -248,7 +257,7 @@
                         </tr>
                         <tr>
                            <td>
-                              <select class = "form-control" name="membership"  required>
+                              <select disabled class = "form-control" name="membership"  required>
                                  <option>
                                     Current Membership: 
                                     <c:out value='${sessionScope.membership}'/>
@@ -264,6 +273,7 @@
                      <br>
                      <input class="btn btn-default" type="submit" value="Update Profile">
                   </form>
+                  <br><br>
                </div>
             </div>
          </div>

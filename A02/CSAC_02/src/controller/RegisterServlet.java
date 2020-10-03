@@ -44,6 +44,7 @@ public class RegisterServlet extends HttpServlet {
 		String destination = "registration.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
 		
+		String role = "Passenger";
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String lastname = request.getParameter("lastname");
@@ -64,7 +65,7 @@ public class RegisterServlet extends HttpServlet {
 		User user = new User();
 		
 		
-		User userModel = new User( username, password,  lastname,  firstname , email,  number,  Roomnumber,  Decknumber,  membership);
+		User userModel = new User( username, password,  lastname,  firstname , email,  number,  Roomnumber,  Decknumber,  membership, role);
 		
 		//create a database model
 		UserDAO regUser = new UserDAO(ConnectionPro.getConnection());

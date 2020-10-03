@@ -29,7 +29,7 @@
       <li class="active"><a href="#">Home</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-user"><c:out value="${sessionScope.firstname} " /></span></a></li>
       <li><a href="LogoutServlet"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
     </ul>
   </div>
@@ -39,100 +39,56 @@
 </div>
 		
 		<br>
-  <h2 class="text-center" id="title">Welcome Manager</h2>
-			 <p class="text-center">
-				<small id="passwordHelpInline" class="text-muted"> HOME PAGE </small>
-			</p>
+  <h2 class="text-center" id="title">Welcome <c:out value="${sessionScope.firstname} ${sessionScope.lastname} " /></h2>
+			 <div class="text-center">
+				<h4 id="passwordHelpInline" class="text-muted"> MANAGER HOME PAGE </h4>
+			</div>
       <ul class="nav nav-tabs">
       <li class = "active"><a data-toggle="tab" href="#eventssummaryform">View Events Summary</a></li>
       </ul>
       <br>
-      <div class="tab-content">
 
-<div id="home" class="tab-pane fade in active">
- <div id = "eventssummaryform" class ="form">    
- <div class = "row">
- <div class = "col-lg-3"> 	
-<form  action="ManagerEventSearchServlet" method = "post">
-<table>
-<tr>
- <td><label for="Date">Event Date:</label></td> 
-</tr>
-<tr> 
-<td><input class = "form-control" name="eventdate" id="currentDate" value = "<c:out value='${sessionScope.currentdate}'/>" ></td>
-<!-- <td> Validation for date here </td>-->
-</tr>
 
-<tr>
-    <td>
-        &nbsp;
-       
-    </td>
-</tr>
-
-<tr>
-<td><label for="Time">Event Time:</label></td>
-</tr>
-<tr>
-<td><input class ="form-control" name = "starttime" value = "<c:out value='${sessionScope.currenttime}'/>"></td>
-<!-- <td> Validation for time here </td>-->
-</tr>
-
-</table>  
-<br><br>	
-   <button type="submit" class="btn btn-primary">Submit</button>
-<br><br>
-</form>
-</div>
-<div class = "col-lg-3">
-
+<div class = "boxshadow">
+<h3>Events Summary</h3>
+<hr>
 <form action="ManagerEventListServlet" method="post">         
-       <table class="table table-striped table-bordered table-hover table-condensed"> 
+       <table class="table  table-hover"> 
 			<tr> 
-				<th>Select row</th>
+				
 				<th>Event Name</th>
 				<th>Event Date</th> 
 				<th>Start Time</th>
 				<th>Duration</th> 
 				<th>Location</th>
 				<th>Number of Attendees</th>
-		
+				<th>View Events</th>
 				
 			</tr>
 
- 		<c:forEach items="${EVENTS}" var="item" varStatus="status">
+ 		<c:forEach items="${EVENTS}" var="item">
 			<tr>
-			<td><input type="radio" id="radioEvent${status.count}" name="radioEvent" value="<c:out value="${status.count}" />"></td> 	
+				
 			<td><c:out value="${item.eventname}" /></td>
 			<td><c:out value="${item.eventdate}" /></td>
 			<td><c:out value="${item.starttime}" /></td>
 			<td><c:out value="${item.duration}" /></td>
 			<td><c:out value="${item.location}" /></td>
 			<td><c:out value="${item.numberofattendees}" /></td>
-			
+			<td><b><i><a href="<c:url value='/ManagerEventListServlet?action=listSpecificCompany&eventid=${item.eventid}' />">View</a></i></b></td>
 
          
 			</tr>
 		</c:forEach>
  </table>
-<input name="ListSelectedEventButton"  class="btn btn-default" type="submit" value="View selected">
  </form>
-
-
-
-
-
+ <br>
+ <a href = "managerhome.jsp">Go back to Home Page</a>
 </div>
 
-</div>
- </div>     
-      	</div>
-      
-      </div>
-      
-      
 
- </div>
+
+
  </div>
  </body>
  </html>

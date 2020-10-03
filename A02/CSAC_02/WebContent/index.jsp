@@ -45,12 +45,12 @@
 			</h4>
  			<hr>
                 
- <div class = "Loginform">               
+ <div class = "boxshadow">               
 <h3>Login Account</h3>
-
+<hr>
 <form action="LoginServlet" method="post">
    					<p class = "errorPane"><c:out value='${sessionScope.InvalidError}'/></p>
-<table class="padding-table-columns">                    
+<table style = "margin-left:320px;" class="padding-table-columns">                    
 <tr>
 <td><input class = "form-control row1" type="text" placeholder="Username" name="username" required style = "width : 130px;"></td>
 <td><p class = "errorPane"><c:out value='${sessionScope.usernameError}'/></p></td>
@@ -75,15 +75,7 @@
                 </form>
 
 <br>
-<br>
-<br>
-<br> 
-<br>    
-<br>
-<br>
-<br>
-<br> 
-<br>             
+            
 
   </div>              
 </div>

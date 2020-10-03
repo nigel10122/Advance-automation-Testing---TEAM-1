@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-
 import data.EventDAO;
 import model.Event;
 
@@ -36,36 +35,30 @@ public class EventListServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		int selectedEventIndex;
 	
+		
 		ArrayList<Event> eventInDB = new ArrayList<Event>();
 		Event selectedEvent = new Event();
 		HttpSession session = request.getSession();
-		if (request.getParameter("radioEvent")!=null) {
-			selectedEventIndex = Integer.parseInt(request.getParameter("radioEvent")) - 1;
-			eventInDB=EventDAO.ListSpecificEvent(); 
-			 selectedEvent.SetEvent(eventInDB.get(selectedEventIndex).getEventid(), 
-									 eventInDB.get(selectedEventIndex).getEventname(), 
-									 eventInDB.get(selectedEventIndex).getEventdate(), 
-									 eventInDB.get(selectedEventIndex).getStarttime(),
-									 eventInDB.get(selectedEventIndex).getDuration(),
-									 eventInDB.get(selectedEventIndex).getLocation(),
-									 eventInDB.get(selectedEventIndex).getNumberofattendees(),
-									 eventInDB.get(selectedEventIndex).getCapacity(),
-									 eventInDB.get(selectedEventIndex).getEventcoordinator(),
-									 eventInDB.get(selectedEventIndex).getType(),
-									 eventInDB.get(selectedEventIndex).getEstattendees());
-			session.setAttribute("EVENTS", selectedEvent);
-			response.sendRedirect("listspecificevent.jsp");					
-		}
-		else  // determine if Submit button was clicked without selecting a company
-			if (request.getParameter("ListSelectedEventButton")!=null) {
-				String errorMsgs =  "Please select a company";
-				session.setAttribute("errorMsgs",errorMsgs);
-				 response.sendRedirect("eventsummary.jsp");				
+
+			 	//action=listSpecificEvent
+				eventInDB=EventDAO.ListSpecificEvent(request.getParameter("eventid"));
+				selectedEvent.SetEvent(	eventInDB.get(0).getEventid(), 
+						 eventInDB.get(0).getEventname(), 
+						 eventInDB.get(0).getEventdate(), 
+						 eventInDB.get(0).getStarttime(),
+						 eventInDB.get(0).getDuration(),
+						 eventInDB.get(0).getLocation(),
+						 eventInDB.get(0).getNumberofattendees(),
+						 eventInDB.get(0).getCapacity(),
+						 eventInDB.get(0).getEventcoordinator(),
+						 eventInDB.get(0).getType(),
+						 eventInDB.get(0).getEstattendees());
+				session.setAttribute("EVENTS", selectedEvent);
+				response.sendRedirect("listspecificevent.jsp");		
 			}
 		
 		
 	}
 
-}
+

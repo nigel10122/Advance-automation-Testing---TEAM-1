@@ -29,7 +29,7 @@
       <li class="active"><a href="#">Home</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span><c:out value="${sessionScope.firstname} " /></a></li>
       <li><a href="LogoutServlet"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
     </ul>
   </div>
@@ -39,24 +39,26 @@
 </div>
 		
 		<br>
-  <h2 class="text-center" id="title">Welcome Coordinator</h2>
-			 <p class="text-center">
-				<small id="passwordHelpInline" class="text-muted"> HOME PAGE </small>
-			</p>
+  <h2 class="text-center" id="title">Welcome <c:out value="${sessionScope.firstname} ${sessionScope.lastname} " /></h2>
+			 <div class="text-center">
+				<h4 id="passwordHelpInline" class="text-muted"> COORDINATOR HOME PAGE </h4>
+			</div>
       <ul class="nav nav-tabs">
       <li class = "active"><a data-toggle="tab" href="#eventssummaryform">View Events Summary</a></li>
       </ul>
       <br>
       <div class="tab-content">
       	<div id="home" class="tab-pane fade in active">
- <div id = "eventssummaryform" class ="form">     	
-<form  action="">
-<table>
+ <div id = "eventssummaryform" class ="boxshadow">   
+ <h3>View Assigned Events</h3>
+ <hr>  	
+<form  action="<c:url value='/CoordinatorAssignedEventsSummary?action=Coordinatorassignedevents&eventcoordinator=${sessionScope.firstname} ${sessionScope.lastname}' />" method="post">
+<table style = "margin-left:300px;">
 <tr>
  <td><label for="Date">Event Date:</label></td> 
 </tr>
 <tr> 
-<td><input class = "form-control"  name="eventdate" id="currentDate" value = "<c:out value='${sessionScope.currentdate}'/>" ></td>
+<td><input name = "eventdate" class = "form-control"  name="eventdate" id="currentDate" value = "<c:out value='${sessionScope.currentdate}'/>" ></td>
 <!-- <td> Validation for date here </td>-->
 </tr>
 
@@ -71,7 +73,7 @@
 <td><label for="Time">Event Time:</label></td>
 </tr>
 <tr>
-<td><input class ="form-control"  value = "<c:out value='${sessionScope.currenttime}'/>"></td>
+<td><input name = "starttime" class ="form-control"  value = "<c:out value='${sessionScope.currenttime}'/>"></td>
 <!-- <td> Validation for time here </td>-->
 </tr>
 
