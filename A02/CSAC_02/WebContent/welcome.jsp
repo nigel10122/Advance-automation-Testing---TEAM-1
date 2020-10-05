@@ -42,9 +42,7 @@
             <c:out value='${sessionScope.firstname}'/>
          </h2>
          <div class="text-center">
-            <p><small id="passwordHelpInline" class="text-muted"> HOME PAGE </small></p>
-            <h5><c:out value='${sessionScope.reservationsuccessmsg}'/></h5>
-            <h5><c:out value='${sessionScope.successmessage}'/></h5>
+            <p class="text-muted"> PASSENGER HOME PAGE</p>
          </div>
          
          <ul class="nav nav-tabs">
@@ -57,7 +55,7 @@
             <div id="home" class="tab-pane fade in active form boxshadow">
             <h3>View Reserved Events</h3>
             <hr>
-             <form  action="EventServlet" method="post">
+             <form  action="<c:url value='/EventServlet?action=GetPassengerEvent&firstname=${sessionScope.firstname}&lastname=${sessionScope.lastname}' />" method="post">
                         <table class="padding-table-columns" style = "margin-left:300px;">
                            <tr>
                               <td><label for="Date">Event Date:</label></td>

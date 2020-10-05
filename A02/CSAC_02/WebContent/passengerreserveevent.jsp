@@ -78,8 +78,8 @@
     <td><label for = "eventdate"> Event Date :</label> </td>
     </tr>
    <tr> 
-   <td><input  class = "form-control" value = " <c:out value="${EVENTS.eventname}"/>" name="eventname" required>  </td>
-   <td><input  class = "form-control" value = " <c:out value="${EVENTS.eventdate}" />" name="eventdate" required>   </td>
+   <td><input  class = "form-control" value = "<c:out value="${EVENTS.eventname}"/>" name="eventname" required>  </td>
+   <td><input  class = "form-control" value = "<c:out value="${EVENTS.eventdate}" />" name="eventdate" required>   </td>
    </tr>
 <tr>
     <td>
@@ -113,7 +113,7 @@
     </tr>
     <tr>
     <td><input  class = "form-control" value = "<c:out value="${EVENTS.location}" /> " name="location" required>   </td>
-    <td><input  class = "form-control" value = " <c:out value="${EVENTS.numberofattendees}"/>" name="numberofattendees"></td>   
+    <td><input  class = "form-control" value = "<c:out value="${EVENTS.numberofattendees}"/>" name="numberofattendees"></td>   
     </tr>
 <tr>
     <td>
@@ -128,7 +128,7 @@
     </tr>
     <tr>
     <td><input  class = "form-control" value = "<c:out value="${EVENTS.capacity}" /> " name="capacity" required>   </td>
-    <td><input  class = "form-control" value = " <c:out value="${EVENTS.eventcoordinator}" />"name="eventcoordinator" required>   </td>
+    <td><input  class = "form-control" value = "<c:out value="${EVENTS.eventcoordinator}" />"name="eventcoordinator" required>   </td>
     </tr>
 <tr>
     <td>
@@ -143,8 +143,8 @@
     <td> <label for = "estattendees">Estimated Attendees :</label> </td>
     </tr>
     <tr>
-    <td> <input  class = "form-control" value = " <c:out value="${EVENTS.type}" />" name="type" required>  </td>
-    <td> <input class = "form-control" value = " <c:out value="${EVENTS.estattendees}" />" name="estattendees" required>  </td>
+    <td> <input  class = "form-control" value = "<c:out value="${EVENTS.type}" />" name="type" required>  </td>
+    <td> <input class = "form-control" value = "<c:out value="${EVENTS.estattendees}" />" name="estattendees" required>  </td>
     </tr>
 <tr>
     <td>
@@ -159,8 +159,8 @@
     <td> <label for = "lastname">Lastname :</label> </td>
     </tr>
     <tr>
-    <td> <input class = "form-control" value = " <c:out value='${sessionScope.firstname}'/>"  name="firstname" required>  </td>
-    <td> <input  class = "form-control" value = " <c:out value='${sessionScope.lastname}'/>" name="lastname" required>  </td>
+    <td> <input class = "form-control" value = "<c:out value='${sessionScope.firstname}'/>"  name="firstname" required>  </td>
+    <td> <input  class = "form-control" value = "<c:out value='${sessionScope.lastname}'/>" name="lastname" required>  </td>
     </tr>
 <tr>
     <td>
@@ -175,8 +175,8 @@
     <td> <label for = "number">Phone Number :</label> </td>
     </tr>
     <tr>
-    <td> <input  class = "form-control" value = " <c:out value='${sessionScope.email}'/>" name="email" required>  </td>
-    <td> <input class = "form-control" value = " <c:out value='${sessionScope.number}'/>" name="number" required>  </td>
+    <td> <input  class = "form-control" value = "<c:out value='${sessionScope.email}'/>" name="email" required>  </td>
+    <td> <input class = "form-control" value = "<c:out value='${sessionScope.number}'/>" name="number" required>  </td>
     </tr>
   
   

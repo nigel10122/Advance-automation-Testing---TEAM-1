@@ -2,8 +2,14 @@ package data;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
+import model.Event;
 import model.Reservation;
+import util.ConnectionPro;
 
 public class ReservationDAO {
 	  Connection con ;
@@ -43,6 +49,39 @@ public class ReservationDAO {
 	        }
 	        return set;
 	    }
+	 
+	    public static  ArrayList<Reservation> getPassengerEvents (String eventdate, String starttime, String firstname, String lastname) {
+			ArrayList<Reservation> eventListInDB = new ArrayList<Reservation>();
+
+			Statement stmt = null;
+			Connection conn = ConnectionPro.getConnection();
+			try {
+				
+				stmt = conn.createStatement();
+				String query = "SELECT * from RESERVATION WHERE eventdate LIKE '%"+eventdate+"%' AND starttime >= '"+starttime+"' AND firstname LIKE '"+firstname+"' AND lastname LIKE '"+lastname+"' ";
+				ResultSet eventList = stmt.executeQuery(query);
+				while (eventList.next()) {
+					Reservation event = new Reservation();
+					event.setEventid(eventList.getInt("eventid"));
+					event.setEventname(eventList.getString("eventname"));
+					event.setEventdate(eventList.getString("eventdate"));
+					event.setStarttime(eventList.getString("starttime"));
+					event.setDuration(eventList.getString("duration"));
+					event.setLocation(eventList.getString("location"));
+					event.setNumberofattendees(eventList.getString("numberofattendees"));
+					event.setCapacity(eventList.getString("capacity"));
+					event.setEventcoordinator(eventList.getString("eventcoordinator"));
+					event.setType(eventList.getString("type"));
+					event.setEstattendees(eventList.getString("estattendees"));
+					event.setFirstname(eventList.getString("firstname"));
+					event.setLastname(eventList.getString("lastname"));
+					event.setNumber(eventList.getString("number"));
+					event.setEmail(eventList.getString("email"));
+					eventListInDB.add(event);
+				}
+			} catch (SQLException e) {}
+			return eventListInDB;
+		}
 	
 	
 	

@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,6 +33,9 @@ public class CoordinatorAssignedEventsSummary extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String destination = "coordinatorhome.jsp";
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
+		
 		String eventcoordinator = request.getParameter("eventcoordinator");
 		String eventdate = request.getParameter("eventdate");   
 		String starttime = request.getParameter("starttime");
@@ -40,20 +44,27 @@ public class CoordinatorAssignedEventsSummary extends HttpServlet {
 		event.setStarttime(starttime);
 		event.setEventcoordinator(eventcoordinator);
 		HttpSession session = request.getSession();
-
-		//action=Coordinatorassignedevents
-		ArrayList<Event> eventInDB = new ArrayList<Event>();
-		if (!eventdate.equals("") && !starttime.equals(""))
+		HttpSession errorsession = request.getSession();
+		
+		String eventdateError = event.validateDate(eventdate);
+		String starttimeError = event.validateDateTime(eventdate, starttime);
+		
+		
+		if(!eventdateError.equals("") || !starttimeError.equals("") )
 		{
-				eventInDB=EventDAO.CoordinatorAssignedevents(eventdate, starttime,eventcoordinator);
-				session.setAttribute("EVENTS", eventInDB);
-				session.removeAttribute("event");
-				response.sendRedirect("coordinatoreventsummary.jsp");
+			errorsession.setAttribute("eventdateError", eventdateError);
+			errorsession.setAttribute("starttimeError", starttimeError);
+			requestDispatcher.forward(request, response);
 		}
-		else {
-			session.setAttribute("event", event);
-			response.sendRedirect("coordinatorhome.jsp");				
+	else{//action=Coordinatorassignedevents
+		ArrayList<Event> eventInDB = new ArrayList<Event>();
+		eventInDB=EventDAO.CoordinatorAssignedevents(eventdate, starttime,eventcoordinator);
+		session.setAttribute("EVENTS", eventInDB);
+		response.sendRedirect("coordinatoreventsummary.jsp");
+		session.removeAttribute("eventdateError");
+		session.removeAttribute("starttimeError");
 		}
+	
 		
 		
 		

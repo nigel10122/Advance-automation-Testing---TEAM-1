@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import data.EventDAO;
+import data.ReservationDAO;
 import model.Event;
+import model.Reservation;
 
 
 @WebServlet("/EventServlet")
@@ -37,6 +39,8 @@ public class EventServlet extends HttpServlet {
 		String destination = "welcome.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
 		
+		String firstname = request.getParameter("firstname");
+		String lastname = request.getParameter("lastname");
 		String eventdate = request.getParameter("eventdate");   
 		String starttime = request.getParameter("starttime");
 		Event event = new Event();
@@ -45,18 +49,19 @@ public class EventServlet extends HttpServlet {
 		String eventdateError = event.validateDate(eventdate);
 		String eventtimeError = event.validateDateTime(eventdate,starttime);
 		
-		ArrayList<Event> eventInDB = new ArrayList<Event>();
+		ArrayList<Reservation> eventInDB = new ArrayList<Reservation>();
 		
+	
 		if(!eventdateError.equals("") || !eventtimeError.equals(""))
 		{
 			session.setAttribute("eventdateError", eventdateError);
 			session.setAttribute("eventtimeError", eventtimeError);
 			requestDispatcher.forward(request, response);
 			
-		}
+		}	//action=GetPassengerEvent
 		if (!eventdate.equals("") && !starttime.equals(""))
 		{
-				eventInDB=EventDAO.getAllevents(eventdate, starttime);
+				eventInDB=ReservationDAO.getPassengerEvents(eventdate, starttime, firstname, lastname);
 				session.setAttribute("EVENTS", eventInDB);
 				session.removeAttribute("event");
 				response.sendRedirect("eventsummary.jsp");

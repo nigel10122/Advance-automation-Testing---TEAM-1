@@ -59,7 +59,7 @@
 </tr>
 <tr> 
 <td><input name = "eventdate" class = "form-control"  name="eventdate" id="currentDate" value = "<c:out value='${sessionScope.currentdate}'/>" ></td>
-<!-- <td> Validation for date here </td>-->
+<td><p class = "errorPane"> <c:out value="${sessionScope.eventdateError} " /></p> </td>
 </tr>
 
 <tr>
@@ -74,7 +74,7 @@
 </tr>
 <tr>
 <td><input name = "starttime" class ="form-control"  value = "<c:out value='${sessionScope.currenttime}'/>"></td>
-<!-- <td> Validation for time here </td>-->
+<td><p class = "errorPane"> <c:out value="${sessionScope.starttimeError} " /></p> </td>
 </tr>
 
 </table>  

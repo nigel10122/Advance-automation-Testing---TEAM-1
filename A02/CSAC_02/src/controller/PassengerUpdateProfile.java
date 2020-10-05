@@ -44,8 +44,8 @@ public class PassengerUpdateProfile extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 	
-		//String destination = "passengerupdateprofile.jsp";
-		//RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
+		String destination = "passengerupdateprofile.jsp";
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
 
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -78,16 +78,41 @@ public class PassengerUpdateProfile extends HttpServlet {
 		UserDAO updateuser = new UserDAO(ConnectionPro.getConnection());
 	
 		HttpSession SuccessfullSession = request.getSession();
+		HttpSession errorSession = request.getSession();
 		
+		String passwordError = user.validatePassword(password);
+		String lastnameError = user.validateLastname(lastname);
+		String firstnameError = user.validateFirstname(firstname);
+		String numberError = user.validateNumber(number);
+		String emailError = user.validateEmail(email);
+		String roomnumberError = user.validateRoomnumber(Roomnumber);
+		String decknumberError = user.validateDecknumber(Decknumber);
+		String namecombinationError = user.validateNameCombination(firstname, lastname);
 		
-			boolean success = updateuser.updateUser(user);
-			if(success) {
-			response.sendRedirect("welcome.jsp");
-			SuccessfullSession.setAttribute("successmessage", successmessage);
-			}
-			else {
-				response.sendRedirect("passengerupdateprofile.jsp");
-			}
+		if(!numberError.equals("") || !roomnumberError.equals("") || !lastnameError.equals("") 
+				|| !firstnameError.equals("") || !emailError.equals("") || !decknumberError.equals("") || !passwordError.equals("") 
+				|| !namecombinationError.equals(""))
+		{	
+			errorSession.setAttribute("passwordError", passwordError);
+			errorSession.setAttribute("lastnameError", lastnameError);
+			errorSession.setAttribute("firstnameError", firstnameError);
+			errorSession.setAttribute("numberError", numberError);
+			errorSession.setAttribute("emailError", emailError);
+			errorSession.setAttribute("roomnumberError", roomnumberError);
+			errorSession.setAttribute("decknumberError", decknumberError);
+			errorSession.setAttribute("namecombinationError", namecombinationError);
+		
+			requestDispatcher.forward(request, response);
+		
+		}
+		else 
+			{
+			 updateuser.updateUser(user);
+			 SuccessfullSession.setAttribute("successmessage", successmessage);
+			 response.sendRedirect("passengersuccessmessage.jsp");
+			} 
+			
+			
 		
 	
 	}		

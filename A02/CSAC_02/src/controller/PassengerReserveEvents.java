@@ -54,7 +54,7 @@ public class PassengerReserveEvents extends HttpServlet {
 		String email = request.getParameter("email");
 		
 		HttpSession successfullsession = request.getSession();
-		String reservationsuccessmsg = "Reservation Succesfull";
+		String successmessage = "Reservation Succesfull";
 		
 		Reservation reservationModel = new Reservation( eventname, eventdate,  starttime,  duration , location,  numberofattendees,  capacity,  eventcoordinator,  type,estattendees,firstname,lastname,number,email);
 		
@@ -63,8 +63,8 @@ public class PassengerReserveEvents extends HttpServlet {
 			ReservationDAO reserveevent = new ReservationDAO(ConnectionPro.getConnection());
 			if(reserveevent.ReserveEvent(reservationModel))
 			{
-				response.sendRedirect("welcome.jsp");
-				successfullsession.setAttribute("reservationsuccessmsg", reservationsuccessmsg);	
+				response.sendRedirect("passengersuccessmessage.jsp");
+				successfullsession.setAttribute("successmessage", successmessage);	
 			}
 			else
 				response.sendRedirect("passengerreserveevent.jsp");

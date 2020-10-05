@@ -77,7 +77,7 @@
                         <tr>
                            <td><input class = "form-control" type="text" value="<c:out value='${sessionScope.username}'/>" name="username" required></td>
                            <td>
-                              <p class = "errorPane"></p>
+                              <p class = "errorPane"><c:out value='${sessionScope.usernameError}'/></p>
                            </td>
                         </tr>
                         <tr>
@@ -91,7 +91,7 @@
                         <tr>
                            <td><input class = "form-control" type="password" value="<c:out value='${sessionScope.password}'/>" name="password" required></td>
                            <td>
-                              <p class = "errorPane"></p>
+                              <p class = "errorPane"><c:out value='${sessionScope.passwordError}'/></p>
                            </td>
                         </tr>
                         <tr>
@@ -105,7 +105,7 @@
                         <tr>
                            <td><input class = "form-control" type="text" value="<c:out value='${sessionScope.lastname}'/>" name="lastname" required></td>
                            <td>
-                              <p class = "errorPane"></p>
+                              <p class = "errorPane"><c:out value='${sessionScope.lastnameError}'/></p>
                            </td>
                         </tr>
                         <tr>
@@ -119,7 +119,7 @@
                         <tr>
                            <td><input class = "form-control" type="text" value="<c:out value='${sessionScope.firstname}'/>" name="firstname" required></td>
                            <td>
-                              <p class = "errorPane"></p>
+                              <p class = "errorPane"><c:out value='${sessionScope.firstnameError}'/></p>
                            </td>
                         </tr>
                         <tr>
@@ -133,7 +133,7 @@
                         <tr>
                            <td><input class = "form-control" type="text" value="<c:out value='${sessionScope.email}'/>" name="email" required></td>
                            <td>
-                              <p class = "errorPane"></p>
+                              <p class = "errorPane"><c:out value='${sessionScope.emailError}'/></p>
                            </td>
                         </tr>
                         <tr>
@@ -147,7 +147,7 @@
                         <tr>
                            <td><input class = "form-control" type="number" value="<c:out value='${sessionScope.number}'/>" name="number" required></td>
                            <td>
-                              <p class = "errorPane"></p>
+                              <p class = "errorPane"><c:out value='${sessionScope.numberError}'/></p>
                            </td>
                         </tr>
                         <tr>
@@ -161,7 +161,7 @@
                         <tr>
                            <td><input class = "form-control" type="number" value="<c:out value='${sessionScope.roomnumber}'/>" name="roomnumber" required></td>
                            <td>
-                              <p class = "errorPane"></p>
+                              <p class = "errorPane"><c:out value='${sessionScope.roomnumberError}'/></p>
                            </td>
                         </tr>
                         <tr>
@@ -175,7 +175,7 @@
                         <tr>
                            <td><input class = "form-control" type="number" value="<c:out value='${sessionScope.decknumber}'/>" name="decknumber" required></td>
                            <td>
-                              <p class = "errorPane"></p>
+                              <p class = "errorPane"><c:out value='${sessionScope.decknumberError}'/></p>
                            </td>
                         <tr>
                            <td>

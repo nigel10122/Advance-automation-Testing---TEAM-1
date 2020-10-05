@@ -56,7 +56,7 @@ public class RegisterServlet extends HttpServlet {
 		String decknumber = request.getParameter("decknumber");
 		int Decknumber=Integer.parseInt(decknumber);  
 		String membership = request.getParameter("membership");
-		String successmessage = "User registered successfully";
+		String registrationsuccessmessage = "User registered successfully";
 		
 		
 		
@@ -112,7 +112,7 @@ public class RegisterServlet extends HttpServlet {
 				regUser.saveUser(userModel); 
 				response.sendRedirect("index.jsp");
 				
-				SuccessfullSession.setAttribute("successmessage", successmessage);
+				SuccessfullSession.setAttribute("registrationsuccessmessage", registrationsuccessmessage);
 				errorSession.removeAttribute("usernameError");	
 				errorSession.removeAttribute("passwordError");	
 				errorSession.removeAttribute("lastnameError");	

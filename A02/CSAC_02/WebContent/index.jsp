@@ -41,7 +41,7 @@
 		<br>
   <h2 class="text-center" id="title">WELCOME</h2>
 			 <h4 class="text-center">
-				   <c:out value='${sessionScope.successmessage}'/>
+				   <c:out value='${sessionScope.registrationsuccessmessage}'/>
 			</h4>
  			<hr>
                 
