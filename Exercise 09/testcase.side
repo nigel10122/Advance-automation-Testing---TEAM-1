@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://adactinhotelapp.com/" />
+<title>testcase</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">testcase</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/index.php</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>nigel10122</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>Plmqaz@098</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=datepick_in</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=datepick_out</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=adult_room</td>
+	<td>label=- Select Adults per Room -</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=Submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=location</td>
+	<td>label=Sydney</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=datepick_in</td>
+	<td>16/10/2020</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=datepick_out</td>
+	<td>19/10/2020</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=room_nos</td>
+	<td>label=2 - Two</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=adult_room</td>
+	<td>label=2 - Two</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=Submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=radiobutton_1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=continue</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=first_name</td>
+	<td>Nigel</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=last_name</td>
+	<td>Dsouza</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=address</td>
+	<td>1225 S PECAN ST</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=cc_num</td>
+	<td>1001759444000000</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=cc_type</td>
+	<td>label=VISA</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=cc_exp_month</td>
+	<td>label=December</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=cc_exp_year</td>
+	<td>label=2022</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=cc_cvv</td>
+	<td>0944</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=book_now</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Click here to login again</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
