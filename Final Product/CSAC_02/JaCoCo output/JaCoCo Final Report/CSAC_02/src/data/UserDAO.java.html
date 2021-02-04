@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>UserDAO.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 7, 2020 8:22:40 PM)</a> &gt; <a href="../../index.html" class="el_group">CSAC_02</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">data</a> &gt; <span class="el_source">UserDAO.java</span></div><h1>UserDAO.java</h1><pre class="source lang-java linenums">package data;
+
+
+import java.sql.*;
+import java.util.ArrayList;
+
+
+
+import util.ConnectionPro;
+import model.*;
+
+
+
+
+
+
+
+
+public class UserDAO {
+    Connection con ;
+
+<span class="fc" id="L22">    public UserDAO(Connection con) {</span>
+<span class="fc" id="L23">        this.con = con;</span>
+<span class="fc" id="L24">    }</span>
+    
+    private static ArrayList&lt;User&gt; ReturnMatchingUsersList (String queryString) {
+<span class="fc" id="L27">		ArrayList&lt;User&gt; userListInDB = new ArrayList&lt;User&gt;();</span>
+		
+<span class="fc" id="L29">		Statement stmt = null;</span>
+<span class="fc" id="L30">		Connection conn = ConnectionPro.getConnection();  </span>
+		try {
+<span class="fc" id="L32">			stmt = conn.createStatement();</span>
+<span class="fc" id="L33">			ResultSet userList = stmt.executeQuery(queryString);</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">			while (userList.next()) {</span>
+<span class="fc" id="L35">				User user = new User(); </span>
+<span class="fc" id="L36">				user.setUsername(userList.getString(&quot;username&quot;));</span>
+<span class="fc" id="L37">				user.setPassword(userList.getString(&quot;password&quot;));</span>
+<span class="fc" id="L38">				user.setLastname(userList.getString(&quot;lastname&quot;));</span>
+<span class="fc" id="L39">				user.setFirstname(userList.getString(&quot;firstname&quot;));</span>
+<span class="fc" id="L40">				user.setEmail(userList.getString(&quot;email&quot;)); </span>
+<span class="fc" id="L41">				user.setNumber(userList.getString(&quot;number&quot;));</span>
+<span class="fc" id="L42">				user.setRoomnumber(userList.getString(&quot;roomnumber&quot;));</span>
+<span class="fc" id="L43">				user.setDecknumber(userList.getString(&quot;decknumber&quot;));</span>
+<span class="fc" id="L44">				user.setMembership(userList.getString(&quot;membership&quot;));  </span>
+<span class="fc" id="L45">				user.setRole(userList.getString(&quot;role&quot;));</span>
+<span class="fc" id="L46">				userListInDB.add(user);	</span>
+			}
+<span class="pc" id="L48">		} catch (SQLException e) {}</span>
+<span class="fc" id="L49">		return userListInDB;</span>
+	}
+    
+
+
+    
+    //for register user 
+    public boolean saveUser(User user){
+<span class="fc" id="L57">        boolean set = false;</span>
+        try{
+            //Insert register data to database
+<span class="fc" id="L60">            String query = &quot;insert into user(username,password,lastname,firstname,email,number,roomnumber,decknumber,membership,role) values(?,?,?,?,?,?,?,?,?,?)&quot;;</span>
+           
+<span class="fc" id="L62">           PreparedStatement pt = this.con.prepareStatement(query);</span>
+<span class="fc" id="L63">           pt.setString(1, user.getUsername());</span>
+<span class="fc" id="L64">           pt.setString(2, user.getPassword());</span>
+<span class="fc" id="L65">           pt.setString(3, user.getLastname());</span>
+<span class="fc" id="L66">           pt.setString(4, user.getFirstname());</span>
+<span class="fc" id="L67">           pt.setString(5, user.getEmail());</span>
+<span class="fc" id="L68">           pt.setString(6, user.getNumber());</span>
+<span class="fc" id="L69">           pt.setString(7, user.getRoomnumber());</span>
+<span class="fc" id="L70">           pt.setString(8, user.getDecknumber());</span>
+<span class="fc" id="L71">           pt.setString(9, user.getMembership());</span>
+<span class="fc" id="L72">           pt.setString(10, user.getRole());</span>
+         
+      
+           
+<span class="fc" id="L76">           pt.executeUpdate();</span>
+<span class="fc" id="L77">           set = true;</span>
+<span class="pc" id="L78">        }catch(Exception e){}</span>
+<span class="fc" id="L79">        return set;</span>
+    }
+    
+    //for register user  
+    public boolean updateUser(User user){
+<span class="fc" id="L84">        boolean set = false;</span>
+        try{
+            //Insert register data to database
+<span class="fc" id="L87">            String query = &quot;Update user set lastname=?, firstname=?, password=?, email=?, number=?, roomnumber=?, decknumber=?, membership=? where username=?&quot;;</span>
+           
+<span class="fc" id="L89">           PreparedStatement pt = this.con.prepareStatement(query);</span>
+<span class="fc" id="L90">           pt.setString(1, user.getLastname());</span>
+<span class="fc" id="L91">           pt.setString(2, user.getFirstname());</span>
+<span class="fc" id="L92">           pt.setString(3, user.getPassword());</span>
+<span class="fc" id="L93">           pt.setString(4, user.getEmail());</span>
+<span class="fc" id="L94">           pt.setString(5, user.getNumber());</span>
+<span class="fc" id="L95">           pt.setString(6, user.getRoomnumber());</span>
+<span class="fc" id="L96">           pt.setString(7, user.getDecknumber());</span>
+<span class="fc" id="L97">           pt.setString(8, user.getMembership());</span>
+<span class="fc" id="L98">           pt.setString(9, user.getUsername());</span>
+      
+           
+<span class="fc" id="L101">           pt.executeUpdate();</span>
+<span class="fc" id="L102">           set = true;</span>
+<span class="pc" id="L103">        }catch(Exception e){}</span>
+<span class="fc" id="L104">        return set;</span>
+    }
+   
+   
+    
+  //user login
+    public User login(String username, String pass){
+<span class="fc" id="L111">        User usr=null;</span>
+        try{
+<span class="fc" id="L113">            String query =&quot;select * from user where username=? and password=?&quot;;</span>
+<span class="fc" id="L114">            PreparedStatement pst = this.con.prepareStatement(query);</span>
+<span class="fc" id="L115">            pst.setString(1, username);</span>
+<span class="fc" id="L116">            pst.setString(2, pass);</span>
+            
+<span class="fc" id="L118">            ResultSet rs = pst.executeQuery();</span>
+            
+<span class="fc bfc" id="L120" title="All 2 branches covered.">            if(rs.next()){</span>
+<span class="fc" id="L121">                usr = new User();</span>
+<span class="fc" id="L122">                usr.setUsername(rs.getString(&quot;username&quot;));</span>
+<span class="fc" id="L123">                usr.setPassword(rs.getString(&quot;password&quot;));</span>
+<span class="fc" id="L124">                usr.setLastname(rs.getString(&quot;lastname&quot;));</span>
+<span class="fc" id="L125">                usr.setFirstname(rs.getString(&quot;firstname&quot;));</span>
+<span class="fc" id="L126">                usr.setEmail(rs.getString(&quot;email&quot;));</span>
+<span class="fc" id="L127">                usr.setNumber(rs.getString(&quot;number&quot;));</span>
+<span class="fc" id="L128">                usr.setRoomnumber(rs.getString(&quot;roomnumber&quot;));</span>
+<span class="fc" id="L129">                usr.setDecknumber(rs.getString(&quot;decknumber&quot;));</span>
+<span class="fc" id="L130">                usr.setMembership(rs.getString(&quot;membership&quot;));</span>
+<span class="fc" id="L131">                usr.setRole(rs.getString(&quot;role&quot;));</span>
+             
+                
+            }
+            
+<span class="pc" id="L136">        }catch(Exception e){}</span>
+<span class="fc" id="L137">        return usr;</span>
+       
+    }
+
+	public static ArrayList&lt;User&gt;  getCoordinatornames() {  
+<span class="fc" id="L142">		return ReturnMatchingUsersList(&quot; SELECT * from USER WHERE role = 'Coordinator'&quot;);</span>
+}
+    
+    
+    public static Boolean NameCombination(String firstname, String lastname)  {  
+<span class="fc" id="L147">		return (ReturnMatchingUsersList(&quot; SELECT * from USER WHERE firstname = '&quot;+firstname+&quot;' AND lastname = '&quot;+lastname+&quot;' ORDER BY roomnumber&quot;).isEmpty());</span>
+}
+    
+	//determine if username is unique
+	public static Boolean Usernameunique(String username)  {  
+<span class="fc" id="L152">			return (ReturnMatchingUsersList(&quot; SELECT * from USER WHERE username = '&quot;+username+&quot;' ORDER BY username&quot;).isEmpty());</span>
+	}
+    
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>Merged (Dec 7, 2020 8:22:40 PM)</div></body></html>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SeleniumTC04.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 7, 2020 8:22:40 PM)</a> &gt; <a href="../../index.html" class="el_group">CSAC_02</a> &gt; <a href="../index.html" class="el_bundle">test</a> &gt; <a href="index.source.html" class="el_package">selenium</a> &gt; <span class="el_source">SeleniumTC04.java</span></div><h1>SeleniumTC04.java</h1><pre class="source lang-java linenums">package selenium;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import java.io.FileInputStream;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import data.EventDAO;
+import data.UserDAO;
+import functions.CSAC_02Functions;
+import junitparams.FileParameters;
+import junitparams.JUnitParamsRunner;
+import model.User;
+import util.ConnectionPro;
+import util.Conversions;
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@RunWith(JUnitParamsRunner.class)
+<span class="fc" id="L27">public class SeleniumTC04 extends CSAC_02Functions{</span>
+	
+	
+<span class="fc" id="L30">	private StringBuffer verificationErrors = new StringBuffer();</span>
+	public String sAppURL,sSharedUIMapPath, testDelay ;
+	private String username, password,firstname,lastname,email,number,roomnumber,decknumber,membership;
+	
+<span class="fc" id="L34">	EventDAO eventmodel = new EventDAO(ConnectionPro.getConnection());</span>
+
+<span class="fc" id="L36">	Conversions conversions = new Conversions();</span>
+	  
+	  @Before
+	  public void setUp() throws Exception {
+		  	// Drivers
+<span class="fc" id="L41">		    driver = invokeCorrectBrowser();</span>
+<span class="fc" id="L42">		    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);</span>
+<span class="fc" id="L43">		    Dimension d = new Dimension(1280,1280);</span>
+<span class="fc" id="L44">		    driver.manage().window().setSize(d);;</span>
+		    // Load Properties
+<span class="fc" id="L46">		    prop = new Properties();	</span>
+<span class="fc" id="L47">		    prop.load(new FileInputStream(&quot;./User/Passenger.properties&quot;));</span>
+<span class="fc" id="L48">			username = prop.getProperty(&quot;username&quot;);</span>
+<span class="fc" id="L49">			password = prop.getProperty(&quot;password&quot;);</span>
+<span class="fc" id="L50">		    prop.load(new FileInputStream(&quot;./Configuration/Configuration.properties&quot;));</span>
+<span class="fc" id="L51">		    sAppURL = prop.getProperty(&quot;sAppURL&quot;);</span>
+<span class="fc" id="L52">			sSharedUIMapPath = prop.getProperty(&quot;SharedUIMap&quot;);</span>
+<span class="fc" id="L53">			prop.load(new FileInputStream(sSharedUIMapPath));</span>
+<span class="fc" id="L54">			testDelay=prop.getProperty(&quot;testDelay&quot;);</span>
+<span class="fc" id="L55">			UserDAO db =  new UserDAO(ConnectionPro.getConnection());</span>
+<span class="fc" id="L56">			User user = db.login(username, password);</span>
+<span class="fc" id="L57">			firstname = user.getFirstname();</span>
+<span class="fc" id="L58">			lastname = user.getLastname();</span>
+<span class="fc" id="L59">			email = user.getEmail();</span>
+<span class="fc" id="L60">			number=user.getNumber();</span>
+<span class="fc" id="L61">			roomnumber = user.getRoomnumber();</span>
+<span class="fc" id="L62">			decknumber = user.getDecknumber();</span>
+<span class="fc" id="L63">			membership = user.getMembership();</span>
+			
+			
+			
+<span class="fc" id="L67">}</span>
+	  
+	  	@Test
+	    @FileParameters(&quot;test/excel/Selenium_TC04a_test_cases.csv&quot;)
+	  	public void TC04A(int testCaseNumber, 
+	  			          String profile_page_tittle, String update_profile_page_title, 
+	  			          String username_label, String password_label, String lastname_label, String firstname_label, String email_label, String number_label, 
+	  			          String roomnumber_label, String decknumber_label,String membership_label) throws InterruptedException {
+<span class="fc" id="L75">	  		String methodName= new Throwable().getStackTrace()[0].getMethodName();</span>
+<span class="fc" id="L76">			driver.get(sAppURL);</span>
+<span class="fc" id="L77">			login_function(driver, username, password, methodName+&quot; loginInputData TC &quot;+testCaseNumber);</span>
+<span class="fc" id="L78">			Thread.sleep(1_000);</span>
+<span class="fc" id="L79">			driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_View_Profile_Link&quot;))).click();</span>
+<span class="fc" id="L80">			Thread.sleep(1_000);</span>
+<span class="fc" id="L81">			verifyViewProfilePageLabels(driver,&quot;View_Profile_Page_Title_&quot;,profile_page_tittle,</span>
+<span class="fc" id="L82">					  &quot;Profile_Page_Username_Label&quot;,username_label,</span>
+<span class="fc" id="L83">					  &quot;Profile_Page_Password_label&quot;,password_label,</span>
+<span class="fc" id="L84">					  &quot;Profile_Page_Lname_label&quot;,lastname_label,</span>
+<span class="fc" id="L85">					  &quot;Profile_Page_Fname_label&quot;,firstname_label,</span>
+<span class="fc" id="L86">					  &quot;Profile_Page_Email_label&quot;,email_label,</span>
+<span class="fc" id="L87">					  &quot;Profile_Page_Number_label&quot;,number_label,</span>
+<span class="fc" id="L88">					  &quot;Profile_Page_RoomNumber_label&quot;,roomnumber_label,</span>
+<span class="fc" id="L89">					  &quot;Profile_Page_Decknumber_label&quot;,decknumber_label,</span>
+<span class="fc" id="L90">					  &quot;Profile_Page_Membership_label&quot;,membership_label,</span>
+<span class="fc" id="L91">					  methodName+&quot; VerifyHeadersListAllEvents TC &quot;+testCaseNumber);</span>
+<span class="fc" id="L92">			verifyUserProfileData(driver,username,password,methodName+&quot;VerifyUserProfileData&quot;);</span>
+<span class="fc" id="L93">			driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Update_Profile_Button&quot;))).click();</span>
+<span class="fc" id="L94">			verifyViewProfilePageLabels(driver,&quot;Update_Profile_Page_Title&quot;,update_profile_page_title,</span>
+<span class="fc" id="L95">					  &quot;Update_Profile_Page_Username_Label&quot;,username_label,</span>
+<span class="fc" id="L96">					  &quot;Update_Profile_Page_Password_label&quot;,password_label,</span>
+<span class="fc" id="L97">					  &quot;Update_Profile_Page_Lname_label&quot;,lastname_label,</span>
+<span class="fc" id="L98">					  &quot;Update_Profile_Page_Fname_label&quot;,firstname_label,</span>
+<span class="fc" id="L99">					  &quot;Update_Profile_Page_Email_label&quot;,email_label,</span>
+<span class="fc" id="L100">					  &quot;Update_Profile_Page_Number_label&quot;,number_label,</span>
+<span class="fc" id="L101">					  &quot;Update_Profile_Page_RoomNumber_label&quot;,roomnumber_label,</span>
+<span class="fc" id="L102">					  &quot;Update_Profile_Page_Decknumber_label&quot;,decknumber_label,</span>
+<span class="fc" id="L103">					  &quot;Update_Profile_Page_Membership_label&quot;,membership_label,</span>
+<span class="fc" id="L104">					  methodName+&quot; VerifyHeadersListAllEvents TC &quot;+testCaseNumber);</span>
+<span class="fc" id="L105">			verifyUpdateProfilePageFinalData(driver,username,password,methodName+&quot;VerifyUpdateProfilePageFinalData&quot;);		   </span>
+<span class="fc" id="L106">	  	}</span>
+	  	
+	  	
+	  	
+	  	@Test
+	  	@FileParameters(&quot;test/excel/Selenium_TC04b_test_cases.csv&quot;)
+	  	public void TC04B(int testCaseNumber, String username,
+	  			          String lastname_erroneous_data, String firstname_erroneous_data, String password_erroneous_data, String email_erroneous_data, String number_erroneous_data, String roomnumber_erroneous_data, String decknumber_erroneous_data,String membership,
+	  			 		  String lastnameErrorMessage, String firstnameErrorMessage, String passwordErrorMessage, String emailErrorMessage, String numberErrorMessage, String RoomNumberErrorMessage, String deckNumberErrorMessage) throws InterruptedException {
+<span class="fc" id="L115">	  		String methodName= new Throwable().getStackTrace()[0].getMethodName();</span>
+<span class="fc" id="L116">			driver.get(sAppURL);</span>
+<span class="fc" id="L117">			login_function(driver, username, password, methodName+&quot; loginInputData TC &quot;+testCaseNumber);</span>
+<span class="fc" id="L118">			driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_View_Profile_Link&quot;))).click();</span>
+<span class="fc" id="L119">			driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Update_Profile_Button&quot;))).click();</span>
+<span class="fc" id="L120">			Update_Profile_function( driver, lastname_erroneous_data, firstname_erroneous_data, password_erroneous_data, email_erroneous_data,</span>
+<span class="fc" id="L121">					number_erroneous_data, roomnumber_erroneous_data, decknumber_erroneous_data, membership, methodName+&quot; UpdateProfileErrormsgs TC &quot;+testCaseNumber);</span>
+<span class="fc" id="L122">			verifyUpdate_ProfileErrorMessages(driver,  lastnameErrorMessage,  firstnameErrorMessage, </span>
+<span class="fc" id="L123">					   passwordErrorMessage,  emailErrorMessage,  numberErrorMessage,  RoomNumberErrorMessage, </span>
+<span class="fc" id="L124">					   deckNumberErrorMessage, methodName+&quot; VerifyProfileErrormsgs TC &quot;+testCaseNumber);		   </span>
+<span class="fc" id="L125">	  	}</span>
+  
+	  	
+	  	@Test
+		@FileParameters(&quot;test/excel/Selenium_TC04c_test_cases.csv&quot;)
+	  	public void TC04C(int testCaseNumber, String usersuccessmessage, String welcome ) throws InterruptedException {
+<span class="fc" id="L131">	  		String methodName= new Throwable().getStackTrace()[0].getMethodName();</span>
+<span class="fc" id="L132">			driver.get(sAppURL);</span>
+<span class="fc" id="L133">			login_function(driver, username, password, methodName+&quot; loginInputData TC &quot;);</span>
+<span class="fc" id="L134">			driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_View_Profile_Link&quot;))).click();</span>
+<span class="fc" id="L135">			driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Update_Profile_Button&quot;))).click();</span>
+<span class="fc" id="L136">			Update_Profile_function( driver, lastname, firstname, password, email,</span>
+<span class="fc" id="L137">					number, roomnumber, decknumber, membership, methodName+&quot; UpdateProfile TC &quot;);</span>
+<span class="fc" id="L138">			assertEquals(usersuccessmessage,driver.findElement(By.xpath(prop.getProperty(&quot;Update_successfull_message&quot;))).getText());</span>
+<span class="fc" id="L139">			verify_Passenger_Welcome_Title(driver,username,password,methodName+&quot;VerifyWelcomeTitle&quot;+&quot;1&quot;);</span>
+<span class="fc" id="L140">			driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Go_Back_1&quot;))).click();</span>
+<span class="fc" id="L141">			verify_Passenger_Welcome_Title(driver,username,password,methodName+&quot;VerifyWelcomeTitle&quot;+&quot;2&quot;);</span>
+<span class="fc" id="L142">			driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Go_Back_2&quot;))).click();</span>
+<span class="fc" id="L143">			verify_Passenger_Welcome_Title(driver,username,password,methodName+&quot;VerifyWelcomeTitle&quot;+&quot;3&quot;);</span>
+<span class="fc" id="L144">			HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;Logout_Link&quot;))));</span>
+<span class="fc" id="L145">			driver.findElement(By.xpath(prop.getProperty(&quot;Logout_Link&quot;))).click();</span>
+<span class="fc" id="L146">			assertEquals(welcome,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Welcome_Title&quot;))).getText());</span>
+<span class="fc" id="L147">			HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Welcome_Title&quot;))));</span>
+<span class="fc" id="L148">	  	}</span>
+ 
+	  
+	  @After
+	  public void tearDown() throws Exception {
+<span class="fc" id="L153">	    driver.quit();</span>
+<span class="fc" id="L154">	    String verificationErrorString = verificationErrors.toString();</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">	    if (!&quot;&quot;.equals(verificationErrorString)) {</span>
+<span class="nc" id="L156">	      fail(verificationErrorString);</span>
+	    }
+<span class="fc" id="L158">	  }</span>
+}
+	  
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>Merged (Dec 7, 2020 8:22:40 PM)</div></body></html>

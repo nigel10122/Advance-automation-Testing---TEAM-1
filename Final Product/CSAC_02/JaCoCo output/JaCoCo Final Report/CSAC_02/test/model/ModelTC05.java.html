@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ModelTC05.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 7, 2020 8:22:40 PM)</a> &gt; <a href="../../index.html" class="el_group">CSAC_02</a> &gt; <a href="../index.html" class="el_bundle">test</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">ModelTC05.java</span></div><h1>ModelTC05.java</h1><pre class="source lang-java linenums">package model;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
+
+import org.junit.runner.RunWith;
+import junitparams.FileParameters;
+import junitparams.JUnitParamsRunner;
+
+	@RunWith(JUnitParamsRunner.class)
+<span class="fc" id="L15">	public class ModelTC05 { </span>
+		
+		Event event;
+		Reservation reservation;
+		ReservationErrorMsgs reservationerrormsg; 
+		
+		@Before
+		public void setUp() throws Exception {
+<span class="fc" id="L23">			reservation = new Reservation();</span>
+<span class="fc" id="L24">			reservationerrormsg = new ReservationErrorMsgs();</span>
+<span class="fc" id="L25">		}	</span>
+
+		@Test
+		@FileParameters(&quot;test/excel/Model_TC05_test_cases.csv&quot;)
+		public void test(int tc,String eventname,  String eventdate, String starttime, String duration, String location, 
+				String numberofattendees, String capacity,String eventcoordinator, String type, String estattendees, String firstname, String lastname, String number, String email,
+			    String eventname_output,  String eventdate_output, String starttime_output, String duration_output, String location_output, 
+				String numberofattendees_output, String capacity_output,String eventcoordinator_output, String type_output, String estattendees_output,
+				         String firstname_output, String lastname_output, String number_output, String email_output,  String eventtypecountErrormsg
+				        ) {
+
+		
+
+			
+			
+<span class="fc bfc" id="L40" title="All 2 branches covered.">			if(eventtypecountErrormsg.equals(&quot;&quot;))</span>
+			{
+<span class="fc" id="L42">				int eventid = 1;</span>
+				
+<span class="fc" id="L44">				reservation.SetEvent(eventid, eventname, eventdate, starttime, duration, location, numberofattendees, capacity, eventcoordinator, type, estattendees);</span>
+<span class="fc" id="L45">				reservation.setEventid(eventid);</span>
+<span class="fc" id="L46">				reservation.getEventid();</span>
+<span class="fc" id="L47">				reservation.getEventname();</span>
+<span class="fc" id="L48">				reservation.getEventdate();</span>
+<span class="fc" id="L49">				reservation.getStarttime();</span>
+<span class="fc" id="L50">				reservation.getDuration();</span>
+<span class="fc" id="L51">				reservation.getNumberofattendees();</span>
+<span class="fc" id="L52">				reservation.getCapacity();</span>
+<span class="fc" id="L53">				reservation.getEventcoordinator();</span>
+<span class="fc" id="L54">				reservation.getType();</span>
+<span class="fc" id="L55">				reservation.getLocation();</span>
+<span class="fc" id="L56">				reservation.getEstattendees();</span>
+<span class="fc" id="L57">				reservation.getFirstname();</span>
+<span class="fc" id="L58">				reservation.getLastname();</span>
+<span class="fc" id="L59">				reservation.getEmail();</span>
+<span class="fc" id="L60">				reservation.getNumber();</span>
+				
+				
+<span class="fc" id="L63">				assertEquals(eventname,eventname_output);</span>
+<span class="fc" id="L64">				assertEquals(eventdate,eventdate_output);</span>
+<span class="fc" id="L65">				assertEquals(starttime,starttime_output);</span>
+<span class="fc" id="L66">				assertEquals(duration,duration_output);</span>
+<span class="fc" id="L67">				assertEquals(location,location_output);</span>
+<span class="fc" id="L68">				assertEquals(numberofattendees,numberofattendees_output);</span>
+<span class="fc" id="L69">				assertEquals(capacity,capacity_output);</span>
+<span class="fc" id="L70">				assertEquals(estattendees,estattendees_output);</span>
+<span class="fc" id="L71">				assertEquals(firstname,firstname_output);</span>
+<span class="fc" id="L72">				assertEquals(lastname,lastname_output);</span>
+<span class="fc" id="L73">				assertEquals(number,number_output);</span>
+<span class="fc" id="L74">				assertEquals(email,email_output);</span>
+				
+				
+<span class="fc" id="L77">			}</span>
+		else {
+			
+		
+			//String reservationerror = custom.validateEventTypeCount(type, eventdate, firstname, lastname);
+<span class="fc" id="L82">			Reservation reservationmodel= new Reservation(eventname, eventdate, starttime, duration, location, numberofattendees,capacity,eventcoordinator, type, estattendees, firstname, lastname, number, email);</span>
+			
+<span class="fc" id="L84">			reservationmodel.validateReservation(reservationmodel, reservationerrormsg);</span>
+			
+		
+		
+<span class="fc" id="L88">			reservation.setEventname(eventname);</span>
+<span class="fc" id="L89">			reservation.setEventdate(eventdate);</span>
+<span class="fc" id="L90">			reservation.setStarttime(starttime);</span>
+<span class="fc" id="L91">			reservation.setDuration(duration);</span>
+<span class="fc" id="L92">			reservation.setNumberofattendees(numberofattendees);</span>
+<span class="fc" id="L93">			reservation.setLocation(location);</span>
+<span class="fc" id="L94">			reservation.setCapacity(capacity);</span>
+<span class="fc" id="L95">			reservation.setEventcoordinator(eventcoordinator);</span>
+<span class="fc" id="L96">			reservation.setType(type);</span>
+<span class="fc" id="L97">			reservation.setEstattendees(estattendees_output);</span>
+<span class="fc" id="L98">			reservation.setFirstname(firstname);</span>
+<span class="fc" id="L99">			reservation.setLastname(lastname);</span>
+<span class="fc" id="L100">			reservation.setEmail(email);</span>
+<span class="fc" id="L101">			reservation.setNumber(number_output);</span>
+			
+
+			
+			
+			
+<span class="fc" id="L107">			reservationerrormsg.getEventTypeCountError();</span>
+			
+<span class="fc" id="L109">			System.out.println(reservationerrormsg.getEventTypeCountError());</span>
+			
+<span class="fc" id="L111">			assertTrue(eventtypecountErrormsg.equals(reservationerrormsg.getEventTypeCountError()));</span>
+			
+
+		}
+<span class="fc" id="L115">	}</span>
+}
+	
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>Merged (Dec 7, 2020 8:22:40 PM)</div></body></html>

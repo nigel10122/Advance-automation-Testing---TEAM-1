@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>LoginServlet.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 7, 2020 8:22:40 PM)</a> &gt; <a href="../../index.html" class="el_group">CSAC_02</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">LoginServlet.java</span></div><h1>LoginServlet.java</h1><pre class="source lang-java linenums">package controller;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import model.*;
+import data.UserDAO;
+import util.CheckErrorMsgs;
+import util.ConnectionPro;
+import util.GetDateTime;
+
+
+
+
+
+
+
+@WebServlet(&quot;/LoginServlet&quot;)
+public class LoginServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+   
+    public LoginServlet() {
+<span class="fc" id="L33">        super();</span>
+        
+<span class="fc" id="L35">    }</span>
+    
+ 
+
+	
+
+	
+
+
+//	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//		// TODO Auto-generated method stub
+////		response.getWriter().append(&quot;Served at: &quot;).append(request.getContextPath());
+////		doPost(request, response);
+//	}
+
+	
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+		//feth data from login form
+<span class="fc" id="L55">		String destination = &quot;index.jsp&quot;;</span>
+<span class="fc" id="L56">		RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);</span>
+<span class="fc" id="L57">        String username = request.getParameter(&quot;username&quot;);</span>
+<span class="fc" id="L58">        String password = request.getParameter(&quot;password&quot;);</span>
+<span class="fc" id="L59">        String InvalidError = &quot;Invalid Username or Password&quot;;</span>
+<span class="fc" id="L60">        String successmessage = &quot;User registered successfully&quot;;</span>
+<span class="fc" id="L61">        HttpSession errorSession = request.getSession();</span>
+<span class="fc" id="L62">        UserDAO db =  new UserDAO(ConnectionPro.getConnection());</span>
+      //  User val = new User();
+<span class="fc" id="L64">        UserLogin ul = new UserLogin(username,password); </span>
+<span class="fc" id="L65">        GetDateTime td = new GetDateTime();</span>
+<span class="fc" id="L66">        User user = db.login(username, password);</span>
+<span class="fc" id="L67">        HttpSession invalidsession = request.getSession();</span>
+<span class="fc" id="L68">        HttpSession SuccessfullSession = request.getSession();</span>
+        
+<span class="fc" id="L70">        String usernameError = ul.validateUsername_Login(username);</span>
+<span class="fc" id="L71"> 		String passwordError = ul.validatePassword(password);</span>
+ 		
+        
+     
+       
+<span class="fc" id="L76">        CheckErrorMsgs errormsgs = new CheckErrorMsgs();</span>
+<span class="fc" id="L77">        String uerrormsgs = errormsgs.LoginErrorMsg(usernameError, passwordError);</span>
+ 		
+ 	
+		
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        if(!uerrormsgs.equals(&quot;&quot;)) </span>
+     		{
+     		
+        	
+<span class="fc" id="L85">        	errorSession.setAttribute(&quot;usernameError&quot;, usernameError);</span>
+<span class="fc" id="L86">     		errorSession.setAttribute(&quot;passwordError&quot;, passwordError);</span>
+<span class="fc" id="L87">     		requestDispatcher.forward(request, response);</span>
+     	
+     		
+<span class="fc" id="L90">     		}</span>
+		else 
+<span class="fc bfc" id="L92" title="All 2 branches covered.">			if(user!=null)</span>
+			{	
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        	if(user.getRole().equals(&quot;Passenger&quot;))</span>
+        	{
+<span class="fc" id="L96">        	HttpSession session = request.getSession();</span>
+<span class="fc" id="L97">            session.setAttribute(&quot;logUser&quot;, user);	</span>
+<span class="fc" id="L98">            SuccessfullSession.setAttribute(&quot;successmessage&quot;, successmessage);</span>
+<span class="fc" id="L99">            SuccessfullSession.removeAttribute(&quot;successmessage&quot;);</span>
+<span class="fc" id="L100">            errorSession.removeAttribute(&quot;usernameError&quot;);	</span>
+<span class="fc" id="L101">			errorSession.removeAttribute(&quot;passwordError&quot;);	</span>
+<span class="fc" id="L102">			errorSession.removeAttribute(&quot;InvalidError&quot;);	</span>
+<span class="fc" id="L103">            response.sendRedirect(&quot;welcome.jsp&quot;);</span>
+<span class="fc" id="L104">            session.setAttribute(&quot;username&quot;, user.getUsername());</span>
+<span class="fc" id="L105">            session.setAttribute(&quot;password&quot;, user.getPassword());</span>
+<span class="fc" id="L106">            session.setAttribute(&quot;lastname&quot;, user.getLastname());</span>
+<span class="fc" id="L107">            session.setAttribute(&quot;firstname&quot;, user.getFirstname());</span>
+<span class="fc" id="L108">            session.setAttribute(&quot;email&quot;, user.getEmail());</span>
+<span class="fc" id="L109">            session.setAttribute(&quot;number&quot;, user.getNumber());</span>
+<span class="fc" id="L110">            session.setAttribute(&quot;roomnumber&quot;, user.getRoomnumber());</span>
+<span class="fc" id="L111">            session.setAttribute(&quot;decknumber&quot;, user.getDecknumber());</span>
+<span class="fc" id="L112">            session.setAttribute(&quot;membership&quot;, user.getMembership());</span>
+<span class="fc" id="L113">            session.setAttribute(&quot;currentdate&quot;, td.getCurrentDate());</span>
+<span class="fc" id="L114">            session.setAttribute(&quot;currenttime&quot;, td.getCurrentTime());</span>
+            
+<span class="fc" id="L116">          }else</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        	if(user.getRole().equals(&quot;Coordinator&quot;))</span>
+        	{
+<span class="fc" id="L119">            	HttpSession session = request.getSession();</span>
+<span class="fc" id="L120">                session.setAttribute(&quot;logUser&quot;, user);</span>
+<span class="fc" id="L121">                SuccessfullSession.setAttribute(&quot;successmessage&quot;, successmessage);</span>
+<span class="fc" id="L122">                SuccessfullSession.removeAttribute(&quot;successmessage&quot;);</span>
+<span class="fc" id="L123">                errorSession.removeAttribute(&quot;usernameError&quot;);	</span>
+<span class="fc" id="L124">    			errorSession.removeAttribute(&quot;passwordError&quot;);	</span>
+<span class="fc" id="L125">    			errorSession.removeAttribute(&quot;InvalidError&quot;);	</span>
+<span class="fc" id="L126">                response.sendRedirect(&quot;coordinatorhome.jsp&quot;);</span>
+<span class="fc" id="L127">                session.setAttribute(&quot;username&quot;, user.getUsername());</span>
+<span class="fc" id="L128">                session.setAttribute(&quot;password&quot;, user.getPassword());</span>
+<span class="fc" id="L129">                session.setAttribute(&quot;lastname&quot;, user.getLastname());</span>
+<span class="fc" id="L130">                session.setAttribute(&quot;firstname&quot;, user.getFirstname());</span>
+<span class="fc" id="L131">                session.setAttribute(&quot;email&quot;, user.getEmail());</span>
+<span class="fc" id="L132">                session.setAttribute(&quot;number&quot;, user.getNumber());</span>
+<span class="fc" id="L133">                session.setAttribute(&quot;roomnumber&quot;, user.getRoomnumber());</span>
+<span class="fc" id="L134">                session.setAttribute(&quot;decknumber&quot;, user.getDecknumber());</span>
+<span class="fc" id="L135">                session.setAttribute(&quot;membership&quot;, user.getMembership());</span>
+<span class="fc" id="L136">                session.setAttribute(&quot;currentdate&quot;, td.getCurrentDate());</span>
+<span class="fc" id="L137">                session.setAttribute(&quot;currenttime&quot;, td.getCurrentTime());</span>
+<span class="fc" id="L138">        	}</span>
+        	else
+
+        		{
+<span class="fc" id="L142">                	HttpSession session = request.getSession();</span>
+<span class="fc" id="L143">                    session.setAttribute(&quot;logUser&quot;, user);</span>
+<span class="fc" id="L144">                    SuccessfullSession.setAttribute(&quot;successmessage&quot;, successmessage);</span>
+<span class="fc" id="L145">                    SuccessfullSession.removeAttribute(&quot;successmessage&quot;);</span>
+<span class="fc" id="L146">                    errorSession.removeAttribute(&quot;usernameError&quot;);	</span>
+<span class="fc" id="L147">        			errorSession.removeAttribute(&quot;passwordError&quot;);	</span>
+<span class="fc" id="L148">        			errorSession.removeAttribute(&quot;InvalidError&quot;);	</span>
+<span class="fc" id="L149">                    response.sendRedirect(&quot;managerhome.jsp&quot;);</span>
+<span class="fc" id="L150">                    session.setAttribute(&quot;username&quot;, user.getUsername());</span>
+<span class="fc" id="L151">                    session.setAttribute(&quot;password&quot;, user.getPassword());</span>
+<span class="fc" id="L152">                    session.setAttribute(&quot;lastname&quot;, user.getLastname());</span>
+<span class="fc" id="L153">                    session.setAttribute(&quot;firstname&quot;, user.getFirstname());</span>
+<span class="fc" id="L154">                    session.setAttribute(&quot;email&quot;, user.getEmail());</span>
+<span class="fc" id="L155">                    session.setAttribute(&quot;number&quot;, user.getNumber());</span>
+<span class="fc" id="L156">                    session.setAttribute(&quot;roomnumber&quot;, user.getRoomnumber());</span>
+<span class="fc" id="L157">                    session.setAttribute(&quot;decknumber&quot;, user.getDecknumber());</span>
+<span class="fc" id="L158">                    session.setAttribute(&quot;membership&quot;, user.getMembership());</span>
+<span class="fc" id="L159">                    session.setAttribute(&quot;currentdate&quot;, td.getCurrentDate());</span>
+<span class="fc" id="L160">                    session.setAttribute(&quot;currenttime&quot;, td.getCurrentTime());</span>
+        		}
+<span class="fc" id="L162">			}</span>
+        		else
+        			{	
+<span class="fc" id="L165">        				invalidsession.setAttribute(&quot;InvalidError&quot;,InvalidError);</span>
+<span class="fc" id="L166">        				requestDispatcher.forward(request, response);</span>
+<span class="fc" id="L167">        				errorSession.removeAttribute(&quot;usernameError&quot;);	</span>
+<span class="fc" id="L168">        				errorSession.removeAttribute(&quot;passwordError&quot;);	</span>
+        			}
+
+<span class="fc" id="L171">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>Merged (Dec 7, 2020 8:22:40 PM)</div></body></html>

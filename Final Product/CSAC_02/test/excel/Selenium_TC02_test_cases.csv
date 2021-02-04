@@ -1,0 +1,4 @@
+1,varu,Qwerty!1,username must be 5 to 20 characters long,,
+2,varu!,Qwerty!1,must not contain special characters,,
+3,1arun,qwerty!1,username must start with a letter,must have upper and lower case letter number special character length greater than 6 and smaller than 46,
+5,varunq,Qwerty!19,,,Invalid Username or Password

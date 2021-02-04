@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>RegisterServlet.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 7, 2020 8:22:40 PM)</a> &gt; <a href="../../index.html" class="el_group">CSAC_02</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">RegisterServlet.java</span></div><h1>RegisterServlet.java</h1><pre class="source lang-java linenums">package controller;
+
+import java.io.IOException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.*;
+import data.UserDAO;
+import util.CheckErrorMsgs;
+import util.ConnectionPro;
+
+
+
+
+@WebServlet(&quot;/RegisterServlet&quot;)
+public class RegisterServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+   
+    public RegisterServlet() {
+<span class="fc" id="L25">        super();</span>
+<span class="fc" id="L26">}</span>
+    
+
+
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+<span class="fc" id="L32">		String destination = &quot;registration.jsp&quot;;</span>
+<span class="fc" id="L33">		RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);</span>
+		
+<span class="fc" id="L35">		String role = &quot;Passenger&quot;;</span>
+<span class="fc" id="L36">		String username = request.getParameter(&quot;username&quot;);</span>
+<span class="fc" id="L37">		String password = request.getParameter(&quot;password&quot;);</span>
+<span class="fc" id="L38">		String lastname = request.getParameter(&quot;lastname&quot;);</span>
+<span class="fc" id="L39">		String firstname = request.getParameter(&quot;firstname&quot;);</span>
+<span class="fc" id="L40">		String email = request.getParameter(&quot;email&quot;);</span>
+<span class="fc" id="L41">		String number = request.getParameter(&quot;number&quot;);</span>
+<span class="fc" id="L42">		String roomnumber = request.getParameter(&quot;roomnumber&quot;);</span>
+		
+<span class="fc" id="L44">		String decknumber = request.getParameter(&quot;decknumber&quot;);</span>
+		
+<span class="fc" id="L46">		String membership = request.getParameter(&quot;membership&quot;);</span>
+<span class="fc" id="L47">		String registrationsuccessmessage = &quot;User registered successfully&quot;;</span>
+		
+		
+		
+	
+		//make user object
+<span class="fc" id="L53">		User user = new User();</span>
+		
+		
+<span class="fc" id="L56">		User userModel = new User( username, password,  lastname,  firstname , email,  number,  roomnumber,  decknumber,  membership, role);</span>
+		
+		//create a database model
+<span class="fc" id="L59">		UserDAO regUser = new UserDAO(ConnectionPro.getConnection());</span>
+<span class="fc" id="L60">		HttpSession errorSession = request.getSession();</span>
+<span class="fc" id="L61">		HttpSession SuccessfullSession = request.getSession();</span>
+		
+		
+		
+		
+		
+		
+<span class="fc" id="L68">		String usernameError = user.validateUsername(username);</span>
+<span class="fc" id="L69">		String passwordError = user.validatePassword(password);</span>
+<span class="fc" id="L70">		String lastnameError = user.validateLastname(lastname);</span>
+<span class="fc" id="L71">		String firstnameError = user.validateFirstname(firstname);</span>
+<span class="fc" id="L72">		String numberError = user.validateNumber(number);</span>
+<span class="fc" id="L73">		String emailError = user.validateEmail(email);</span>
+<span class="fc" id="L74">		String roomnumberError = user.validateRoomnumber(roomnumber);</span>
+<span class="fc" id="L75">		String decknumberError = user.validateDecknumber(decknumber);</span>
+<span class="fc" id="L76">		String namecombinationError = user.validateNameCombination(firstname, lastname);</span>
+		
+<span class="fc" id="L78">		CheckErrorMsgs errormsg = new CheckErrorMsgs();</span>
+<span class="fc" id="L79">		String uerrormsgs = errormsg.RegisterErrorMsg(usernameError, numberError,  roomnumberError, lastnameError, firstnameError,  emailError,  decknumberError, passwordError,namecombinationError);</span>
+		
+<span class="fc bfc" id="L81" title="All 2 branches covered.">			if(!uerrormsgs.equals(&quot;&quot;))</span>
+			{	
+
+<span class="fc" id="L84">				errorSession.setAttribute(&quot;usernameError&quot;, usernameError);</span>
+<span class="fc" id="L85">				errorSession.setAttribute(&quot;passwordError&quot;, passwordError);</span>
+<span class="fc" id="L86">				errorSession.setAttribute(&quot;lastnameError&quot;, lastnameError);</span>
+<span class="fc" id="L87">				errorSession.setAttribute(&quot;firstnameError&quot;, firstnameError);</span>
+<span class="fc" id="L88">				errorSession.setAttribute(&quot;numberError&quot;, numberError);</span>
+<span class="fc" id="L89">				errorSession.setAttribute(&quot;emailError&quot;, emailError);</span>
+<span class="fc" id="L90">				errorSession.setAttribute(&quot;roomnumberError&quot;, roomnumberError);</span>
+<span class="fc" id="L91">				errorSession.setAttribute(&quot;decknumberError&quot;, decknumberError);</span>
+<span class="fc" id="L92">				errorSession.setAttribute(&quot;namecombinationError&quot;, namecombinationError);</span>
+			
+<span class="fc" id="L94">				requestDispatcher.forward(request, response);</span>
+		
+<span class="fc" id="L96">			}</span>
+			else
+				{
+<span class="fc" id="L99">				regUser.saveUser(userModel); </span>
+<span class="fc" id="L100">				response.sendRedirect(&quot;index.jsp&quot;);</span>
+				
+<span class="fc" id="L102">				SuccessfullSession.setAttribute(&quot;registrationsuccessmessage&quot;, registrationsuccessmessage);</span>
+<span class="fc" id="L103">				errorSession.removeAttribute(&quot;usernameError&quot;);	</span>
+<span class="fc" id="L104">				errorSession.removeAttribute(&quot;passwordError&quot;);	</span>
+<span class="fc" id="L105">				errorSession.removeAttribute(&quot;lastnameError&quot;);	</span>
+<span class="fc" id="L106">				errorSession.removeAttribute(&quot;firstnameError&quot;);	</span>
+<span class="fc" id="L107">				errorSession.removeAttribute(&quot;numberError&quot;);	</span>
+<span class="fc" id="L108">				errorSession.removeAttribute(&quot;emailError&quot;);	</span>
+<span class="fc" id="L109">				errorSession.removeAttribute(&quot;roomnumberError&quot;);</span>
+<span class="fc" id="L110">				errorSession.removeAttribute(&quot;decknumberError&quot;);</span>
+				
+					
+				}
+				
+				
+				
+		
+		
+<span class="fc" id="L119">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>Merged (Dec 7, 2020 8:22:40 PM)</div></body></html>

@@ -1,0 +1,14 @@
+1,12/8/2020,06:59:59,,Event Timings must be between 7:00 AM(inclusive) and 10:00 PM(inclusive),Please correct the following errors
+2,12/8/2020,07:00:00,,,
+3,12/8/2020,22:00:00,,,
+4,12/8/2020,22:00:01,,Event Timings must be between 7:00 AM(inclusive) and 10:00 PM(inclusive),Please correct the following errors
+5,12/7/2020,06:59:59,,Event Timings must be between 7:00 AM(inclusive) and 10:00 PM(inclusive),Please correct the following errors
+6,12/7/2020,22:00:00,,,
+7,12/7/2020,22:00:00,,,
+8,12/7/2020,22:00:01,,Event Timings must be between 7:00 AM(inclusive) and 10:00 PM(inclusive),Please correct the following errors
+9,12/7/2020,22:00:01,,Event Timings must be between 7:00 AM(inclusive) and 10:00 PM(inclusive),Please correct the following errors
+10,abcd,07:00:00,Invalid Date format,Invalid Date-Time format,Please correct the following errors
+11,10/25/2020,07:00:00,Date cannot be in the past,Time cannot be in the past,Please correct the following errors
+12,10/25/2020,16:56:35,Date cannot be in the past,Time cannot be in the past,Please correct the following errors
+13,12/7/2020,22:00:00,,,
+14,12/7/2020,14:56:35,,Time cannot be in the past,Please correct the following errors

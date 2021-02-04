@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ReservationDAO.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 7, 2020 8:22:40 PM)</a> &gt; <a href="../../index.html" class="el_group">CSAC_02</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">data</a> &gt; <span class="el_source">ReservationDAO.java</span></div><h1>ReservationDAO.java</h1><pre class="source lang-java linenums">package data;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+
+import model.Reservation;
+import util.ConnectionPro;
+
+public class ReservationDAO {
+	  Connection con ;
+
+<span class="fc" id="L17">	    public ReservationDAO(Connection con) {</span>
+<span class="fc" id="L18">	        this.con = con;</span>
+<span class="fc" id="L19">	    }</span>
+
+	
+	 public boolean ReserveEvent(Reservation reservation){
+<span class="fc" id="L23">	        boolean set = false;</span>
+	        try{
+	            //Insert register data to database
+<span class="fc" id="L26">	            String query = &quot;insert into reservation(eventname,eventdate,starttime,duration,location,numberofattendees,capacity,eventcoordinator,type,estattendees,firstname,lastname,number,email) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)&quot;;</span>
+	           
+<span class="fc" id="L28">	           PreparedStatement pt = this.con.prepareStatement(query);</span>
+<span class="fc" id="L29">	           pt.setString(1, reservation.getEventname());</span>
+<span class="fc" id="L30">	           pt.setString(2, reservation.getEventdate());</span>
+<span class="fc" id="L31">	           pt.setString(3, reservation.getStarttime());</span>
+<span class="fc" id="L32">	           pt.setString(4, reservation.getDuration());</span>
+<span class="fc" id="L33">	           pt.setString(5, reservation.getLocation());</span>
+<span class="fc" id="L34">	           pt.setString(6, reservation.getNumberofattendees());</span>
+<span class="fc" id="L35">	           pt.setString(7, reservation.getCapacity());</span>
+<span class="fc" id="L36">	           pt.setString(8, reservation.getEventcoordinator());</span>
+<span class="fc" id="L37">	           pt.setString(9, reservation.getType());</span>
+<span class="fc" id="L38">	           pt.setString(10, reservation.getEstattendees());</span>
+<span class="fc" id="L39">	           pt.setString(11, reservation.getFirstname());</span>
+<span class="fc" id="L40">	           pt.setString(12, reservation.getLastname());</span>
+<span class="fc" id="L41">	           pt.setString(13, reservation.getEmail());</span>
+<span class="fc" id="L42">	           pt.setString(14, reservation.getNumber());</span>
+	      
+	           
+<span class="fc" id="L45">	           pt.executeUpdate();</span>
+<span class="fc" id="L46">	           set = true;</span>
+<span class="pc" id="L47">	        }catch(Exception e){}</span>
+<span class="fc" id="L48">	        return set;</span>
+	    }
+	 
+	    public static  ArrayList&lt;Reservation&gt; getPassengerEvents (String eventdate, String starttime, String firstname, String lastname) {
+<span class="fc" id="L52">			ArrayList&lt;Reservation&gt; eventListInDB = new ArrayList&lt;Reservation&gt;();</span>
+
+<span class="fc" id="L54">			Statement stmt = null;</span>
+<span class="fc" id="L55">			Connection conn = ConnectionPro.getConnection();</span>
+			try {
+				
+<span class="fc" id="L58">				stmt = conn.createStatement();</span>
+<span class="fc" id="L59">				String query = &quot;SELECT * from RESERVATION WHERE eventdate LIKE '%&quot;+eventdate+&quot;%' AND starttime &gt; '&quot;+starttime+&quot;' AND firstname LIKE '&quot;+firstname+&quot;' AND lastname LIKE '&quot;+lastname+&quot;' &quot;;</span>
+<span class="fc" id="L60">				ResultSet eventList = stmt.executeQuery(query);</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">				while (eventList.next()) {</span>
+<span class="fc" id="L62">					Reservation event = new Reservation();</span>
+<span class="fc" id="L63">					event.setEventid(eventList.getInt(&quot;eventid&quot;));</span>
+<span class="fc" id="L64">					event.setEventname(eventList.getString(&quot;eventname&quot;));</span>
+<span class="fc" id="L65">					event.setEventdate(eventList.getString(&quot;eventdate&quot;));</span>
+<span class="fc" id="L66">					event.setStarttime(eventList.getString(&quot;starttime&quot;));</span>
+<span class="fc" id="L67">					event.setDuration(eventList.getString(&quot;duration&quot;));</span>
+<span class="fc" id="L68">					event.setLocation(eventList.getString(&quot;location&quot;));</span>
+<span class="fc" id="L69">					event.setNumberofattendees(eventList.getString(&quot;numberofattendees&quot;));</span>
+<span class="fc" id="L70">					event.setCapacity(eventList.getString(&quot;capacity&quot;));</span>
+<span class="fc" id="L71">					event.setEventcoordinator(eventList.getString(&quot;eventcoordinator&quot;));</span>
+<span class="fc" id="L72">					event.setType(eventList.getString(&quot;type&quot;));</span>
+<span class="fc" id="L73">					event.setEstattendees(eventList.getString(&quot;estattendees&quot;));</span>
+<span class="fc" id="L74">					event.setFirstname(eventList.getString(&quot;firstname&quot;));</span>
+<span class="fc" id="L75">					event.setLastname(eventList.getString(&quot;lastname&quot;));</span>
+<span class="fc" id="L76">					event.setNumber(eventList.getString(&quot;number&quot;));</span>
+<span class="fc" id="L77">					event.setEmail(eventList.getString(&quot;email&quot;));</span>
+<span class="fc" id="L78">					eventListInDB.add(event);</span>
+				}
+<span class="pc" id="L80">			} catch (SQLException e) {}</span>
+<span class="fc" id="L81">			return eventListInDB;</span>
+		}
+	    
+	    
+	    public static  ArrayList&lt;Reservation&gt; ListSpecificEvent (String eventid) {
+<span class="fc" id="L86">			ArrayList&lt;Reservation&gt; eventListInDB = new ArrayList&lt;Reservation&gt;();</span>
+
+<span class="fc" id="L88">			Statement stmt = null;</span>
+<span class="fc" id="L89">			Connection conn = ConnectionPro.getConnection();</span>
+			try {
+				
+<span class="fc" id="L92">				stmt = conn.createStatement();</span>
+<span class="fc" id="L93">				String query = &quot;SELECT * from RESERVATION where eventid = '&quot;+eventid+&quot;' ORDER BY eventid &quot; ;</span>
+<span class="fc" id="L94">				ResultSet eventList = stmt.executeQuery(query);</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">				while (eventList.next()) {</span>
+<span class="fc" id="L96">					Reservation event = new Reservation();</span>
+<span class="fc" id="L97">					event.setEventid(eventList.getInt(&quot;eventid&quot;));</span>
+<span class="fc" id="L98">					event.setEventname(eventList.getString(&quot;eventname&quot;));</span>
+<span class="fc" id="L99">					event.setEventdate(eventList.getString(&quot;eventdate&quot;));</span>
+<span class="fc" id="L100">					event.setStarttime(eventList.getString(&quot;starttime&quot;));</span>
+<span class="fc" id="L101">					event.setDuration(eventList.getString(&quot;duration&quot;));</span>
+<span class="fc" id="L102">					event.setLocation(eventList.getString(&quot;location&quot;));</span>
+<span class="fc" id="L103">					event.setNumberofattendees(eventList.getString(&quot;numberofattendees&quot;));</span>
+<span class="fc" id="L104">					event.setCapacity(eventList.getString(&quot;capacity&quot;));</span>
+<span class="fc" id="L105">					event.setEventcoordinator(eventList.getString(&quot;eventcoordinator&quot;));</span>
+<span class="fc" id="L106">					event.setType(eventList.getString(&quot;type&quot;));</span>
+<span class="fc" id="L107">					event.setEstattendees(eventList.getString(&quot;estattendees&quot;));</span>
+<span class="fc" id="L108">					eventListInDB.add(event);</span>
+				}
+<span class="pc" id="L110">			} catch (SQLException e) {}</span>
+<span class="fc" id="L111">			return eventListInDB;</span>
+		}
+	    
+	    public static  int getCountShowType (String type,String eventdate, String firstname, String lastname) {
+			
+<span class="fc" id="L116">	    	int count = 0;</span>
+	    	ResultSet getcount;
+<span class="fc" id="L118">	    	Statement stmt = null;</span>
+<span class="fc" id="L119">			Connection conn = ConnectionPro.getConnection();</span>
+			try {
+				
+<span class="fc" id="L122">				stmt = conn.createStatement();</span>
+<span class="fc" id="L123">				String query = &quot; SELECT * FROM RESERVATION WHERE type = '&quot;+type+&quot;' AND eventdate = '&quot;+eventdate+&quot;' AND firstname = '&quot;+firstname+&quot;' AND lastname = '&quot;+lastname+&quot;'&quot;;</span>
+				
+<span class="fc" id="L125">				getcount = stmt.executeQuery(query);</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">					while(getcount.next()) {</span>
+<span class="fc" id="L127">					count++;</span>
+				}
+			
+<span class="fc" id="L130">				}</span>
+<span class="nc" id="L131">			catch (SQLException e) {}</span>
+<span class="fc" id="L132">			return count;</span>
+		}
+	
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>Merged (Dec 7, 2020 8:22:40 PM)</div></body></html>

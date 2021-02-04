@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SeleniumTC01.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 7, 2020 8:22:40 PM)</a> &gt; <a href="../../index.html" class="el_group">CSAC_02</a> &gt; <a href="../index.html" class="el_bundle">test</a> &gt; <a href="index.source.html" class="el_package">selenium</a> &gt; <span class="el_source">SeleniumTC01.java</span></div><h1>SeleniumTC01.java</h1><pre class="source lang-java linenums">package selenium;
+
+import static org.junit.Assert.*;
+
+import java.io.FileInputStream;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
+import org.openqa.selenium.Dimension;
+import functions.CSAC_02Functions;
+import junitparams.FileParameters;
+import junitparams.JUnitParamsRunner;
+
+// --------------------------------------------------------- SELENIUM REGISTER TEST---------------------------------------------------------------------------------------------------------// 
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@RunWith(JUnitParamsRunner.class)
+<span class="fc" id="L23">public class SeleniumTC01 extends CSAC_02Functions{</span>
+
+<span class="fc" id="L25">	private StringBuffer verificationErrors = new StringBuffer();</span>
+	public String sAppURL, sSharedUIMapPath, testDelay;
+	  
+	  @Before
+	  public void setUp() throws Exception {
+//		MAGIC CODE GOES HERE 
+<span class="fc" id="L31">		    driver = invokeCorrectBrowser();</span>
+<span class="fc" id="L32">		    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);</span>
+<span class="fc" id="L33">		    Dimension d = new Dimension(1280,1280);</span>
+		   
+<span class="fc" id="L35">		    driver.manage().window().setSize(d);;</span>
+<span class="fc" id="L36">		    prop = new Properties();	  </span>
+<span class="fc" id="L37">		    prop.load(new FileInputStream(&quot;./Configuration/Configuration.properties&quot;));</span>
+<span class="fc" id="L38">			sAppURL = prop.getProperty(&quot;sAppURL&quot;);</span>
+<span class="fc" id="L39">			sSharedUIMapPath = prop.getProperty(&quot;SharedUIMap&quot;);</span>
+<span class="fc" id="L40">			testDelay=prop.getProperty(&quot;testDelay&quot;);</span>
+<span class="fc" id="L41">			prop.load(new FileInputStream(sSharedUIMapPath));</span>
+<span class="fc" id="L42">	  }</span>
+	  
+	  @Test
+	  @FileParameters(&quot;test/excel/Selenium_TC01_test_cases.csv&quot;)
+	  public void TC01A(int testCaseNumber, String username, String lastname, String firstname, String password, String email,
+			  					   String number, String roomNumber, String deckNumber, String membershipType,String usernameErrorMessage,
+			  					   String lastnameErrorMessage, String firstnameErrorMessage,  String passwordErrorMessage, String emailErrorMessage, 
+			  					   String numberErrorMessage, String roomNumberErrorMessage, String deckNumberErrorMessage, String nameCombinationError, 
+			  					   String errMsg) throws Exception {
+		  
+<span class="fc" id="L52">		String methodName= new Throwable().getStackTrace()[0].getMethodName();</span>
+<span class="fc" id="L53">	    driver.get(sAppURL);</span>
+<span class="fc" id="L54">	    MainApp_function(driver,FunctionEnum.Register); </span>
+<span class="fc" id="L55">	    Register_function(driver, username, lastname, firstname, password, email, number, roomNumber, deckNumber, membershipType, methodName+&quot; registerInputData TC &quot;+testCaseNumber);</span>
+	    // verify error messages
+<span class="fc" id="L57">	    verifyRegisterErrorMessages(driver, usernameErrorMessage, lastnameErrorMessage, firstnameErrorMessage, passwordErrorMessage, emailErrorMessage, </span>
+<span class="fc" id="L58">	    		numberErrorMessage, roomNumberErrorMessage, deckNumberErrorMessage, nameCombinationError, errMsg, methodName+&quot; verifyRegisterInputDataRespectiveErrorMessages TC &quot;+testCaseNumber);</span>
+<span class="fc" id="L59">	  }</span>
+	  
+	  @Test
+	  public void TC01B() {
+<span class="fc" id="L63">		String loginPageFormHeader = &quot;Login Account&quot;;</span>
+<span class="fc" id="L64">		String afterRegistrationPageHeader= &quot;User registered successfully&quot;;</span>
+<span class="fc" id="L65">		int linkNumber=1;</span>
+<span class="fc" id="L66">		String methodName= new Throwable().getStackTrace()[0].getMethodName();</span>
+<span class="fc" id="L67">		driver.get(sAppURL);</span>
+<span class="fc" id="L68">	    MainApp_function(driver,FunctionEnum.Register); </span>
+<span class="fc" id="L69">	    verifyRegisterPageLinks(driver, loginPageFormHeader,methodName+&quot; verifyRegisterLinkedPageTitle TC 1 &quot;,linkNumber);</span>
+<span class="fc" id="L70">	    linkNumber++;</span>
+<span class="fc" id="L71">		driver.get(sAppURL);</span>
+<span class="fc" id="L72">		MainApp_function(driver,FunctionEnum.Register); </span>
+<span class="fc" id="L73">	    verifyRegisterPageLinks(driver, afterRegistrationPageHeader,methodName+&quot; verifyRegisterLinkedPageTitle TC &quot;+linkNumber,linkNumber);</span>
+<span class="fc" id="L74">		driver.get(sAppURL); // to reach the happy state</span>
+
+
+<span class="fc" id="L77">	  }</span>
+	  @After
+	  public void tearDown() throws Exception {
+<span class="fc" id="L80">	    driver.quit();</span>
+<span class="fc" id="L81">	    String verificationErrorString = verificationErrors.toString();</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">	    if (!&quot;&quot;.equals(verificationErrorString)) {</span>
+<span class="nc" id="L83">	      fail(verificationErrorString);</span>
+	    }
+<span class="fc" id="L85">	  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>Merged (Dec 7, 2020 8:22:40 PM)</div></body></html>

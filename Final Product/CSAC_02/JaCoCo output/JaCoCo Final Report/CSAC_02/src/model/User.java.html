@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 7, 2020 8:22:40 PM)</a> &gt; <a href="../../index.html" class="el_group">CSAC_02</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package model;
+
+
+
+import java.util.regex.Pattern;
+import java.util.*;
+import data.UserDAO;
+
+
+
+public class User {
+	 int id;
+	 String username;
+	 String password;
+	 String lastname;
+	 String firstname;
+	 String email;
+	 String number;
+	 String roomnumber;
+	 String decknumber;
+	 String membership;
+	 String role;
+
+<span class="fc" id="L24">    public User()</span>
+    {
+    	
+<span class="fc" id="L27">    }</span>
+    
+
+
+
+<span class="fc" id="L32">    public User(String username,String password, String lastname, String firstname , String email, String number, String roomnumber, String decknumber, String membership,String role) {</span>
+<span class="fc" id="L33">    	this.username = username;</span>
+<span class="fc" id="L34">        this.password = password;</span>
+<span class="fc" id="L35">        this.lastname = lastname;</span>
+<span class="fc" id="L36">        this.firstname = firstname;</span>
+<span class="fc" id="L37">        this.email = email;</span>
+<span class="fc" id="L38">        this.number = number;</span>
+<span class="fc" id="L39">        this.roomnumber = roomnumber;</span>
+<span class="fc" id="L40">        this.decknumber = decknumber;</span>
+<span class="fc" id="L41">        this.membership = membership;</span>
+<span class="fc" id="L42">        this.role = role;</span>
+<span class="fc" id="L43">    }</span>
+
+
+    public String getUsername() {
+<span class="fc" id="L47">		return username;</span>
+	}
+	public void setUsername(String username) {
+<span class="fc" id="L50">		this.username = username;</span>
+<span class="fc" id="L51">	}</span>
+	
+	public String getPassword() {
+<span class="fc" id="L54">		return password;</span>
+	}
+	public void setPassword(String password) {
+<span class="fc" id="L57">		this.password = password;</span>
+<span class="fc" id="L58">	}</span>
+	
+	public String getLastname() {
+<span class="fc" id="L61">		return lastname;</span>
+	}
+	public void setLastname(String lastname) {
+<span class="fc" id="L64">		this.lastname = lastname;</span>
+<span class="fc" id="L65">	}</span>
+	
+	public String getFirstname() {
+<span class="fc" id="L68">		return firstname;</span>
+	}
+	public void setFirstname(String firstname) {
+<span class="fc" id="L71">		this.firstname = firstname;</span>
+<span class="fc" id="L72">	}</span>
+	
+	public String getEmail() {
+<span class="fc" id="L75">		return email;</span>
+	}
+
+	public void setEmail(String email) {
+<span class="fc" id="L79">		this.email = email;</span>
+<span class="fc" id="L80">	}</span>
+
+	public String getNumber() {
+<span class="fc" id="L83">		return number;</span>
+	}
+	
+	public void setNumber(String number) {
+<span class="fc" id="L87">        this.number = number;</span>
+<span class="fc" id="L88">	}</span>
+
+	public String getRoomnumber() {
+<span class="fc" id="L91">		return roomnumber;</span>
+	}
+	
+	public void setRoomnumber(String roomnumber) {
+<span class="fc" id="L95">        this.roomnumber = roomnumber;</span>
+<span class="fc" id="L96">	}</span>
+
+	public String getDecknumber() {
+<span class="fc" id="L99">		return decknumber;</span>
+	}
+	
+	public void setDecknumber(String decknumber) {
+<span class="fc" id="L103">        this.decknumber = decknumber;</span>
+<span class="fc" id="L104">	}</span>
+
+	public String getMembership() {
+<span class="fc" id="L107">		return membership;</span>
+	}
+	
+	public void setMembership(String membership) {
+<span class="fc" id="L111">        this.membership = membership;</span>
+<span class="fc" id="L112">	}</span>
+    
+
+	
+	public String getRole() {
+<span class="fc" id="L117">		return role;</span>
+	}
+	
+	public void setRole(String role) {
+<span class="fc" id="L121">		this.role = role;</span>
+<span class="fc" id="L122">	}</span>
+	
+	
+
+	
+
+	
+	public void validateUser (User user, UserErrorMsgs errorMsgs) {
+		
+<span class="fc" id="L131">			errorMsgs.setUsernameError(validateUsername(user.getUsername()));</span>
+<span class="fc" id="L132">			errorMsgs.setNumberError(validateNumber(user.getNumber()));</span>
+<span class="fc" id="L133">			errorMsgs.setRoomnumberError(validateRoomnumber(user.getRoomnumber()));</span>
+<span class="fc" id="L134">			errorMsgs.setLastnameError(validateLastname(user.getLastname()));</span>
+<span class="fc" id="L135">			errorMsgs.setFirstnameError(validateFirstname(user.getFirstname()));</span>
+<span class="fc" id="L136">			errorMsgs.setEmailError(validateEmail(user.getEmail()));</span>
+<span class="fc" id="L137">			errorMsgs.setDecknumberError(validateDecknumber(user.getDecknumber()));</span>
+<span class="fc" id="L138">			errorMsgs.setPasswordError(validatePassword(user.getPassword()));</span>
+<span class="fc" id="L139">			errorMsgs.setNameCombinationError(validateNameCombination(user.getFirstname(), user.getLastname()));</span>
+<span class="fc" id="L140">			errorMsgs.setMembershipError(validateMembership(user.getMembership()));</span>
+<span class="fc" id="L141">			errorMsgs.setRoleError(validateRole(user.getRole()));</span>
+<span class="fc" id="L142">			errorMsgs.setErrorMsg();</span>
+<span class="fc" id="L143">		}</span>
+	
+	
+	public void validateUserUpdateProfile (User user, UserErrorMsgs errorMsgs) {
+		
+		
+<span class="fc" id="L149">		errorMsgs.setNumberError(validateNumber(user.getNumber()));</span>
+<span class="fc" id="L150">		errorMsgs.setRoomnumberError(validateRoomnumber(user.getRoomnumber()));</span>
+<span class="fc" id="L151">		errorMsgs.setLastnameError(validateLastname(user.getLastname()));</span>
+<span class="fc" id="L152">		errorMsgs.setFirstnameError(validateFirstname(user.getFirstname()));</span>
+<span class="fc" id="L153">		errorMsgs.setEmailError(validateEmail(user.getEmail()));</span>
+<span class="fc" id="L154">		errorMsgs.setDecknumberError(validateDecknumber(user.getDecknumber()));</span>
+<span class="fc" id="L155">		errorMsgs.setPasswordError(validatePassword(user.getPassword()));</span>
+<span class="fc" id="L156">		errorMsgs.setNameCombinationError(validateNameCombination(user.getFirstname(), user.getLastname()));</span>
+<span class="fc" id="L157">		errorMsgs.setErrorMsg();</span>
+<span class="fc" id="L158">	}</span>
+	
+
+	
+							
+	public String validateMembership(String membership)
+	{
+<span class="fc" id="L165">		String result = &quot;&quot;;</span>
+		
+<span class="fc bfc" id="L167" title="All 8 branches covered.">		if(!(membership.equals(&quot;None&quot;) || membership.equals(&quot;Standard&quot;) || membership.equals(&quot;Superior&quot;) || membership.equals(&quot;Premium&quot;)))  </span>
+		{
+<span class="fc" id="L169">			result = &quot;Invalid Membership(Dropdown)&quot;;</span>
+		}
+<span class="fc" id="L171">		return result;</span>
+	}
+	
+	public String validateRole(String role)
+	{
+<span class="fc" id="L176">		String result = &quot;&quot;;</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">		if(!(role.equals(&quot;Passenger&quot;)))</span>
+		{
+<span class="fc" id="L179">			result = &quot;Invalid Role(Default)&quot;;</span>
+		}
+<span class="fc" id="L181">		return result;</span>
+	}
+	
+	
+	
+	
+	public String validateNameCombination(String firstname, String lastname) {
+<span class="fc" id="L188">		String result = &quot;&quot;;</span>
+		
+<span class="fc bfc" id="L190" title="All 2 branches covered.">		if (!UserDAO.NameCombination(firstname, lastname))</span>
+<span class="fc" id="L191">			result = &quot;Firstname and Lastname combination already in database&quot;;</span>
+		
+<span class="fc" id="L193">		return result;</span>
+	}
+	
+   
+	
+	
+    public String validateUsername(String username) {
+<span class="fc" id="L200">    	String result=&quot;&quot;;</span>
+<span class="fc" id="L201">    	char c = username.charAt(0);</span>
+<span class="fc" id="L202">		String specialCharactersString = &quot;!@#$%&amp;*()'+,-./:;&lt;=&gt;?[]^_`{|}&quot;;</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">		if (!UserDAO.Usernameunique(username))</span>
+<span class="fc" id="L204">			result = &quot;Username already in database&quot;;</span>
+		else
+<span class="fc bfc" id="L206" title="All 2 branches covered.">			if (!(Character.isLetter(c))) </span>
+				{
+<span class="fc" id="L208">					result =&quot;username must start with a letter&quot;; </span>
+<span class="fc" id="L209">				}</span>
+			else 
+<span class="fc bfc" id="L211" title="All 2 branches covered.">				if(!stringSize(username,5,20)) {</span>
+<span class="fc" id="L212">				result = &quot;username must be 5 to 20 characters long&quot;;</span>
+			
+<span class="fc" id="L214">				}</span>
+				else 
+				{  
+<span class="fc bfc" id="L217" title="All 2 branches covered.">					for (int i=0; i &lt; username.length() ; i++)</span>
+			        	{
+<span class="fc" id="L219">							char ch = username.charAt(i);</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">							if(specialCharactersString.contains(Character.toString(ch))) </span>
+							{
+<span class="fc" id="L222">			            	result = &quot;must not contain special characters&quot;;</span>
+<span class="fc" id="L223">			            	break;</span>
+							}    
+
+				}
+	
+		}
+			
+	
+<span class="fc" id="L231">		return result;</span>
+
+}
+	
+	
+	public String validatePassword(String password) {
+<span class="fc" id="L237">		String result=&quot;&quot;;</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">		if(!(Pattern.matches(&quot;^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&amp;*-]).{8,29}$&quot;,password))){</span>
+<span class="fc" id="L239">			result = &quot;must have upper and lower case letter number special character length greater than 6 and smaller than 46&quot;;</span>
+		}
+
+<span class="fc" id="L242">		return result;		</span>
+	}
+	
+
+	public String validateLastname(String lastname) {
+<span class="fc" id="L247">		String result=&quot;&quot;;</span>
+		
+<span class="fc" id="L249">		boolean digit = false;</span>
+<span class="fc" id="L250">		 char[] chars = lastname.toCharArray();</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">		 for(char chh : chars){</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">	         if(Character.isDigit(chh)){</span>
+<span class="fc" id="L253">	        	digit =true;</span>
+	         }
+		 }
+<span class="fc" id="L256">		char c = lastname.charAt(0);</span>
+<span class="fc" id="L257">		String specialCharactersString = &quot;!@#$%&amp;*()'+,-./:;&lt;=&gt;?[]^_`{|}&quot;;</span>
+
+<span class="fc bfc" id="L259" title="All 2 branches covered.">		if (!(Character.isUpperCase(c))) </span>
+		{
+<span class="fc" id="L261">			result =&quot;Last name must start with a capital letter&quot;; </span>
+<span class="fc" id="L262">		}</span>
+		else
+<span class="fc bfc" id="L264" title="All 2 branches covered.">			if(!stringSize(lastname,3,29)) {</span>
+<span class="fc" id="L265">				result = &quot;Last name must be 3 to 29 characters long&quot;;</span>
+			
+<span class="fc" id="L267">				}</span>
+			else
+<span class="fc bfc" id="L269" title="All 2 branches covered.">				if(digit) {</span>
+				
+<span class="fc" id="L271">			        	 result=&quot;Last name must not contain a number&quot;;</span>
+<span class="fc" id="L272">			         }</span>
+				
+				else {
+<span class="fc bfc" id="L275" title="All 2 branches covered.">					for (int i=0; i &lt; lastname.length() ; i++)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             </span>
+		        	{
+<span class="fc" id="L277">						char ch = lastname.charAt(i);</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">						if(specialCharactersString.contains(Character.toString(ch))) </span>
+						{
+<span class="fc" id="L280">		            	result = &quot;Last name must not contain special characters&quot;;</span>
+<span class="fc" id="L281">		            	break;</span>
+						}    
+
+		        	}
+				}
+					
+<span class="fc" id="L287">		return result;		</span>
+	}
+
+	
+	public String validateFirstname(String firstname) {
+<span class="fc" id="L292">		String result=&quot;&quot;;</span>
+		
+<span class="fc" id="L294">		boolean digit = false;</span>
+<span class="fc" id="L295">		 char[] chars = firstname.toCharArray();</span>
+<span class="fc bfc" id="L296" title="All 2 branches covered.">		 for(char chh : chars){</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">	         if(Character.isDigit(chh)){</span>
+<span class="fc" id="L298">	        	digit =true;</span>
+	         }
+		 }
+		
+<span class="fc" id="L302">		char c = firstname.charAt(0);</span>
+<span class="fc" id="L303">		String specialCharactersString = &quot;!@#$%&amp;*()'+,-./:;&lt;=&gt;?[]^_`{|}&quot;;</span>
+
+<span class="fc bfc" id="L305" title="All 2 branches covered.">		if (!(Character.isUpperCase(c))) </span>
+		{
+<span class="fc" id="L307">			result =&quot;First name must start with a capital letter&quot;; </span>
+<span class="fc" id="L308">		}</span>
+		else
+<span class="fc bfc" id="L310" title="All 2 branches covered.">			if(!stringSize(firstname,3,29)) {</span>
+<span class="fc" id="L311">				result = &quot;First name must be 3 to 29 characters long&quot;;</span>
+			
+<span class="fc" id="L313">				}</span>
+			else
+<span class="fc bfc" id="L315" title="All 2 branches covered.">				if (digit)</span>
+<span class="fc" id="L316">					result=&quot;First name must not contain a number&quot;;</span>
+				else {
+<span class="fc bfc" id="L318" title="All 2 branches covered.">					for (int i=0; i &lt; firstname.length() ; i++)</span>
+		        	{
+<span class="fc" id="L320">						char ch = firstname.charAt(i);</span>
+<span class="fc bfc" id="L321" title="All 2 branches covered.">						if(specialCharactersString.contains(Character.toString(ch))) </span>
+						{
+<span class="fc" id="L323">		            	result = &quot;First name must not contain special characters&quot;;</span>
+<span class="fc" id="L324">		            	break;</span>
+						}    
+
+		        	}
+				}
+					
+<span class="fc" id="L330">		return result;		</span>
+	}
+	
+
+	
+	public String validateNumber(String number) {
+<span class="fc" id="L336">		String result=&quot;&quot;;</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">		if (number.length()!=10)</span>
+<span class="fc" id="L338">			result=&quot;Phone number must be 10 digits in length&quot;;</span>
+		else
+<span class="fc bfc" id="L340" title="All 2 branches covered.">			if (!isTextAnInteger(number))</span>
+<span class="fc" id="L341">				result=&quot;Phone number must be a number&quot;;</span>
+<span class="fc" id="L342">		return result;		</span>
+	}
+
+	public String validateRoomnumber(String roomnumber) {
+<span class="fc" id="L346">		String result=&quot;&quot;;</span>
+<span class="fc" id="L347">		int length_roomnumber = String.valueOf(roomnumber).length();</span>
+		try {
+<span class="fc" id="L349">		int intRoomnumber = Integer.parseInt(roomnumber);</span>
+		
+<span class="fc bfc" id="L351" title="All 2 branches covered.">		if (length_roomnumber!=3)</span>
+<span class="fc" id="L352">			result=&quot;Roomnumber must be 3 digits in length&quot;;</span>
+		
+			else
+				
+<span class="fc bfc" id="L356" title="All 2 branches covered.">				if (!(Math.max(100, intRoomnumber) == Math.min(intRoomnumber, 199)))</span>
+<span class="fc" id="L357">					result=&quot;Roomnumber must be between 100 and 199&quot;;</span>
+<span class="fc" id="L358">		return result;		</span>
+		
+		}
+<span class="fc" id="L361">		catch (NumberFormatException e) </span>
+        {
+<span class="fc" id="L363">            result=&quot;Roomnumber must be a number&quot;;</span>
+<span class="fc" id="L364">            return result;</span>
+        }
+			
+	}
+
+	public String validateDecknumber(String decknumber) {
+<span class="fc" id="L370">		String result=&quot;&quot;;</span>
+<span class="fc" id="L371">		int length_decknumber = String.valueOf(decknumber).length();</span>
+
+		
+		try {
+<span class="fc" id="L375">			int intDecknumber = Integer.parseInt(decknumber);</span>
+			
+<span class="fc bfc" id="L377" title="All 2 branches covered.">			if (!(length_decknumber &lt;= 2 ))</span>
+<span class="fc" id="L378">				result=&quot;Decknumber must be 1 or 2 digits in length&quot;;</span>
+			
+				else
+<span class="fc bfc" id="L381" title="All 2 branches covered.">					if (!(Math.max(1, intDecknumber) == Math.min(intDecknumber, 15)))</span>
+<span class="fc" id="L382">						result=&quot;Decknumber must be between 1 and 15&quot;;</span>
+<span class="fc" id="L383">			return result;	</span>
+			
+			}
+<span class="fc" id="L386">			catch (NumberFormatException e) </span>
+	        {
+<span class="fc" id="L388">	            result=&quot;Decknumber must be a number&quot;;</span>
+<span class="fc" id="L389">	            return result;</span>
+	        }
+		
+			
+	}
+
+	
+	
+	public String validateEmail(String email) {
+<span class="fc" id="L398">		String result=&quot;&quot;,extension=&quot;&quot;;</span>
+<span class="fc bfc" id="L399" title="All 2 branches covered.">		if (!email.contains(&quot;@&quot;))</span>
+<span class="fc" id="L400">			result = &quot;Email address needs to contain @&quot;;</span>
+		else
+<span class="fc bfc" id="L402" title="All 2 branches covered.">			if (!stringSize(email,7,45))</span>
+<span class="fc" id="L403">				result=&quot;Email address must be between 7 and 45 characters long&quot;;</span>
+			else {
+<span class="fc" id="L405">				extension = email.substring(email.length()-4, email.length());</span>
+<span class="fc" id="L406">				List&lt;String&gt; allowedExtensions = new ArrayList&lt;String&gt;(6); </span>
+<span class="fc" id="L407">				allowedExtensions.add(&quot;.org&quot;); </span>
+<span class="fc" id="L408">				allowedExtensions.add(&quot;.edu&quot;); </span>
+<span class="fc" id="L409">				allowedExtensions.add(&quot;.com&quot;);</span>
+<span class="fc" id="L410">				allowedExtensions.add(&quot;.net&quot;);</span>
+<span class="fc" id="L411">				allowedExtensions.add(&quot;.gov&quot;);</span>
+<span class="fc" id="L412">				allowedExtensions.add(&quot;.mil&quot;);</span>
+
+
+<span class="fc bfc" id="L415" title="All 2 branches covered.">				if (!(allowedExtensions.contains(extension)))</span>
+<span class="fc" id="L416">					result = &quot;Invalid domain name&quot;;				</span>
+			}
+<span class="fc" id="L418">		return result;		</span>
+	}
+
+
+	
+	private boolean stringSize(String string, int min, int max) {
+<span class="fc bfc" id="L424" title="All 4 branches covered.">		return string.length()&gt;=min &amp;&amp; string.length()&lt;=max;</span>
+	}
+	
+
+	
+	private boolean isTextAnInteger (String string) {
+        boolean result;
+		try
+        {
+<span class="fc" id="L433">            Long.parseLong(string);</span>
+<span class="fc" id="L434">            result=true;</span>
+<span class="fc" id="L435">        } </span>
+<span class="fc" id="L436">        catch (NumberFormatException e) </span>
+        {
+<span class="fc" id="L438">            result=false;</span>
+        }
+<span class="fc" id="L440">		return result;</span>
+	}
+	
+	
+	
+    
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>Merged (Dec 7, 2020 8:22:40 PM)</div></body></html>

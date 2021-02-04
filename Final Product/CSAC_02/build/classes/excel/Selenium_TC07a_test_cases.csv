@@ -1,0 +1,3 @@
+1,abcd,abcd,Invalid Date format,Invalid Date-Time format
+2,11/7/2020,1:52:52,Date cannot be in the past,Time cannot be in the past
+3,12/28/2020,6:59:59,,Event Timings must be between 7:00 AM(inclusive) and 10:00 PM(inclusive)

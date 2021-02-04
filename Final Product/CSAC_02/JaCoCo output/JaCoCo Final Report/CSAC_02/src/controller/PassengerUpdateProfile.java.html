@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PassengerUpdateProfile.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 7, 2020 8:22:40 PM)</a> &gt; <a href="../../index.html" class="el_group">CSAC_02</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">PassengerUpdateProfile.java</span></div><h1>PassengerUpdateProfile.java</h1><pre class="source lang-java linenums">package controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import data.UserDAO;
+import model.User;
+import util.CheckErrorMsgs;
+import util.ConnectionPro;
+
+/**
+ * Servlet implementation class PassengerUpdateProfile
+ */
+@WebServlet(&quot;/PassengerUpdateProfile&quot;)
+public class PassengerUpdateProfile extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public PassengerUpdateProfile() {
+<span class="fc" id="L28">        super();</span>
+        // TODO Auto-generated constructor stub
+<span class="fc" id="L30">    }</span>
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+//	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//	
+////		response.getWriter().append(&quot;Served at: &quot;).append(request.getContextPath());
+////		doPost(request, response);
+//	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	
+<span class="fc" id="L47">		String destination = &quot;passengerupdateprofile.jsp&quot;;</span>
+<span class="fc" id="L48">		RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);</span>
+
+<span class="fc" id="L50">		String username = request.getParameter(&quot;username&quot;);</span>
+<span class="fc" id="L51">		String password = request.getParameter(&quot;password&quot;);</span>
+<span class="fc" id="L52">		String lastname = request.getParameter(&quot;lastname&quot;);</span>
+<span class="fc" id="L53">		String firstname = request.getParameter(&quot;firstname&quot;);</span>
+<span class="fc" id="L54">		String email = request.getParameter(&quot;email&quot;);</span>
+<span class="fc" id="L55">		String number = request.getParameter(&quot;number&quot;);</span>
+<span class="fc" id="L56">		String roomnumber = request.getParameter(&quot;roomnumber&quot;);</span>
+		//int Roomnumber=Integer.parseInt(roomnumber);  
+<span class="fc" id="L58">		String decknumber = request.getParameter(&quot;decknumber&quot;);</span>
+		//int Decknumber=Integer.parseInt(decknumber);  
+<span class="fc" id="L60">		String membership = request.getParameter(&quot;membership&quot;);</span>
+<span class="fc" id="L61">		String successmessage = &quot;User updated successfully&quot;;</span>
+		
+
+		//make userUpdate object
+<span class="fc" id="L65">		User userUpdate = new User();</span>
+		
+<span class="fc" id="L67">		userUpdate.setUsername(username);</span>
+<span class="fc" id="L68">		userUpdate.setPassword(password);</span>
+<span class="fc" id="L69">		userUpdate.setLastname(lastname);</span>
+<span class="fc" id="L70">		userUpdate.setFirstname(firstname);</span>
+<span class="fc" id="L71">		userUpdate.setEmail(email);</span>
+<span class="fc" id="L72">		userUpdate.setNumber(number);</span>
+<span class="fc" id="L73">		userUpdate.setRoomnumber(roomnumber);</span>
+<span class="fc" id="L74">		userUpdate.setDecknumber(decknumber);</span>
+<span class="fc" id="L75">		userUpdate.setMembership(membership);</span>
+				
+		//create a database model
+<span class="fc" id="L78">		UserDAO updateuser = new UserDAO(ConnectionPro.getConnection());</span>
+	
+<span class="fc" id="L80">		HttpSession SuccessfullSession = request.getSession();</span>
+<span class="fc" id="L81">		HttpSession errorSession = request.getSession();</span>
+		
+<span class="fc" id="L83">		String passwordError = userUpdate.validatePassword(password);</span>
+<span class="fc" id="L84">		String lastnameError = userUpdate.validateLastname(lastname);</span>
+<span class="fc" id="L85">		String firstnameError = userUpdate.validateFirstname(firstname);</span>
+<span class="fc" id="L86">		String numberError = userUpdate.validateNumber(number);</span>
+<span class="fc" id="L87">		String emailError = userUpdate.validateEmail(email);</span>
+<span class="fc" id="L88">		String roomnumberError = userUpdate.validateRoomnumber(roomnumber);</span>
+<span class="fc" id="L89">		String decknumberError = userUpdate.validateDecknumber(decknumber);</span>
+
+		
+<span class="fc" id="L92">		CheckErrorMsgs errormsg = new CheckErrorMsgs();</span>
+<span class="fc" id="L93">		String uerrormsgs = errormsg.UpdateprofileErrorMsg( numberError,  roomnumberError, lastnameError, firstnameError,  emailError,  decknumberError, passwordError);</span>
+		
+<span class="fc bfc" id="L95" title="All 2 branches covered.">		if(!uerrormsgs.equals(&quot;&quot;))</span>
+		{	
+<span class="fc" id="L97">			errorSession.setAttribute(&quot;passwordError&quot;, passwordError);</span>
+<span class="fc" id="L98">			errorSession.setAttribute(&quot;lastnameError&quot;, lastnameError);</span>
+<span class="fc" id="L99">			errorSession.setAttribute(&quot;firstnameError&quot;, firstnameError);</span>
+<span class="fc" id="L100">			errorSession.setAttribute(&quot;numberError&quot;, numberError);</span>
+<span class="fc" id="L101">			errorSession.setAttribute(&quot;emailError&quot;, emailError);</span>
+<span class="fc" id="L102">			errorSession.setAttribute(&quot;roomnumberError&quot;, roomnumberError);</span>
+<span class="fc" id="L103">			errorSession.setAttribute(&quot;decknumberError&quot;, decknumberError);</span>
+	
+		
+<span class="fc" id="L106">			requestDispatcher.forward(request, response);</span>
+		
+<span class="fc" id="L108">		}</span>
+		else 
+			{
+<span class="fc" id="L111">			 updateuser.updateUser(userUpdate);</span>
+<span class="fc" id="L112">			 SuccessfullSession.setAttribute(&quot;successmessage&quot;, successmessage);</span>
+<span class="fc" id="L113">			 response.sendRedirect(&quot;passengersuccessmessage.jsp&quot;);</span>
+			} 
+			
+			
+		
+	
+<span class="fc" id="L119">	}		</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>Merged (Dec 7, 2020 8:22:40 PM)</div></body></html>

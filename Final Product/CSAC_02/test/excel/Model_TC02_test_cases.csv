@@ -1,0 +1,17 @@
+1,varunn,Qwerty!1,,
+3,varu,Qwerty!1,username must be 5 to 20 characters long,
+4,varunvarunvarunvarun,Qwerty!1,,
+5,varunvarunvarunvarunv,Qwerty!1,username must be 5 to 20 characters long,
+6,varu!,Qwerty!1,must not contain special characters,
+7,varu@,Qwerty!1,must not contain special characters,
+8,varu#,Qwerty!1,must not contain special characters,
+9,varu_,Qwerty!1,must not contain special characters,
+10,varu.,Qwerty!1,must not contain special characters,
+11,1arun,Qwerty!1,username must start with a letter,
+12,varunn,qwerty!1,,must have upper and lower case letter number special character length greater than 6 and smaller than 46
+13,varunn,QWERTY!1,,must have upper and lower case letter number special character length greater than 6 and smaller than 46
+14,varunn,Qwert!1,,must have upper and lower case letter number special character length greater than 6 and smaller than 46
+15,varunn,Qwe!1Qwe!1Qwe!1Qwe!1Qwe!1Qwe!,,
+16,varunn,Qwe!1Qwe!1Qwe!1Qwe!1Qwe!1Qwe!1,,must have upper and lower case letter number special character length greater than 6 and smaller than 46
+17,varunn,Qwerty!!,,must have upper and lower case letter number special character length greater than 6 and smaller than 46
+18,varunn,Qwerty11,,must have upper and lower case letter number special character length greater than 6 and smaller than 46

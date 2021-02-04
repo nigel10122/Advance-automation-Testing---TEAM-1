@@ -1,0 +1,39 @@
+1,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,,,,,,,,
+2,1,Bowling 1,abcd,08:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,Invalid Date format,Invalid Date-Time format,,,,,,Please correct the following errors
+3,1,Bowling 1,12/8/2020,06:59:59,01:00:00,15,100,100,Amey Dhuri,Show,100,,Event Timings must be between 7:00 AM(inclusive) and 10:00 PM(inclusive),,,,,,Please correct the following errors
+4,1,Bowling 1,12/8/2020,07:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,,,,,,,,
+5,1,Bowling 1,12/8/2020,22:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,,,Duration cannot exceed end of day,,,,,Please correct the following errors
+6,1,Bowling 1,12/8/2020,22:00:01,01:00:00,15,100,100,Amey Dhuri,Show,100,,Event Timings must be between 7:00 AM(inclusive) and 10:00 PM(inclusive),Duration cannot exceed end of day,,,,,Please correct the following errors
+7,1,Bowling 1,12/8/2020,21:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,,,,,,,,
+8,1,Bowling 1,12/8/2020,21:00:01,01:00:00,15,100,100,Amey Dhuri,Show,100,,,Duration cannot exceed end of day,,,,,Please correct the following errors
+9,1,Bowling 1,10/25/2020,15:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,Date cannot be in the past,Time cannot be in the past,,,,,,Please correct the following errors
+10,1,Bowling 1,12/7/2020,11:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,,Time cannot be in the past,,,,,,Please correct the following errors
+11,1,Bowling 1,12/8/2020,17:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,,,,,,,,
+12,1,Bowling 1,1/1/2000,07:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,Date cannot be in the past,Time cannot be in the past,,,,,,Please correct the following errors
+13,1,Bowling 1,12/31/1999,21:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,Date cannot be in the past,Time cannot be in the past,,,,,,Please correct the following errors
+14,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,100,100,Amey Dhuri,Show,99,,,,,The number of attendees should be the same as Estimated attendees,,The number of attendees should be the same as Estimated attendees,Please correct the following errors
+15,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,aa,100,Amey Dhuri,Show,aa,,,,,Number of attendees should be a number,,Number of attendees should be a number,Please correct the following errors
+16,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,101,100,Amey Dhuri,Show,101,,,,,The number of attendees should not exceed capacity,,The number of attendees should not exceed capacity,Please correct the following errors
+17,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,0,100,Amey Dhuri,Show,0,,,,,Number of attendees must be between 1(inclusive) and 100(inclusive),,Number of attendees must be between 1(inclusive) and 100(inclusive),Please correct the following errors
+18,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,1,100,Amey Dhuri,Show,1,,,,,,,,
+19,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,,,,,,,,
+20,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,101,101,Amey Dhuri,Show,101,,,,,Number of attendees must be between 1(inclusive) and 100(inclusive),Capacity should be between 0 (not inclusive) to 100 (inclusive),Number of attendees must be between 1(inclusive) and 100(inclusive),Please correct the following errors
+21,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,,,,,,,,
+22,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,100,1000,Amey Dhuri,Show,100,,,,,,Capacity should be 1 to 3 characters long,,Please correct the following errors
+22,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,,,,,,,,
+22,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,10,10,Amey Dhuri,Show,10,,,,,,,,
+22,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,1,1,Amey Dhuri,Show,1,,,,,,,,
+23,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,0,0,Amey Dhuri,Show,0,,,,,Number of attendees must be between 1(inclusive) and 100(inclusive),Capacity should be between 0 (not inclusive) to 100 (inclusive),Number of attendees must be between 1(inclusive) and 100(inclusive),Please correct the following errors
+24,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,1,1,Amey Dhuri,Show,1,,,,,,,,
+25,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,,,,,,,,
+26,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,101,101,Amey Dhuri,Show,101,,,,,Number of attendees must be between 1(inclusive) and 100(inclusive),Capacity should be between 0 (not inclusive) to 100 (inclusive),Number of attendees must be between 1(inclusive) and 100(inclusive),Please correct the following errors
+27,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,,,,,,,,
+28,1,Bowling 1,12/8/2020,08:00:00,01:00:00,aa,100,100,Amey Dhuri,Show,100,,,,Decknumber must be a number,,,,Please correct the following errors
+28,1,Bowling 1,12/8/2020,08:00:00,01:00:00,100,100,100,Amey Dhuri,Show,100,,,,Decknumber must be 1 or 2 digits in length,,,,Please correct the following errors
+28,1,Bowling 1,12/8/2020,08:00:00,01:00:00,10,100,100,Amey Dhuri,Show,100,,,,,,,,
+28,1,Bowling 1,12/8/2020,08:00:00,01:00:00,1,100,100,Amey Dhuri,Show,100,,,,,,,,
+29,1,Bowling 1,12/8/2020,08:00:00,01:00:00,99,100,100,Amey Dhuri,Show,100,,,,Decknumber must be between 1 and 15,,,,Please correct the following errors
+30,1,Bowling 1,12/8/2020,08:00:00,01:00:00,0,100,100,Amey Dhuri,Show,100,,,,Decknumber must be between 1 and 15,,,,Please correct the following errors
+31,1,Bowling 1,12/8/2020,08:00:00,01:00:00,1,100,100,Amey Dhuri,Show,100,,,,,,,,
+32,1,Bowling 1,12/8/2020,08:00:00,01:00:00,15,100,100,Amey Dhuri,Show,100,,,,,,,,
+33,1,Bowling 1,12/8/2020,08:00:00,01:00:00,16,100,100,Amey Dhuri,Show,100,,,,Decknumber must be between 1 and 15,,,,Please correct the following errors

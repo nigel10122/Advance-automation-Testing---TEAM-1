@@ -1,0 +1,1394 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CSAC_02Functions.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 7, 2020 8:22:40 PM)</a> &gt; <a href="../../index.html" class="el_group">CSAC_02</a> &gt; <a href="../index.html" class="el_bundle">functions</a> &gt; <a href="index.source.html" class="el_package">functions</a> &gt; <span class="el_source">CSAC_02Functions.java</span></div><h1>CSAC_02Functions.java</h1><pre class="source lang-java linenums">package functions;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Properties;
+import java.util.Random;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+import data.EventDAO;
+import data.ReservationDAO;
+import data.UserDAO;
+import model.Event;
+import model.Reservation;
+import model.User;
+import util.ConnectionPro;
+import util.GetDateTime;
+
+<span class="fc" id="L33">public class CSAC_02Functions {</span>
+
+<span class="fc" id="L35">	Connection conn = ConnectionPro.getConnection();  </span>
+	
+	  public WebDriver driver;
+	  public Properties prop;
+<span class="fc" id="L39">	  Random rand = new Random();</span>
+<span class="fc" id="L40">	  public enum FunctionEnum {Login, Register}</span>
+	  
+	  public WebDriver invokeCorrectBrowser () {
+<span class="fc" id="L43">			System.setProperty(&quot;webdriver.chrome.driver&quot;, &quot;c:/ChromeDriver/chromedriver.exe&quot;);</span>
+<span class="fc" id="L44">			return new ChromeDriver();</span>
+	  }
+
+	  public void takeScreenShot (WebDriver driver, String screenshotname) {
+		  //Take screenshot and save it in source object
+<span class="fc" id="L49">		  File source = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);</span>
+		  // Define path where Screenshots will be saved
+	
+		  //Copy the source file at the screenshot path
+		  try {
+<span class="fc" id="L54">			FileUtils.copyFile(source, new File(&quot;./ScreenShots/&quot; + screenshotname +&quot;.png&quot;));</span>
+<span class="pc" id="L55">		} catch (IOException e1) {}</span>
+		    try {
+//			    Change the thread value to run test files with delay
+<span class="fc" id="L58">				Thread.sleep(3_000);</span>
+<span class="pc" id="L59">			} catch (InterruptedException e) {}</span>
+<span class="fc" id="L60">	  }</span>
+	  
+	  public void MainApp_function (WebDriver driver, FunctionEnum function) {
+<span class="pc bpc" id="L63" title="2 of 3 branches missed.">		  switch (function) {</span>
+		  	case Login:
+<span class="nc" id="L65">			    driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_loginButton&quot;))).click(); //select List Company from homepage</span>
+<span class="nc" id="L66">			    break;</span>
+		  	case Register:
+<span class="fc" id="L68">		  	    driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_RegisterPageLink&quot;))).click(); //select Insert Company from homepage</span>
+		  	    break;
+		  }
+<span class="fc" id="L71">	  }</span>
+	  
+	  public void login_function (WebDriver driver, String username, String password, String snapShotName) {
+		  try {
+<span class="fc" id="L75">			Thread.sleep(1_000);</span>
+<span class="pc" id="L76">		} catch (InterruptedException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L78">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L80">		    driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_UsernameInputField&quot;))).sendKeys(username);</span>
+<span class="fc" id="L81">		    driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_PasswordInputField&quot;))).sendKeys(password);</span>
+		    try {
+<span class="fc" id="L83">				Thread.sleep(1_000);</span>
+<span class="pc" id="L84">			} catch (InterruptedException e) {</span>
+				// TODO Auto-generated catch block
+<span class="nc" id="L86">				e.printStackTrace();</span>
+			}
+<span class="fc" id="L88">		    takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L89">		    driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_loginButton&quot;))).click(); //click on insertCompany button</span>
+		   
+<span class="fc" id="L91">	  }</span>
+	  
+	  public void verifyLoginErrorMessages (WebDriver driver, String usernameError, String passwordError,String invalidError, String snapShotName) {
+<span class="fc" id="L94">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_UsernameErrorMsg&quot;))).getText().equals(usernameError));</span>
+<span class="fc" id="L95">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_PasswordErrorMsg&quot;))).getText().equals(passwordError));</span>
+<span class="fc" id="L96">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_invalidErrorMsg&quot;))).getText().equals(invalidError));</span>
+
+<span class="fc" id="L98">			takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L99">}</span>
+	  
+	  public void verifyLoginPageLinks(WebDriver driver, String nextPageTitle,String snapShotName, int linkNumber) {
+<span class="fc bfc" id="L102" title="All 2 branches covered.">		if(linkNumber==1) {</span>
+<span class="fc" id="L103">		  driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_RegisterPageLink&quot;))).click();</span>
+		  try {
+<span class="fc" id="L105">			Thread.sleep(6000);</span>
+<span class="pc" id="L106">		} catch (InterruptedException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L108">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L110">		  assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Register_formHeader&quot;))).getText().equals(nextPageTitle));</span>
+<span class="fc" id="L111">		  HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Register_formHeader&quot;))));</span>
+<span class="fc" id="L112">		  takeScreenShot(driver,snapShotName);</span>
+		}
+<span class="fc bfc" id="L114" title="All 2 branches covered.">		  if(linkNumber==2) {</span>
+<span class="fc" id="L115">		  driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_UsernameInputField&quot;))).sendKeys(&quot;nigel10122&quot;);</span>
+<span class="fc" id="L116">		  driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_PasswordInputField&quot;))).sendKeys(&quot;Plmqaz@098&quot;);</span>
+<span class="fc" id="L117">		  driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_loginButton&quot;))).click(); //click on insertCompany button</span>
+		  try {
+<span class="fc" id="L119">				Thread.sleep(6000);</span>
+<span class="pc" id="L120">			} catch (InterruptedException e) {</span>
+				// TODO Auto-generated catch block
+<span class="nc" id="L122">				e.printStackTrace();</span>
+			}
+		  
+<span class="fc" id="L125">		  String welcome_name_actual = driver.findElement(By.xpath(&quot;.//*[@id='title']&quot;)).getText();</span>
+<span class="fc" id="L126">		  UserDAO db =  new UserDAO(ConnectionPro.getConnection());</span>
+			
+<span class="fc" id="L128">		   String username = &quot;nigel10122&quot;;</span>
+<span class="fc" id="L129">		   String password = &quot;Plmqaz@098&quot;;</span>
+<span class="fc" id="L130">	       User user = db.login(username, password);</span>
+	       
+<span class="fc" id="L132">	       String welcome_name_expected = &quot;Welcome&quot;+&quot; &quot;+user.getFirstname()+&quot; &quot;+user.getLastname();</span>
+<span class="fc" id="L133">	       System.out.println(welcome_name_expected);</span>
+	      
+<span class="fc" id="L135">	       System.out.println(welcome_name_actual);</span>
+<span class="fc" id="L136">	       assertEquals(welcome_name_expected,welcome_name_actual);</span>
+<span class="fc" id="L137">	       HighLight(driver,driver.findElement(By.xpath(&quot;.//*[@id='title']&quot;)));</span>
+	       try {
+<span class="fc" id="L139">				Thread.sleep(2_000);</span>
+<span class="pc" id="L140">			} catch (InterruptedException e) {</span>
+				// TODO Auto-generated catch block
+<span class="nc" id="L142">				e.printStackTrace();</span>
+			}
+<span class="fc" id="L144">		  assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Welcome_pageHeading&quot;))).getText().equals(nextPageTitle));</span>
+<span class="fc" id="L145">		  HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Welcome_pageHeading&quot;))));</span>
+		  
+		  
+<span class="fc" id="L148">		  takeScreenShot(driver,snapShotName);</span>
+		  	
+		  }
+<span class="fc" id="L151">	  }</span>
+	  
+	  public void Register_function(WebDriver driver, String username, String lastname, String firstname, String password, String email,
+			  String number, String roomnumber, String decknumber, String membershipType, String snapShotName) {
+		  try {
+<span class="fc" id="L156">			Thread.sleep(1000);</span>
+<span class="pc" id="L157">		} catch (InterruptedException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L159">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L161">		  	driver.findElement(By.xpath(prop.getProperty(&quot;Register_usernameInput&quot;))).sendKeys(username);</span>
+<span class="fc" id="L162">		    driver.findElement(By.xpath(prop.getProperty(&quot;Register_passwordInput&quot;))).sendKeys(password);</span>
+<span class="fc" id="L163">		    driver.findElement(By.xpath(prop.getProperty(&quot;Register_lastnameInput&quot;))).sendKeys(lastname);</span>
+<span class="fc" id="L164">		    driver.findElement(By.xpath(prop.getProperty(&quot;Register_firstnameInput&quot;))).sendKeys(firstname);</span>
+<span class="fc" id="L165">		    driver.findElement(By.xpath(prop.getProperty(&quot;Register_emailInput&quot;))).sendKeys(email);</span>
+<span class="fc" id="L166">		    driver.findElement(By.xpath(prop.getProperty(&quot;Register_numberInput&quot;))).sendKeys(number);</span>
+<span class="fc" id="L167">		    driver.findElement(By.xpath(prop.getProperty(&quot;Register_roomNumberInput&quot;))).sendKeys(roomnumber);</span>
+<span class="fc" id="L168">		    driver.findElement(By.xpath(prop.getProperty(&quot;Register_deckNumberInput&quot;))).sendKeys(decknumber);</span>
+<span class="fc" id="L169">		    new Select(driver.findElement(By.xpath(prop.getProperty(&quot;Register_membershipTypeDropDown&quot;)))).selectByVisibleText(&quot;Superior&quot;);</span>
+<span class="fc" id="L170">		    takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L171">		    driver.findElement(By.xpath(prop.getProperty(&quot;Register_registerButton&quot;))).click(); //click on insertCompany button</span>
+<span class="fc" id="L172">		    HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Register_registerButton&quot;))));</span>
+		    /*   try {
+		    		Thread.sleep(1_000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+		  
+<span class="fc" id="L180">	  }</span>
+
+	  public void verifyRegisterErrorMessages(WebDriver driver, String usernameErrorMessage, String lastnameErrorMessage, String firstnameErrorMessage, 
+			  String passwordErrorMessage, String emailErrorMessage, String numberErrorMessage, String RoomNumberErrorMessage, 
+			  String deckNumberErrorMessage, String nameCombinationError, String errMsg, String snapShotName) {
+		  
+<span class="fc" id="L186">		  	assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Register_usernameErrorMsg&quot;))).getText().equals(usernameErrorMessage));</span>
+<span class="fc" id="L187">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Register_passwordErrorMsg&quot;))).getText().equals(passwordErrorMessage));</span>
+<span class="fc" id="L188">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Register_lastnameErrorMsg&quot;))).getText().equals(lastnameErrorMessage));</span>
+<span class="fc" id="L189">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Register_firstnameErrorMsg&quot;))).getText().equals(firstnameErrorMessage));</span>
+<span class="fc" id="L190">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Register_emailErrorMsg&quot;))).getText().equals(emailErrorMessage));</span>
+<span class="fc" id="L191">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Register_numberErrorMsg&quot;))).getText().equals(numberErrorMessage));</span>
+<span class="fc" id="L192">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Register_roomNumberErrorMsg&quot;))).getText().equals(RoomNumberErrorMessage));</span>
+<span class="fc" id="L193">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Register_deckNumberErrorMsg&quot;))).getText().equals(deckNumberErrorMessage));</span>
+	//		assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_PasswordErrorMsg&quot;))).getText().equals(membershipTypeErrorMessage));
+
+<span class="fc" id="L196">			takeScreenShot(driver,snapShotName);</span>
+		  
+<span class="fc" id="L198">	  }</span>
+	  
+	  
+	  public void verifyRegisterPageLinks(WebDriver driver, String nextPageTitle,String snapShotName, int linkNumber) {
+<span class="fc bfc" id="L202" title="All 2 branches covered.">		  if(linkNumber==1) {</span>
+		  try {
+<span class="fc" id="L204">				Thread.sleep(3000);</span>
+<span class="pc" id="L205">			} catch (InterruptedException e) {</span>
+				// TODO Auto-generated catch block
+<span class="nc" id="L207">				e.printStackTrace();</span>
+			}
+<span class="fc" id="L209">		  driver.findElement(By.xpath(prop.getProperty(&quot;Register_loginPageLink&quot;))).click();</span>
+<span class="fc" id="L210">		  HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Register_loginPageLink&quot;))));</span>
+		  try {
+<span class="fc" id="L212">			Thread.sleep(3000);</span>
+<span class="pc" id="L213">		} catch (InterruptedException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L215">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L217">		  assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_loginFormHeader&quot;))).getText().equals(nextPageTitle));</span>
+<span class="fc" id="L218">		  HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_loginFormHeader&quot;))));</span>
+<span class="fc" id="L219">		  takeScreenShot(driver,snapShotName);</span>
+		  }
+<span class="fc bfc" id="L221" title="All 2 branches covered.">		  if(linkNumber==2) {</span>
+			  try {
+<span class="fc" id="L223">					Thread.sleep(3000);</span>
+<span class="pc" id="L224">				} catch (InterruptedException e) {</span>
+					// TODO Auto-generated catch block
+<span class="nc" id="L226">					e.printStackTrace();</span>
+				}
+			  
+<span class="fc" id="L229">			  	int random = rand.nextInt(1000); </span>
+			  	
+			//
+			  	
+<span class="fc" id="L233">			  	driver.findElement(By.xpath(prop.getProperty(&quot;Register_usernameInput&quot;))).sendKeys(&quot;robot&quot;+random);</span>
+<span class="fc" id="L234">			    driver.findElement(By.xpath(prop.getProperty(&quot;Register_passwordInput&quot;))).sendKeys(&quot;Qwerty!1&quot;);</span>
+<span class="fc" id="L235">			    driver.findElement(By.xpath(prop.getProperty(&quot;Register_lastnameInput&quot;))).sendKeys(&quot;Robotic&quot;+GetRandomCharacters());</span>
+<span class="fc" id="L236">			    driver.findElement(By.xpath(prop.getProperty(&quot;Register_firstnameInput&quot;))).sendKeys(&quot;Robott&quot;);</span>
+<span class="fc" id="L237">			    driver.findElement(By.xpath(prop.getProperty(&quot;Register_emailInput&quot;))).sendKeys(&quot;v@gmail.com&quot;);</span>
+<span class="fc" id="L238">			    driver.findElement(By.xpath(prop.getProperty(&quot;Register_numberInput&quot;))).sendKeys(&quot;1234567890&quot;);</span>
+<span class="fc" id="L239">			    driver.findElement(By.xpath(prop.getProperty(&quot;Register_roomNumberInput&quot;))).sendKeys(&quot;101&quot;);</span>
+<span class="fc" id="L240">			    driver.findElement(By.xpath(prop.getProperty(&quot;Register_deckNumberInput&quot;))).sendKeys(&quot;2&quot;);</span>
+<span class="fc" id="L241">			    new Select(driver.findElement(By.xpath(prop.getProperty(&quot;Register_membershipTypeDropDown&quot;)))).selectByVisibleText(&quot;Superior&quot;);</span>
+<span class="fc" id="L242">			    takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L243">			    driver.findElement(By.xpath(prop.getProperty(&quot;Register_registerButton&quot;))).click(); //click on insertCompany button			  try {</span>
+<span class="fc" id="L244">				HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Register_registerButton&quot;))));</span>
+<span class="fc" id="L245">			    try{ Thread.sleep(3000);</span>
+<span class="pc" id="L246">			} catch (InterruptedException e) {</span>
+				// TODO Auto-generated catch block
+<span class="nc" id="L248">				e.printStackTrace();</span>
+			}
+<span class="fc" id="L250">			  assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_afterRegistration&quot;))).getText().equals(nextPageTitle));</span>
+<span class="fc" id="L251">			  HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;MainApp_afterRegistration&quot;))));</span>
+<span class="fc" id="L252">			  takeScreenShot(driver,snapShotName);</span>
+		  }
+<span class="fc" id="L254">	  }</span>
+	  
+	  
+	  // COORDINATOR PART
+	  
+	  public void SearchAssignedEvents (WebDriver driver, String eventdate, String eventtime, String snapShotName) {
+		  try {
+<span class="fc" id="L261">			Thread.sleep(1_000);</span>
+<span class="pc" id="L262">		} catch (InterruptedException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L264">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L266">		  	driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_Eventdate_InputField&quot;))).clear();</span>
+<span class="fc" id="L267">		    driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_Eventdate_InputField&quot;))).sendKeys(eventdate);</span>
+		    
+<span class="fc" id="L269">		    driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_EventTime_InputField&quot;))).clear();</span>
+<span class="fc" id="L270">		    driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_EventTime_InputField&quot;))).sendKeys(eventtime);</span>
+		    try {
+<span class="fc" id="L272">				Thread.sleep(1_000);</span>
+<span class="pc" id="L273">			} catch (InterruptedException e) {</span>
+				// TODO Auto-generated catch block
+<span class="nc" id="L275">				e.printStackTrace();</span>
+			}
+<span class="fc" id="L277">		    takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L278">		    driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_SearchEvent_Button&quot;))).click(); //click on insertCompany button</span>
+		   
+<span class="fc" id="L280">	  }</span>
+	  
+	  public void verifyDateTimeErrormsgs(WebDriver driver, String eventdateError, String eventtimeError, String snapShotName) {
+		  
+		  	
+<span class="fc" id="L285">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_Eventdate_Errormsg&quot;))).getText().equals(eventdateError));</span>
+<span class="fc" id="L286">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_EventTime_Errormsg&quot;))).getText().equals(eventtimeError));</span>
+		
+
+<span class="fc" id="L289">			takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L290">}</span>
+	  
+	  
+	  public String [][] getCoordinatorAssignedpartialEventListFromDB(String eventdate, String starttime, String username, String password,int listSize) throws SQLException { // this method gets the list company table contents from the DB
+<span class="fc" id="L294">		  	ArrayList&lt;Event&gt; fromDB = new ArrayList&lt;Event&gt;();</span>
+<span class="fc" id="L295">				UserDAO db =  new UserDAO(ConnectionPro.getConnection());</span>
+<span class="fc" id="L296">				User user = db.login(username, password);</span>
+<span class="fc" id="L297">				fromDB=EventDAO.CoordinatorAssignedevents(eventdate, starttime,user.getFirstname()+&quot; &quot;+user.getLastname());</span>
+<span class="fc" id="L298">		    String [][] arrayDB = new String [listSize-1][6];</span>
+<span class="fc" id="L299">		    System.out.println(Arrays.toString(arrayDB));</span>
+<span class="fc" id="L300">		    int i=0;</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">		    for (Event p:fromDB) {</span>
+<span class="fc" id="L302">		    	System.out.println(&quot;DATABASE DATA&quot;);</span>
+<span class="fc" id="L303">		    	arrayDB[i][0]=p.getEventname();</span>
+<span class="fc" id="L304">		    	System.out.println(arrayDB[i][0]);</span>
+<span class="fc" id="L305">		    	arrayDB[i][1]=p.getEventdate();</span>
+<span class="fc" id="L306">		    	System.out.println(arrayDB[i][1]);</span>
+<span class="fc" id="L307">		    	arrayDB[i][2]= p.getStarttime();</span>
+<span class="fc" id="L308">		    	System.out.println(arrayDB[i][2]);</span>
+<span class="fc" id="L309">		    	arrayDB[i][3]= p.getDuration();</span>
+<span class="fc" id="L310">		    	System.out.println(arrayDB[i][3]);</span>
+<span class="fc" id="L311">		    	arrayDB[i][4]= p.getLocation();</span>
+<span class="fc" id="L312">		    	System.out.println(arrayDB[i][4]);</span>
+<span class="fc" id="L313">		    	arrayDB[i][5]= p.getNumberofattendees();</span>
+<span class="fc" id="L314">		    	System.out.println(arrayDB[i][5]);</span>
+		    	
+<span class="fc" id="L316">		 		i++;</span>
+		    }
+<span class="fc" id="L318">		    return arrayDB;</span>
+		    
+	  }
+	  
+	  
+	  public void verifyCoordinatorAssignedEventsLinksandData(WebDriver driver,String eventdate, String starttime,String username, String password,int rows,String event_Details_Title_page,
+															  String aboutevent_header_expected,String eventdetails_header_expected,String eventid_label_expected,String eventname_label_expected ,
+															  String eventdate_label_expected,String starttime_label_expected ,String duration_label_expected,String location_label_expected ,
+															  String numberofattendees_label_expected,String capacity_label_expected,String eventcoordinator_label_expected,String type_label_expected ,
+															  String estattendees_label_expected ,String snapShotName) throws SQLException {
+		  
+<span class="fc" id="L329">		  	ArrayList&lt;Event&gt; eventindb = new ArrayList&lt;Event&gt;();</span>
+<span class="fc" id="L330">			UserDAO db =  new UserDAO(ConnectionPro.getConnection());</span>
+<span class="fc" id="L331">			User user = db.login(username, password);</span>
+<span class="fc" id="L332">		  	eventindb=EventDAO.CoordinatorAssignedevents(eventdate, starttime,user.getFirstname()+&quot; &quot;+user.getLastname());</span>
+
+	
+		 
+<span class="fc bfc" id="L336" title="All 2 branches covered.">		 for(int i = 1;i&lt;rows;i++) {</span>
+			  
+			  
+<span class="fc" id="L339">			  HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_Events_Summary_Prefix_Col&quot;)+(i+1)+</span>
+<span class="fc" id="L340">					  prop.getProperty(&quot;Coordinator_Events_Summary_View_Details_Col&quot;))));</span>
+<span class="fc" id="L341">			  driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_Events_Summary_Prefix_Col&quot;)+(i+1)+</span>
+<span class="fc" id="L342">										  prop.getProperty(&quot;Coordinator_Events_Summary_View_Details_Col&quot;))).click();</span>
+	
+			  // Verify Header
+<span class="fc" id="L345">			  assertEquals(event_Details_Title_page,driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_Assigned_Event_Details_Title&quot;))).getText());</span>
+<span class="fc" id="L346">			  HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_Assigned_Event_Details_Title&quot;))));</span>
+			  //Verify Labels							 					
+<span class="fc" id="L348">	  			assertEquals(aboutevent_header_expected,driver.findElement(By.xpath(prop.getProperty(&quot;aboutevent_header_actual&quot;))).getText());</span>
+<span class="fc" id="L349">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;aboutevent_header_actual&quot;))));</span>
+<span class="fc" id="L350">	  			assertEquals(eventdetails_header_expected,driver.findElement(By.xpath(prop.getProperty(&quot;eventdetails_header_actual&quot;))).getText());</span>
+<span class="fc" id="L351">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;eventdetails_header_actual&quot;))));</span>
+<span class="fc" id="L352">	  			assertEquals(eventid_label_expected,driver.findElement(By.xpath(prop.getProperty(&quot;eventid_label_actual&quot;))).getText());</span>
+<span class="fc" id="L353">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;eventid_label_actual&quot;))));</span>
+<span class="fc" id="L354">	  			assertEquals(eventname_label_expected,driver.findElement(By.xpath(prop.getProperty(&quot;eventname_label_actual&quot;))).getText());</span>
+<span class="fc" id="L355">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;eventname_label_actual&quot;))));</span>
+<span class="fc" id="L356">	  			assertEquals(eventdate_label_expected,driver.findElement(By.xpath(prop.getProperty(&quot;eventdate_label_actual&quot;))).getText());</span>
+<span class="fc" id="L357">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;eventdate_label_actual&quot;))));</span>
+<span class="fc" id="L358">	  			assertEquals(starttime_label_expected,driver.findElement(By.xpath(prop.getProperty(&quot;starttime_label_actual&quot;))).getText());</span>
+<span class="fc" id="L359">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;starttime_label_actual&quot;))));</span>
+<span class="fc" id="L360">	  			assertEquals(duration_label_expected,driver.findElement(By.xpath(prop.getProperty(&quot;duration_label_actual&quot;))).getText());</span>
+<span class="fc" id="L361">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;duration_label_actual&quot;))));</span>
+<span class="fc" id="L362">	  			assertEquals(location_label_expected,driver.findElement(By.xpath(prop.getProperty(&quot;location_label_actual&quot;))).getText());</span>
+<span class="fc" id="L363">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;location_label_actual&quot;))));</span>
+<span class="fc" id="L364">	  			assertEquals(numberofattendees_label_expected,driver.findElement(By.xpath(prop.getProperty(&quot;numberofattendees_label_actual&quot;))).getText());</span>
+<span class="fc" id="L365">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;numberofattendees_label_actual&quot;))));</span>
+<span class="fc" id="L366">	  			assertEquals(capacity_label_expected,driver.findElement(By.xpath(prop.getProperty(&quot;capacity_label_actual&quot;))).getText());</span>
+<span class="fc" id="L367">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;capacity_label_actual&quot;))));</span>
+<span class="fc" id="L368">	  			assertEquals(eventcoordinator_label_expected,driver.findElement(By.xpath(prop.getProperty(&quot;eventcoordinator_label_actual&quot;))).getText());</span>
+<span class="fc" id="L369">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;eventcoordinator_label_actual&quot;))));</span>
+<span class="fc" id="L370">	  			assertEquals(type_label_expected,driver.findElement(By.xpath(prop.getProperty(&quot;type_label_actual&quot;))).getText());</span>
+<span class="fc" id="L371">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;type_label_actual&quot;))));</span>
+<span class="fc" id="L372">	  			assertEquals(estattendees_label_expected,driver.findElement(By.xpath(prop.getProperty(&quot;estattendees_label_actual&quot;))).getText());</span>
+<span class="fc" id="L373">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;estattendees_label_actual&quot;))));</span>
+	  			//Get Expected Data
+<span class="fc" id="L375">	  			int data_1 =    eventindb.get(i-1).getEventid();</span>
+<span class="fc" id="L376">	  			String data1 = Integer.toString(data_1);</span>
+<span class="fc" id="L377">		  		String data2 = eventindb.get(i-1).getEventname();</span>
+<span class="fc" id="L378">		  		String data3 = eventindb.get(i-1).getEventdate();</span>
+<span class="fc" id="L379">		  		String data4 = eventindb.get(i-1).getStarttime();</span>
+<span class="fc" id="L380">		  		String data5 = eventindb.get(i-1).getDuration();	</span>
+<span class="fc" id="L381">		  		String data6 = eventindb.get(i-1).getLocation();</span>
+<span class="fc" id="L382">		  		String data7 = eventindb.get(i-1).getNumberofattendees();</span>
+<span class="fc" id="L383">		  		String data8 = eventindb.get(i-1).getCapacity();</span>
+<span class="fc" id="L384">		  		String data9 = eventindb.get(i-1).getEventcoordinator();</span>
+<span class="fc" id="L385">		  		String data10 = eventindb.get(i-1).getType();</span>
+<span class="fc" id="L386">		  		String data11 = eventindb.get(i-1).getEstattendees();</span>
+		  		
+		  	
+		  		
+		  		
+		  
+	  			//Verify Data
+<span class="fc" id="L393">	  			assertEquals(data1,driver.findElement(By.xpath(prop.getProperty(&quot;eventid_actual&quot;))).getText());</span>
+<span class="fc" id="L394">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;eventid_actual&quot;))));</span>
+<span class="fc" id="L395">	  			assertEquals(data2,driver.findElement(By.xpath(prop.getProperty(&quot;eventname_actual&quot;))).getText());</span>
+<span class="fc" id="L396">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;eventname_actual&quot;))));</span>
+<span class="fc" id="L397">	  			assertEquals(data3,driver.findElement(By.xpath(prop.getProperty(&quot;eventdate_actual&quot;))).getText());</span>
+<span class="fc" id="L398">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;eventdate_actual&quot;))));</span>
+<span class="fc" id="L399">	  			assertEquals(data4,driver.findElement(By.xpath(prop.getProperty(&quot;startime_actual&quot;))).getText());</span>
+<span class="fc" id="L400">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;startime_actual&quot;))));</span>
+<span class="fc" id="L401">	  			assertEquals(data5,driver.findElement(By.xpath(prop.getProperty(&quot;duration_actual&quot;))).getText());</span>
+<span class="fc" id="L402">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;duration_actual&quot;))));</span>
+<span class="fc" id="L403">	  			assertEquals(data6,driver.findElement(By.xpath(prop.getProperty(&quot;location_actual&quot;))).getText());</span>
+<span class="fc" id="L404">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;location_actual&quot;))));</span>
+<span class="fc" id="L405">	  			assertEquals(data7,driver.findElement(By.xpath(prop.getProperty(&quot;numberofattendees_actual&quot;))).getText());</span>
+<span class="fc" id="L406">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;numberofattendees_actual&quot;))));</span>
+<span class="fc" id="L407">	  			assertEquals(data8,driver.findElement(By.xpath(prop.getProperty(&quot;capacity_actual&quot;))).getText());</span>
+<span class="fc" id="L408">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;capacity_actual&quot;))));</span>
+<span class="fc" id="L409">	  			assertEquals(data9,driver.findElement(By.xpath(prop.getProperty(&quot;eventcoordinator_actual&quot;))).getText());</span>
+<span class="fc" id="L410">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;eventcoordinator_actual&quot;))));</span>
+<span class="fc" id="L411">	  			assertEquals(data10,driver.findElement(By.xpath(prop.getProperty(&quot;type_actual&quot;))).getText());</span>
+<span class="fc" id="L412">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;type_actual&quot;))));</span>
+<span class="fc" id="L413">	  			assertEquals(data11,driver.findElement(By.xpath(prop.getProperty(&quot;estattendees_actual&quot;))).getText());</span>
+<span class="fc" id="L414">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;estattendees_actual&quot;))));</span>
+	  		
+	  			 
+<span class="fc" id="L417">	  			 System.out.println(&quot;Welcome&quot;+&quot; &quot;+user.getFirstname()+&quot; &quot;+user.getLastname());</span>
+<span class="fc" id="L418">	  			 System.out.println(driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_homePageTitle&quot;))).getText());</span>
+	  			
+		  		
+<span class="fc" id="L421">		  		assertEquals(&quot;Welcome&quot;+&quot; &quot;+user.getFirstname()+&quot; &quot;+user.getLastname(),driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_homePageTitle&quot;))).getText());</span>
+<span class="fc" id="L422">	  			HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_homePageTitle&quot;)))); </span>
+	  			//Goback
+<span class="fc" id="L424">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_GO_BACK_1&quot;))));</span>
+<span class="fc" id="L425">	  			driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_GO_BACK_1&quot;))).click();</span>
+	  			
+	  			
+	  			
+		 }
+
+<span class="fc" id="L431">		 		HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_GO_BACK_1&quot;))));</span>
+<span class="fc" id="L432">		 		driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_GO_BACK_1&quot;))).click();</span>
+<span class="fc" id="L433">		 		assertEquals(&quot;Welcome&quot;+&quot; &quot;+user.getFirstname()+&quot; &quot;+user.getLastname(),driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_homePageTitle&quot;))).getText());</span>
+<span class="fc" id="L434">		 		HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_homePageTitle&quot;)))); </span>
+<span class="fc" id="L435">		 		HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_Logout_Link&quot;))));</span>
+<span class="fc" id="L436">		 		driver.findElement(By.xpath(prop.getProperty(&quot;Coordinator_Logout_Link&quot;))).click();</span>
+<span class="fc" id="L437">		 		assertEquals(&quot;WELCOME&quot;,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Welcome_Title&quot;))).getText());</span>
+<span class="fc" id="L438">		 		HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Welcome_Title&quot;))));</span>
+	
+<span class="fc" id="L440">}</span>
+	  
+	  
+	  
+	  
+ //------------------------------------------------------ USER --&gt; Passenger Part-------------------------------------------------//
+	  
+	  
+// Passenger Events	  
+	  public void PassengerSearchEvents (WebDriver driver, String eventdate, String eventtime, String eventtype, String snapShotName) {
+	
+<span class="fc" id="L451">		  	driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_ListAllEvents_Link&quot;))).click();</span>
+<span class="fc" id="L452">		  	driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_EventDate_InputField&quot;))).clear();</span>
+<span class="fc" id="L453">		    driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_EventDate_InputField&quot;))).sendKeys(eventdate);</span>
+<span class="fc" id="L454">		    driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_EventTime_InputField&quot;))).clear();</span>
+<span class="fc" id="L455">		    driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_EventTime_InputField&quot;))).sendKeys(eventtime);</span>
+<span class="fc" id="L456">		    new Select(driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_EvntType_SelectField&quot;)))).selectByVisibleText(eventtype);</span>
+<span class="fc" id="L457">		    takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L458">		    driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_ListAllEvents_Submit_Button&quot;))).click(); //click on insertCompany button</span>
+		   
+<span class="fc" id="L460">}</span>
+
+	  
+	  public String [][] getpartialEventListFromDB(String eventdate, String starttime, String type, int listSize) throws SQLException { // this method gets the list company table contents from the DB
+<span class="fc" id="L464">		    ArrayList&lt;Event&gt; fromDB= EventDAO.geteventsbasedonshowtype(eventdate, starttime, type);</span>
+<span class="fc" id="L465">		    String [][] arrayDB = new String [listSize-1][6];</span>
+<span class="fc" id="L466">		    int i=0;</span>
+<span class="fc bfc" id="L467" title="All 2 branches covered.">		    for (Event p:fromDB) {</span>
+<span class="fc" id="L468">		    	arrayDB[i][0]=p.getEventname();</span>
+<span class="fc" id="L469">		    	arrayDB[i][1]=p.getEventdate();</span>
+<span class="fc" id="L470">		    	arrayDB[i][2]= p.getStarttime();</span>
+<span class="fc" id="L471">		    	arrayDB[i][3]= p.getDuration();</span>
+<span class="fc" id="L472">		    	arrayDB[i][4]= p.getLocation();</span>
+<span class="fc" id="L473">		    	arrayDB[i][5]= p.getEstattendees();</span>
+		    	
+<span class="fc" id="L475">		 		i++;</span>
+		    }
+<span class="fc" id="L477">		    return arrayDB;</span>
+	  }
+	  
+	  
+	
+	  
+	  
+	  public void verify_Passenger_Welcome_Title(WebDriver driver, String username, String password,String snapShotName) {
+		  
+<span class="fc" id="L486">		 String welcome_name_expected =  driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Welcome_Title&quot;))).getText();</span>
+<span class="fc" id="L487">		 UserDAO db =  new UserDAO(ConnectionPro.getConnection());</span>
+<span class="fc" id="L488">		 User user = db.login(username, password);</span>
+<span class="fc" id="L489">	     String welcome_name_actual = &quot;Welcome,&quot;+&quot; &quot;+user.getFirstname();</span>
+<span class="fc" id="L490">	     assertEquals(welcome_name_expected,welcome_name_actual);</span>
+<span class="fc" id="L491">	     HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Welcome_Title&quot;))));</span>
+	    
+		 
+<span class="fc" id="L494">  }</span>
+	  
+	  public void verifyHeaders(WebDriver driver, 
+			  					String actual_header1, String exp_header1,
+			  					String actual_header2,String exp_header2,
+			  					String actual_header3,String exp_header3,
+			  					String actual_header4,String exp_header4, 
+			  					String actual_header5,String exp_header5, 
+			  					String actual_header6,String exp_header6, 
+			  					String actual_header7,String exp_header7, 
+			  					String actual_header8,String exp_header8, 
+			  					String snapShotName) {
+<span class="fc" id="L506">		  	assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header1))).getText().equals(exp_header1));</span>
+<span class="fc" id="L507">		  	HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header1))));</span>
+<span class="fc" id="L508">		  	assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header2))).getText().equals(exp_header2));</span>
+<span class="fc" id="L509">		  	HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header2))));</span>
+<span class="fc" id="L510">		  	assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header3))).getText().equals(exp_header3));</span>
+<span class="fc" id="L511">		  	HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header3))));</span>
+<span class="fc" id="L512">		  	assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header4))).getText().equals(exp_header4));</span>
+<span class="fc" id="L513">		  	HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header4))));</span>
+<span class="fc" id="L514">		  	assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header5))).getText().equals(exp_header5));</span>
+<span class="fc" id="L515">		  	HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header5))));</span>
+<span class="fc" id="L516">		  	assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header6))).getText().equals(exp_header6));</span>
+<span class="fc" id="L517">		  	HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header6))));</span>
+<span class="fc" id="L518">		  	assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header7))).getText().equals(exp_header7));</span>
+<span class="fc" id="L519">		  	HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header7))));</span>
+<span class="fc" id="L520">		  	assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header8))).getText().equals(exp_header8));</span>
+<span class="fc" id="L521">		  	HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header8))));</span>
+		  ;
+<span class="fc" id="L523">		  	takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L524">}</span>
+
+	  
+	  public void verifyMakeReservationLinksandData(WebDriver driver,String eventdate,String starttime,String type,String username,String password,int rows,
+													String welcomepage_header_expected,String header,String label1,String label2,String label3 ,String label4 ,
+												  	String label5 ,String label6 ,String label7 ,String label8 ,String label9 ,String label10 ,
+												  	String label11 ,String label12 ,String label13 ,String label14 ,String snapShotName) throws SQLException {
+		  
+<span class="fc" id="L532">		  	ArrayList&lt;Event&gt; eventindb = new ArrayList&lt;Event&gt;();</span>
+<span class="fc" id="L533">		  	eventindb=EventDAO.geteventsbasedonshowtype(eventdate, starttime, type);</span>
+<span class="fc" id="L534">			UserDAO db =  new UserDAO(ConnectionPro.getConnection());</span>
+<span class="fc" id="L535">			User user = db.login(username, password);</span>
+
+		 
+<span class="fc bfc" id="L538" title="All 2 branches covered.">		 for(int i = 1;i&lt;rows;i++) {</span>
+			  
+			  
+<span class="fc" id="L541">			  HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L542">					  prop.getProperty(&quot;listevent_View_Link&quot;))));</span>
+<span class="fc" id="L543">			  driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L544">										  prop.getProperty(&quot;listevent_View_Link&quot;))).click();</span>
+	
+			  // Verify Header
+<span class="fc" id="L547">			  assertEquals(header,driver.findElement(By.xpath(prop.getProperty(&quot;Make_Reservation_Form_Header&quot;))).getText());</span>
+<span class="fc" id="L548">			  HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Make_Reservation_Form_Header&quot;))));</span>
+			  //Verify Labels							 					
+<span class="fc" id="L550">			    assertEquals(label1,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Name_Label&quot;))).getText());</span>
+<span class="fc" id="L551">			    HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Name_Label&quot;))));</span>
+<span class="fc" id="L552">	  			assertEquals(label2,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Date_Label&quot;))).getText());</span>
+<span class="fc" id="L553">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Date_Label&quot;))));</span>
+<span class="fc" id="L554">	  			assertEquals(label3,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Duration_Label&quot;))).getText());</span>
+<span class="fc" id="L555">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Duration_Label&quot;))));</span>
+<span class="fc" id="L556">	  			assertEquals(label4,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Start_Time_Label&quot;))).getText());</span>
+<span class="fc" id="L557">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Start_Time_Label&quot;))));</span>
+<span class="fc" id="L558">	  			assertEquals(label5,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Location_Label&quot;))).getText());</span>
+<span class="fc" id="L559">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Location_Label&quot;))));</span>
+<span class="fc" id="L560">	  			assertEquals(label6,driver.findElement(By.xpath(prop.getProperty(&quot;Event_NumberofAttendees_Label&quot;))).getText());</span>
+<span class="fc" id="L561">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_NumberofAttendees_Label&quot;))));</span>
+<span class="fc" id="L562">	  			assertEquals(label7,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Capacity_Label&quot;))).getText());</span>
+<span class="fc" id="L563">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Capacity_Label&quot;))));</span>
+<span class="fc" id="L564">	  			assertEquals(label8,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Coordinator_Label&quot;))).getText());</span>
+<span class="fc" id="L565">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Coordinator_Label&quot;))));</span>
+<span class="fc" id="L566">	  			assertEquals(label9,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Type_Label&quot;))).getText());</span>
+<span class="fc" id="L567">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Type_Label&quot;))));</span>
+<span class="fc" id="L568">	  			assertEquals(label10,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Estattendees_Label&quot;))).getText());</span>
+<span class="fc" id="L569">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Estattendees_Label&quot;))));</span>
+<span class="fc" id="L570">	  			assertEquals(label11,driver.findElement(By.xpath(prop.getProperty(&quot;Users_Firstname_Label&quot;))).getText());</span>
+<span class="fc" id="L571">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Users_Firstname_Label&quot;))));</span>
+<span class="fc" id="L572">	  			assertEquals(label12,driver.findElement(By.xpath(prop.getProperty(&quot;Users_Lastname_Label&quot;))).getText());</span>
+<span class="fc" id="L573">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Users_Lastname_Label&quot;))));</span>
+<span class="fc" id="L574">	  			assertEquals(label13,driver.findElement(By.xpath(prop.getProperty(&quot;Users_Email_Label&quot;))).getText());</span>
+<span class="fc" id="L575">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Users_Email_Label&quot;))));</span>
+<span class="fc" id="L576">	  			assertEquals(label14,driver.findElement(By.xpath(prop.getProperty(&quot;Users_Phone_Label&quot;))).getText());</span>
+<span class="fc" id="L577">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Users_Phone_Label&quot;))));</span>
+	  			//Get Expected Data
+<span class="fc" id="L579">		  		String data1 = eventindb.get(i-1).getEventname();</span>
+<span class="fc" id="L580">		  		String data2 = eventindb.get(i-1).getEventdate();</span>
+<span class="fc" id="L581">		  		String data3 = eventindb.get(i-1).getDuration();</span>
+<span class="fc" id="L582">		  		String data4 = eventindb.get(i-1).getStarttime();</span>
+<span class="fc" id="L583">		  		String data5 = eventindb.get(i-1).getLocation();</span>
+<span class="fc" id="L584">		  		String data6 = eventindb.get(i-1).getNumberofattendees();</span>
+<span class="fc" id="L585">		  		String data7 = eventindb.get(i-1).getCapacity();</span>
+<span class="fc" id="L586">		  		String data8 = eventindb.get(i-1).getEventcoordinator();</span>
+<span class="fc" id="L587">		  		String data9 = eventindb.get(i-1).getType();</span>
+<span class="fc" id="L588">		  		String data10 = eventindb.get(i-1).getEstattendees();</span>
+<span class="fc" id="L589">		  		String data11 = user.getFirstname();</span>
+<span class="fc" id="L590">		  		String data12 = user.getLastname();</span>
+<span class="fc" id="L591">		  		String data13 = user.getEmail();</span>
+<span class="fc" id="L592">		  		String data14 = user.getNumber();</span>
+	  			//Verify Data
+<span class="fc" id="L594">	  			assertEquals(data1,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Name&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L595">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Name&quot;))));</span>
+<span class="fc" id="L596">	  			assertEquals(data2,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Date&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L597">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Date&quot;))));</span>
+<span class="fc" id="L598">	  			assertEquals(data3,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Duration&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L599">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Duration&quot;))));</span>
+<span class="fc" id="L600">	  			assertEquals(data4,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Start_Time&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L601">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Start_Time&quot;))));</span>
+<span class="fc" id="L602">	  			assertEquals(data5,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Location&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L603">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Location&quot;))));</span>
+<span class="fc" id="L604">	  			assertEquals(data6,driver.findElement(By.xpath(prop.getProperty(&quot;Event_NumberofAttendees&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L605">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_NumberofAttendees&quot;))));</span>
+<span class="fc" id="L606">	  			assertEquals(data7,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Capacity&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L607">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Capacity&quot;))));</span>
+<span class="fc" id="L608">	  			assertEquals(data8,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Coordinator&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L609">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Coordinator&quot;))));</span>
+<span class="fc" id="L610">	  			assertEquals(data9,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Type&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L611">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Type&quot;))));</span>
+<span class="fc" id="L612">	  			assertEquals(data10,driver.findElement(By.xpath(prop.getProperty(&quot;Event_Estattendees&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L613">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Event_Estattendees&quot;))));</span>
+<span class="fc" id="L614">	  			assertEquals(data11,driver.findElement(By.xpath(prop.getProperty(&quot;Users_Firstname&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L615">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Users_Firstname&quot;))));</span>
+<span class="fc" id="L616">	  			assertEquals(data12,driver.findElement(By.xpath(prop.getProperty(&quot;Users_Lastname&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L617">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Users_Lastname&quot;))));</span>
+<span class="fc" id="L618">	  			assertEquals(data13,driver.findElement(By.xpath(prop.getProperty(&quot;Users_Email&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L619">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Users_Email&quot;))));</span>
+<span class="fc" id="L620">	  			assertEquals(data14,driver.findElement(By.xpath(prop.getProperty(&quot;Users_Phone&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L621">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Users_Phone&quot;))));</span>
+	  			//Goback
+<span class="fc" id="L623">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Go_Back_From_Reservation_Form&quot;))));</span>
+<span class="fc" id="L624">	  			driver.findElement(By.xpath(prop.getProperty(&quot;Go_Back_From_Reservation_Form&quot;))).click();</span>
+	  			
+		 }
+
+<span class="fc" id="L628">		 		HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;goback_link&quot;))));</span>
+<span class="fc" id="L629">		 		driver.findElement(By.xpath(prop.getProperty(&quot;goback_link&quot;))).click();</span>
+<span class="fc" id="L630">		 		HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Logout_Link&quot;))));</span>
+<span class="fc" id="L631">		 		driver.findElement(By.xpath(prop.getProperty(&quot;Logout_Link&quot;))).click();</span>
+<span class="fc" id="L632">		 		assertEquals(welcomepage_header_expected, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Welcome_Title&quot;))).getText());</span>
+<span class="fc" id="L633">		 		HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Welcome_Title&quot;))));</span>
+<span class="fc" id="L634">}</span>
+	  
+	  public void verifyPassengerEventDateTimeErrormsgs(WebDriver driver, String eventdateError, String eventtimeError, String snapShotName) {
+		  
+		  	
+<span class="fc" id="L639">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_EventDate_Error_Msg&quot;))).getText().equals(eventdateError));</span>
+<span class="fc" id="L640">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_EventTime_Error_Msg&quot;))).getText().equals(eventtimeError));</span>
+		
+
+<span class="fc" id="L643">			takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L644">}</span>
+
+	  
+	  
+	  
+// PASSENGER RESERVATION // 	  
+	  
+		  
+	  
+	  
+	  public void PassengerSearchReservation(WebDriver driver, String eventdate, String eventtime, String snapShotName) {
+		  try {
+<span class="fc" id="L656">			Thread.sleep(1_000);</span>
+<span class="pc" id="L657">		} catch (InterruptedException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L659">			e.printStackTrace();</span>
+		}
+		  	
+<span class="fc" id="L662">		  	driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Reservation_EventDate_InputField&quot;))).clear();</span>
+<span class="fc" id="L663">		    driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Reservation_EventDate_InputField&quot;))).sendKeys(eventdate);</span>
+		    
+<span class="fc" id="L665">		    driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Reservation_EventTime_InputField&quot;))).clear();</span>
+<span class="fc" id="L666">		    driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Reservation_EventTime_InputField&quot;))).sendKeys(eventtime);</span>
+	
+		
+		    
+		    try {
+<span class="fc" id="L671">				Thread.sleep(1_000);</span>
+<span class="pc" id="L672">			} catch (InterruptedException e) {</span>
+				// TODO Auto-generated catch block
+<span class="nc" id="L674">				e.printStackTrace();</span>
+			}
+<span class="fc" id="L676">		    takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L677">		    driver.findElement(By.xpath(prop.getProperty(&quot;Passneger_Reservation_Search_Button&quot;))).click(); //click on insertCompany button</span>
+		   
+<span class="fc" id="L679">	  }</span>
+	  
+	  
+	  
+	
+	  public void verifyPassengerReservationDateTimeErrormsgs(WebDriver driver, String eventdateError, String eventtimeError, String snapShotName) {
+		  
+		  	
+<span class="fc" id="L687">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Reservation_EventDate_Errormsg&quot;))).getText().equals(eventdateError));</span>
+<span class="fc" id="L688">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Reservation_EventTime_Errormsg&quot;))).getText().equals(eventtimeError));</span>
+		
+
+<span class="fc" id="L691">			takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L692">}</span>
+	  
+
+	  
+	  public String [][] getpartialReservationListFromDB(String eventdate, String starttime, String firstname, String lastname, int listSize) throws SQLException { // this method gets the list company table contents from the DB
+<span class="fc" id="L697">		    ArrayList&lt;Reservation&gt; fromDB= ReservationDAO.getPassengerEvents(eventdate, starttime, firstname,lastname);</span>
+<span class="fc" id="L698">		    String [][] arrayDB = new String [listSize-1][6];</span>
+<span class="fc" id="L699">		    int i=0;</span>
+<span class="fc bfc" id="L700" title="All 2 branches covered.">		    for (Reservation p:fromDB) {</span>
+<span class="fc" id="L701">		    	arrayDB[i][0]=p.getEventname();</span>
+<span class="fc" id="L702">		    	arrayDB[i][1]=p.getEventdate();</span>
+<span class="fc" id="L703">		    	arrayDB[i][2]= p.getStarttime();</span>
+<span class="fc" id="L704">		    	arrayDB[i][3]= p.getDuration();</span>
+<span class="fc" id="L705">		    	arrayDB[i][4]= p.getLocation();</span>
+<span class="fc" id="L706">		    	arrayDB[i][5]= p.getEstattendees();</span>
+		    	
+<span class="fc" id="L708">		 		i++;</span>
+		    }
+<span class="fc" id="L710">		    return arrayDB;</span>
+	  }
+	  
+	  
+	  public void verifyReservationDetailsLabelsandData(WebDriver driver,String eventdate, String starttime, String firstname, String lastname,int rows,
+				String welcomepage_header_expected,
+		 String header,
+		String label1, 
+		String label2,
+	  	String label3,
+	  	String label4,
+	  	String label5,
+	  	String label6,
+	  	String label7,
+	  	String label8,
+	  	String label9,
+	  	String label10,
+	  	String label11,String snapShotName) throws SQLException {
+		  
+<span class="fc" id="L729">		  	ArrayList&lt;Reservation&gt; eventindb = new ArrayList&lt;Reservation&gt;();</span>
+<span class="fc" id="L730">		  	eventindb=ReservationDAO.getPassengerEvents(eventdate, starttime, firstname, lastname);</span>
+		
+//		
+//			String welcomepage_header_expected = &quot;WELCOME&quot;;
+//			 String header = &quot;Selected Event Details&quot;;
+//			String label1 = &quot;Event ID:&quot;; 
+//			String label2 =  &quot;Event Name :&quot;;
+//		  	String label3 =  &quot;Event Date :&quot;;
+//		  	String label4 =  &quot;Start Time:&quot;;
+//		  	String label5 =  &quot;Duration:&quot;;
+//		  	String label6 =  &quot;Location:&quot;;
+//		  	String label7 =  &quot;Number of Attendees :&quot;;
+//		  	String label8 =  &quot;Capacity :&quot;;
+//		  	String label9 =  &quot;Event Coordinator :&quot;;
+//		  	String label10 =  &quot;Event Type :&quot;;
+//		  	String label11 = &quot;Estimated Attendees :&quot;;
+
+		 
+<span class="fc bfc" id="L748" title="All 2 branches covered.">		 for(int i = 1;i&lt;rows;i++) {</span>
+			  
+			  
+<span class="fc" id="L751">			  HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L752">					  prop.getProperty(&quot;listevent_View_Link&quot;))));</span>
+<span class="fc" id="L753">			  driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L754">										  prop.getProperty(&quot;listevent_View_Link&quot;))).click();</span>
+	
+			  // Verify Header
+<span class="fc" id="L757">			  assertEquals(header,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_Header&quot;))).getText());</span>
+<span class="fc" id="L758">			  HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_Header&quot;))));</span>
+			  //Verify Labels							 					
+<span class="fc" id="L760">			    assertEquals(label1,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventId_Label&quot;))).getText());</span>
+<span class="fc" id="L761">			    HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventId_Label&quot;))));</span>
+<span class="fc" id="L762">	  			assertEquals(label2,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_Eventname_Label&quot;))).getText());</span>
+<span class="fc" id="L763">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_Eventname_Label&quot;))));</span>
+<span class="fc" id="L764">	  			assertEquals(label3,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventDate_Label_&quot;))).getText());</span>
+<span class="fc" id="L765">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventDate_Label_&quot;))));</span>
+<span class="fc" id="L766">	  			assertEquals(label4,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventTime_Label&quot;))).getText());</span>
+<span class="fc" id="L767">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventTime_Label&quot;))));</span>
+<span class="fc" id="L768">	  			assertEquals(label5,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventDuration_Label_&quot;))).getText());</span>
+<span class="fc" id="L769">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventDuration_Label_&quot;))));</span>
+<span class="fc" id="L770">	  			assertEquals(label6,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventLocation_Label&quot;))).getText());</span>
+<span class="fc" id="L771">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventLocation_Label&quot;))));</span>
+<span class="fc" id="L772">	  			assertEquals(label7,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventNoofattendees_Labels&quot;))).getText());</span>
+<span class="fc" id="L773">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventNoofattendees_Labels&quot;))));</span>
+<span class="fc" id="L774">	  			assertEquals(label8,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventCapacity_Label&quot;))).getText());</span>
+<span class="fc" id="L775">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventCapacity_Label&quot;))));</span>
+<span class="fc" id="L776">	  			assertEquals(label9,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventCoordinator_Labels&quot;))).getText());</span>
+<span class="fc" id="L777">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventCoordinator_Labels&quot;))));</span>
+<span class="fc" id="L778">	  			assertEquals(label10,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventType_Labels&quot;))).getText());</span>
+<span class="fc" id="L779">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventType_Labels&quot;))));</span>
+<span class="fc" id="L780">	  			assertEquals(label11,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventEstAttendees_Labels&quot;))).getText());</span>
+<span class="fc" id="L781">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventEstAttendees_Labels&quot;))));</span>
+	  	
+	  			//Get Expected Data
+<span class="fc" id="L784">	  			int data_1 = eventindb.get(i-1).getEventid();</span>
+<span class="fc" id="L785">	  			String data1 = Integer.toString(data_1);</span>
+<span class="fc" id="L786">		  		String data2 = eventindb.get(i-1).getEventname();</span>
+<span class="fc" id="L787">		  		String data3 = eventindb.get(i-1).getEventdate();</span>
+<span class="fc" id="L788">		  		String data5 = eventindb.get(i-1).getDuration();</span>
+<span class="fc" id="L789">		  		String data4 = eventindb.get(i-1).getStarttime();</span>
+<span class="fc" id="L790">		  		String data6 = eventindb.get(i-1).getLocation();</span>
+<span class="fc" id="L791">		  		String data7 = eventindb.get(i-1).getNumberofattendees();</span>
+<span class="fc" id="L792">		  		String data8 = eventindb.get(i-1).getCapacity();</span>
+<span class="fc" id="L793">		  		String data9 = eventindb.get(i-1).getEventcoordinator();</span>
+<span class="fc" id="L794">		  		String data10 = eventindb.get(i-1).getType();</span>
+<span class="fc" id="L795">		  		String data11 = eventindb.get(i-1).getEstattendees();</span>
+		  		
+
+	  			//Verify Data
+<span class="fc" id="L799">	  			assertEquals(data1,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventId_Data&quot;))).getText());</span>
+<span class="fc" id="L800">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventId_Data&quot;))));</span>
+<span class="fc" id="L801">	  			assertEquals(data2,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_Eventname_Data&quot;))).getText());</span>
+<span class="fc" id="L802">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_Eventname_Data&quot;))));</span>
+<span class="fc" id="L803">	  			assertEquals(data3,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventDate_Data_&quot;))).getText());</span>
+<span class="fc" id="L804">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventDate_Data_&quot;))));</span>
+<span class="fc" id="L805">	  			assertEquals(data4,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventTime_Data&quot;))).getText());</span>
+<span class="fc" id="L806">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventTime_Data&quot;))));</span>
+<span class="fc" id="L807">	  			assertEquals(data5,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventDuration_Data_&quot;))).getText());</span>
+<span class="fc" id="L808">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventDuration_Data_&quot;))));</span>
+<span class="fc" id="L809">	  			assertEquals(data6,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventLocation_Data&quot;))).getText());</span>
+<span class="fc" id="L810">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventLocation_Data&quot;))));</span>
+<span class="fc" id="L811">	  			assertEquals(data7,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventNoofattendees_Data_&quot;))).getText());</span>
+<span class="fc" id="L812">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventNoofattendees_Data_&quot;))));</span>
+<span class="fc" id="L813">	  			assertEquals(data8,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventCapacity_Data&quot;))).getText());</span>
+<span class="fc" id="L814">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventCapacity_Data&quot;))));</span>
+<span class="fc" id="L815">	  			assertEquals(data9,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventCoordinator_Data&quot;))).getText());</span>
+<span class="fc" id="L816">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventCoordinator_Data&quot;))));</span>
+<span class="fc" id="L817">	  			assertEquals(data10,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventType_Data&quot;))).getText());</span>
+<span class="fc" id="L818">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventType_Data&quot;))));</span>
+<span class="fc" id="L819">	  			assertEquals(data11,driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventEstAttendees_Data&quot;))).getText());</span>
+<span class="fc" id="L820">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Event_Details_EventEstAttendees_Data&quot;))));</span>
+   
+	  			//Goback
+<span class="fc" id="L823">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Go_Back_from_Reservation_Details_Page&quot;))));</span>
+<span class="fc" id="L824">	  			driver.findElement(By.xpath(prop.getProperty(&quot;Go_Back_from_Reservation_Details_Page&quot;))).click();</span>
+	  			
+		 }
+
+<span class="fc" id="L828">		 		HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Go_Back_from_Reservation_Summarry_Page&quot;))));</span>
+<span class="fc" id="L829">		 		driver.findElement(By.xpath(prop.getProperty(&quot;Go_Back_from_Reservation_Summarry_Page&quot;))).click();</span>
+<span class="fc" id="L830">		 		HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Logout_Link&quot;))));</span>
+<span class="fc" id="L831">		 		driver.findElement(By.xpath(prop.getProperty(&quot;Logout_Link&quot;))).click();</span>
+<span class="fc" id="L832">		 		assertEquals(welcomepage_header_expected, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Welcome_Title&quot;))).getText());</span>
+<span class="fc" id="L833">		 		HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Welcome_Title&quot;))));</span>
+<span class="fc" id="L834">}</span>
+	  
+	  
+	  //Passenger Profile
+	  
+	  public void verifyViewProfilePageLabels(WebDriver driver, 
+				String actual_header1, String exp_header1,
+				String actual_header2,String exp_header2,
+				String actual_header3,String exp_header3,
+				String actual_header4,String exp_header4, 
+				String actual_header5,String exp_header5, 
+				String actual_header6,String exp_header6, 
+				String actual_header7,String exp_header7, 
+				String actual_header8,String exp_header8, 
+				String actual_header9,String exp_header9,
+				String actual_header10,String exp_header10,
+				String snapShotName) {
+<span class="fc" id="L851">assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header1))).getText().equals(exp_header1));</span>
+<span class="fc" id="L852">HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header1))));</span>
+<span class="fc" id="L853">assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header2))).getText().equals(exp_header2));</span>
+<span class="fc" id="L854">HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header2))));</span>
+<span class="fc" id="L855">assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header3))).getText().equals(exp_header3));</span>
+<span class="fc" id="L856">HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header3))));</span>
+<span class="fc" id="L857">assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header4))).getText().equals(exp_header4));</span>
+<span class="fc" id="L858">HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header4))));</span>
+<span class="fc" id="L859">assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header5))).getText().equals(exp_header5));</span>
+<span class="fc" id="L860">HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header5))));</span>
+<span class="fc" id="L861">assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header6))).getText().equals(exp_header6));</span>
+<span class="fc" id="L862">HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header6))));</span>
+<span class="fc" id="L863">assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header7))).getText().equals(exp_header7));</span>
+<span class="fc" id="L864">HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header7))));</span>
+<span class="fc" id="L865">assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header8))).getText().equals(exp_header8));</span>
+<span class="fc" id="L866">HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header8))));</span>
+<span class="fc" id="L867">assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header9))).getText().equals(exp_header9));</span>
+<span class="fc" id="L868">HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header9))));</span>
+<span class="fc" id="L869">assertTrue(driver.findElement(By.xpath(prop.getProperty(actual_header10))).getText().equals(exp_header10));</span>
+<span class="fc" id="L870">HighLight(driver,driver.findElement(By.xpath(prop.getProperty(actual_header10))));</span>
+<span class="fc" id="L871">takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L872">}</span>
+	  
+	  public void verifyUserProfileData(WebDriver driver, String username, String password,String snapShotName) {
+		  
+<span class="fc" id="L876">			UserDAO db =  new UserDAO(ConnectionPro.getConnection());</span>
+<span class="fc" id="L877">			User user = db.login(username, password);</span>
+			
+<span class="fc" id="L879">			String username_actual = user.getUsername();</span>
+<span class="fc" id="L880">			String password_actual = user.getPassword();</span>
+<span class="fc" id="L881">			String lastname_actual = user.getLastname();</span>
+<span class="fc" id="L882">			String firstname_actual = user.getFirstname();</span>
+<span class="fc" id="L883">			String email_actual = user.getEmail();</span>
+<span class="fc" id="L884">			String number_actual = user.getNumber();</span>
+<span class="fc" id="L885">			String roomnumber_actual = user.getRoomnumber();</span>
+<span class="fc" id="L886">			String decknumber_actual = user.getDecknumber();</span>
+<span class="fc" id="L887">			String membership = user.getMembership();</span>
+		  
+<span class="fc" id="L889">			assertEquals(username_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Username_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L890"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Username_Data&quot;))));</span>
+<span class="fc" id="L891"> 			assertEquals(password_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Password_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L892"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Password_Data&quot;))));</span>
+<span class="fc" id="L893"> 			assertEquals(lastname_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Lname_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L894"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Lname_Data&quot;))));</span>
+<span class="fc" id="L895"> 			assertEquals(firstname_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Fname_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L896"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Fname_Data&quot;))));</span>
+<span class="fc" id="L897"> 			assertEquals(email_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Email_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L898"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Email_Data&quot;))));</span>
+<span class="fc" id="L899"> 			assertEquals(number_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Number_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L900"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Number_Data&quot;))));</span>
+<span class="fc" id="L901"> 			assertEquals(roomnumber_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Roomnumber_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L902"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Roomnumber_Data&quot;))));</span>
+<span class="fc" id="L903"> 			assertEquals(decknumber_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Decknumber_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L904"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Decknumber_Data&quot;))));</span>
+<span class="fc" id="L905">  			assertEquals(membership,driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Membership_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L906">			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Profile_Page_Membership_Data&quot;))));</span>
+			
+		  
+		  
+<span class="fc" id="L910">	  }</span>
+	  
+	  
+	  public void verifyUpdateProfilePageFinalData(WebDriver driver, String username, String password,String snapShotName) {
+		  
+<span class="fc" id="L915">			UserDAO db =  new UserDAO(ConnectionPro.getConnection());</span>
+<span class="fc" id="L916">			User user = db.login(username, password);</span>
+			
+<span class="fc" id="L918">			String username_actual = user.getUsername();</span>
+<span class="fc" id="L919">			String password_actual = user.getPassword();</span>
+<span class="fc" id="L920">			String lastname_actual = user.getLastname();</span>
+<span class="fc" id="L921">			String firstname_actual = user.getFirstname();</span>
+<span class="fc" id="L922">			String email_actual = user.getEmail();</span>
+<span class="fc" id="L923">			String number_actual = user.getNumber();</span>
+<span class="fc" id="L924">			String roomnumber_actual = user.getRoomnumber();</span>
+<span class="fc" id="L925">			String decknumber_actual = user.getDecknumber();</span>
+<span class="fc" id="L926">			String membership = user.getMembership();</span>
+<span class="fc" id="L927">			String selectedOption = new Select(driver.findElement(By.xpath(prop.getProperty((&quot;Update_Profile_Page_Membership_Data&quot;))))).getFirstSelectedOption().getText();</span>
+			
+<span class="fc" id="L929">			System.out.println(membership);</span>
+<span class="fc" id="L930">			System.out.println(selectedOption);</span>
+		  
+<span class="fc" id="L932">			assertEquals(username_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Username_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L933"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Username_Data&quot;))));</span>
+<span class="fc" id="L934"> 			assertEquals(password_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Password_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L935"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Password_Data&quot;))));</span>
+<span class="fc" id="L936"> 			assertEquals(lastname_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Lname_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L937"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Lname_Data&quot;))));</span>
+<span class="fc" id="L938"> 			assertEquals(firstname_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Fname_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L939"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Fname_Data&quot;))));</span>
+<span class="fc" id="L940"> 			assertEquals(email_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Email_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L941"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Email_Data&quot;))));</span>
+<span class="fc" id="L942"> 			assertEquals(number_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Number_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L943"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Number_Data&quot;))));</span>
+<span class="fc" id="L944"> 			assertEquals(roomnumber_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Roomnumber_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L945"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Roomnumber_Data&quot;))));</span>
+<span class="fc" id="L946"> 			assertEquals(decknumber_actual,driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Decknumber_Data&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L947"> 			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Decknumber_Data&quot;))));</span>
+<span class="fc" id="L948">  			assertEquals(membership,selectedOption);</span>
+<span class="fc" id="L949">			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Membership_Data&quot;))));</span>
+			
+		  
+		  
+<span class="fc" id="L953">	  }</span>
+
+	  
+	  public void Update_Profile_function(WebDriver driver, String lastname, String firstname, String password, String email,
+			  String number, String roomnumber, String decknumber, String membershipType, String snapShotName) throws InterruptedException {
+		  try {
+<span class="fc" id="L959">			Thread.sleep(1000);</span>
+<span class="pc" id="L960">		} catch (InterruptedException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L962">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L964">		  	driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Password_Data&quot;))).clear();</span>
+<span class="fc" id="L965">		    driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Password_Data&quot;))).sendKeys(password);</span>
+<span class="fc" id="L966">		    driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Lname_Data&quot;))).clear();</span>
+<span class="fc" id="L967">		    driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Lname_Data&quot;))).sendKeys(lastname);</span>
+<span class="fc" id="L968">		    driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Fname_Data&quot;))).clear();</span>
+<span class="fc" id="L969">		    driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Fname_Data&quot;))).sendKeys(firstname);</span>
+<span class="fc" id="L970">		    driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Email_Data&quot;))).clear();</span>
+<span class="fc" id="L971">		    driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Email_Data&quot;))).sendKeys(email);</span>
+<span class="fc" id="L972">		    driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Number_Data&quot;))).clear();</span>
+<span class="fc" id="L973">		    driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Number_Data&quot;))).sendKeys(number);</span>
+<span class="fc" id="L974">		    driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Roomnumber_Data&quot;))).clear();</span>
+<span class="fc" id="L975">		    driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Roomnumber_Data&quot;))).sendKeys(roomnumber);</span>
+<span class="fc" id="L976">		    driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Decknumber_Data&quot;))).clear();</span>
+<span class="fc" id="L977">		    driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Decknumber_Data&quot;))).sendKeys(decknumber);</span>
+<span class="fc" id="L978">		    new Select(driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Membership_Data&quot;)))).selectByVisibleText(&quot;Superior&quot;);</span>
+<span class="fc" id="L979">		    takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L980">		    HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Modify_Profile_Button&quot;))));</span>
+<span class="fc" id="L981">		    driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Modify_Profile_Button&quot;))).click(); //click on insertCompany button</span>
+<span class="fc" id="L982">		    Alert alertPopUp = driver.switchTo().alert();</span>
+<span class="fc" id="L983">		    assertEquals(&quot;Are you sure you want to Update your Profie ?&quot;,alertPopUp.getText());</span>
+<span class="fc" id="L984">		    Thread.sleep(2_000);</span>
+<span class="fc" id="L985">		    alertPopUp.accept();</span>
+
+		  
+<span class="fc" id="L988">	  }</span>
+
+
+	  public void verifyUpdate_ProfileErrorMessages(WebDriver driver, String lastnameErrorMessage, String firstnameErrorMessage, 
+			  String passwordErrorMessage, String emailErrorMessage, String numberErrorMessage, String RoomNumberErrorMessage, 
+			  String deckNumberErrorMessage, String snapShotName) {
+		  
+		  
+		  
+<span class="fc" id="L997">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Password_Errormsg&quot;))).getText().equals(passwordErrorMessage));</span>
+<span class="fc" id="L998">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Lname_Errormsg&quot;))).getText().equals(lastnameErrorMessage));</span>
+<span class="fc" id="L999">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Fname_Errormsg&quot;))).getText().equals(firstnameErrorMessage));</span>
+<span class="fc" id="L1000">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Email_Errormsg&quot;))).getText().equals(emailErrorMessage));</span>
+<span class="fc" id="L1001">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Number_Errormsg&quot;))).getText().equals(numberErrorMessage));</span>
+<span class="fc" id="L1002">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Roomnumber_Errormsg&quot;))).getText().equals(RoomNumberErrorMessage));</span>
+<span class="fc" id="L1003">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Update_Profile_Page_Decknumber_Errormsg&quot;))).getText().equals(deckNumberErrorMessage));</span>
+	
+
+<span class="fc" id="L1006">			takeScreenShot(driver,snapShotName);</span>
+		  
+<span class="fc" id="L1008">	  }</span>
+	  
+	  
+	  // Manager Part
+	  
+	  public void VerifyCurrentDateTime(WebDriver driver,String snapShotName) {
+		  
+<span class="fc" id="L1015">		  GetDateTime datetime = new GetDateTime();</span>
+<span class="fc" id="L1016">		  System.out.println(datetime.getCurrentDate());</span>
+<span class="fc" id="L1017">		  System.out.println(datetime.getCurrentTime());</span>
+<span class="fc" id="L1018">		  System.out.println(&quot;--------&quot;);</span>
+<span class="fc" id="L1019">		  System.out.println( driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventDate_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1020">		  System.out.println( driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventTime_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1021">		  assertEquals(datetime.getCurrentDate(), driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventDate_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1022">		  HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventTime_input_field&quot;))));</span>
+<span class="fc" id="L1023">		  HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventTime_input_field&quot;))));</span>
+<span class="fc" id="L1024">	  }</span>
+	  
+	  
+	  public void ManagerSearchAllEvents (WebDriver driver, String eventdate, String eventtime, String snapShotName) {
+	
+<span class="fc" id="L1029">		  	driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventDate_input_field&quot;))).clear();</span>
+<span class="fc" id="L1030">		    driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventDate_input_field&quot;))).sendKeys(eventdate);</span>
+		    
+<span class="fc" id="L1032">		    driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventTime_input_field&quot;))).clear();</span>
+<span class="fc" id="L1033">		    driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventTime_input_field&quot;))).sendKeys(eventtime);</span>
+		  
+<span class="fc" id="L1035">		    takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L1036">		    driver.findElement(By.xpath(prop.getProperty(&quot;Manager_EventSearch_Submit_Button&quot;))).click(); //click on insertCompany button</span>
+		   
+<span class="fc" id="L1038">	  }</span>
+	  
+	  
+	  public void verifyManagereDateTimeErrormsgs(WebDriver driver, String eventdateError, String eventtimeError, String snapShotName) {
+		  
+		  	
+<span class="fc" id="L1044">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Eventdate_errormsg&quot;))).getText().equals(eventdateError));</span>
+<span class="fc" id="L1045">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Eventtime_errormsg&quot;))).getText().equals(eventtimeError));</span>
+		
+
+<span class="fc" id="L1048">			takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L1049">}</span>
+
+	  
+	  public String [][] getManagerEventListFromDB(String eventdate, String starttime, int listSize) throws SQLException { // this method gets the list company table contents from the DB
+<span class="fc" id="L1053">		    ArrayList&lt;Event&gt; fromDB= EventDAO.getAllevents(eventdate, starttime);</span>
+<span class="fc" id="L1054">		    String [][] arrayDB = new String [listSize-1][6];</span>
+<span class="fc" id="L1055">		    int i=0;</span>
+<span class="fc bfc" id="L1056" title="All 2 branches covered.">		    for (Event p:fromDB) {</span>
+<span class="fc" id="L1057">		    	arrayDB[i][0]=p.getEventname();</span>
+<span class="fc" id="L1058">		    	arrayDB[i][1]=p.getEventdate();</span>
+<span class="fc" id="L1059">		    	arrayDB[i][2]= p.getStarttime();</span>
+<span class="fc" id="L1060">		    	arrayDB[i][3]= p.getDuration();</span>
+<span class="fc" id="L1061">		    	arrayDB[i][4]= p.getLocation();</span>
+<span class="fc" id="L1062">		    	arrayDB[i][5]= p.getNumberofattendees();</span>
+		    	
+<span class="fc" id="L1064">		 		i++;</span>
+		    }
+<span class="fc" id="L1066">		    return arrayDB;</span>
+	  }
+	  
+	  public void verifyManagerLabelsandData(WebDriver driver,String eventdate, String starttime,int rows,String welcomepage_header_expected,String header,String header1,
+											 String header2,String header3,String label1,String label2,String label3,String label4,String label5,String label6,
+											 String label7,String label8,String label9,String label10,String label11,String snapShotName) throws SQLException, InterruptedException {
+		  
+<span class="fc" id="L1073">		  	ArrayList&lt;Event&gt; eventindb = new ArrayList&lt;Event&gt;();</span>
+<span class="fc" id="L1074">		  	eventindb=EventDAO.getAllevents(eventdate, starttime);</span>
+		
+		
+
+
+		 
+<span class="fc bfc" id="L1080" title="All 2 branches covered.">		 for(int i = 1;i&lt;rows;i++) {</span>
+			  
+			  
+<span class="fc" id="L1083">			  HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_events_summary_prefix&quot;)+(i+1)+</span>
+<span class="fc" id="L1084">					  prop.getProperty(&quot;Manager_View_Link&quot;))));</span>
+<span class="fc" id="L1085">			  driver.findElement(By.xpath(prop.getProperty(&quot;Manager_events_summary_prefix&quot;)+(i+1)+</span>
+<span class="fc" id="L1086">										  prop.getProperty(&quot;Manager_View_Link&quot;))).click();</span>
+	
+			  // Verify Header
+<span class="fc" id="L1089">			  assertEquals(header,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_aboutevent_header_actual&quot;))).getText());</span>
+<span class="fc" id="L1090">			  HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_aboutevent_header_actual&quot;))));</span>
+			  
+<span class="fc" id="L1092">			  assertEquals(header1,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventdetails_header_actual&quot;))).getText());</span>
+<span class="fc" id="L1093">			  HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventdetails_header_actual&quot;))));</span>
+			  
+			  //Verify Labels							 					
+<span class="fc" id="L1096">			    assertEquals(label1,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventid_label_actual&quot;))).getText());</span>
+<span class="fc" id="L1097">			    HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventid_label_actual&quot;))));</span>
+<span class="fc" id="L1098">	  			assertEquals(label2,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventname_label_actual&quot;))).getText());</span>
+<span class="fc" id="L1099">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventname_label_actual&quot;))));</span>
+<span class="fc" id="L1100">	  			assertEquals(label3,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventdate_label_actual&quot;))).getText());</span>
+<span class="fc" id="L1101">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventdate_label_actual&quot;))));</span>
+<span class="fc" id="L1102">	  			assertEquals(label4,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_starttime_label_actual&quot;))).getText());</span>
+<span class="fc" id="L1103">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_starttime_label_actual&quot;))));</span>
+<span class="fc" id="L1104">	  			assertEquals(label5,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_duration_label_actual&quot;))).getText());</span>
+<span class="fc" id="L1105">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_duration_label_actual&quot;))));</span>
+<span class="fc" id="L1106">	  			assertEquals(label6,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_location_label_actual&quot;))).getText());</span>
+<span class="fc" id="L1107">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_location_label_actual&quot;))));</span>
+<span class="fc" id="L1108">	  			assertEquals(label7,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_numberofattendees_label_actual&quot;))).getText());</span>
+<span class="fc" id="L1109">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_numberofattendees_label_actual&quot;))));</span>
+<span class="fc" id="L1110">	  			assertEquals(label8,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_capacity_label_actual&quot;))).getText());</span>
+<span class="fc" id="L1111">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_capacity_label_actual&quot;))));</span>
+<span class="fc" id="L1112">	  			assertEquals(label9,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventcoordinator_label_actual&quot;))).getText());</span>
+<span class="fc" id="L1113">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventcoordinator_label_actual&quot;))));</span>
+<span class="fc" id="L1114">	  			assertEquals(label10,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_type_label_actual&quot;))).getText());</span>
+<span class="fc" id="L1115">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_type_label_actual&quot;))));</span>
+<span class="fc" id="L1116">	  			assertEquals(label11,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_estattendees_label_actual&quot;))).getText());</span>
+<span class="fc" id="L1117">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_estattendees_label_actual&quot;))));</span>
+	  	
+	  			//Get Expected Data
+<span class="fc" id="L1120">	  			int data_1 = eventindb.get(i-1).getEventid();</span>
+<span class="fc" id="L1121">	  			String data1 = Integer.toString(data_1);</span>
+<span class="fc" id="L1122">		  		String data2 = eventindb.get(i-1).getEventname();</span>
+<span class="fc" id="L1123">		  		String data3 = eventindb.get(i-1).getEventdate();</span>
+<span class="fc" id="L1124">		  		String data5 = eventindb.get(i-1).getDuration();</span>
+<span class="fc" id="L1125">		  		String data4 = eventindb.get(i-1).getStarttime();</span>
+<span class="fc" id="L1126">		  		String data6 = eventindb.get(i-1).getLocation();</span>
+<span class="fc" id="L1127">		  		String data7 = eventindb.get(i-1).getNumberofattendees();</span>
+<span class="fc" id="L1128">		  		String data8 = eventindb.get(i-1).getCapacity();</span>
+<span class="fc" id="L1129">		  		String data9 = eventindb.get(i-1).getEventcoordinator();</span>
+<span class="fc" id="L1130">		  		String data10 = eventindb.get(i-1).getType();</span>
+<span class="fc" id="L1131">		  		String data11 = eventindb.get(i-1).getEstattendees();</span>
+		  		
+
+	  			//Verify Data
+<span class="fc" id="L1135">	  			assertEquals(data1,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventid_actual&quot;))).getText());</span>
+<span class="fc" id="L1136">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventid_actual&quot;))));</span>
+<span class="fc" id="L1137">	  			assertEquals(data2,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventname_actual&quot;))).getText());</span>
+<span class="fc" id="L1138">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventname_actual&quot;))));</span>
+<span class="fc" id="L1139">	  			assertEquals(data3,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventdate_actual&quot;))).getText());</span>
+<span class="fc" id="L1140">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventdate_actual&quot;))));</span>
+<span class="fc" id="L1141">	  			assertEquals(data4,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_startime_actual&quot;))).getText());</span>
+<span class="fc" id="L1142">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_startime_actual&quot;))));</span>
+<span class="fc" id="L1143">	  			assertEquals(data5,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_duration_actual&quot;))).getText());</span>
+<span class="fc" id="L1144">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_duration_actual&quot;))));</span>
+<span class="fc" id="L1145">	  			assertEquals(data6,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_location_actual&quot;))).getText());</span>
+<span class="fc" id="L1146">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_location_actual&quot;))));</span>
+<span class="fc" id="L1147">	  			assertEquals(data7,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_numberofattendees_actual&quot;))).getText());</span>
+<span class="fc" id="L1148">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_numberofattendees_actual&quot;))));</span>
+<span class="fc" id="L1149">	  			assertEquals(data8,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_capacity_actual&quot;))).getText());</span>
+<span class="fc" id="L1150">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_capacity_actual&quot;))));</span>
+<span class="fc" id="L1151">	  			assertEquals(data9,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventcoordinator_actual&quot;))).getText());</span>
+<span class="fc" id="L1152">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_eventcoordinator_actual&quot;))));</span>
+<span class="fc" id="L1153">	  			assertEquals(data10,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_type_actual&quot;))).getText());</span>
+<span class="fc" id="L1154">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_type_actual&quot;))));</span>
+<span class="fc" id="L1155">	  			assertEquals(data11,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_estattendees_actual&quot;))).getText());</span>
+<span class="fc" id="L1156">	  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_estattendees_actual&quot;))));</span>
+	  			 
+	  		// Click on Modify Event Button	 
+	  		
+<span class="fc" id="L1160">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Event_Details_Modify_Event_Button&quot;))));</span>
+<span class="fc" id="L1161">	  			Thread.sleep(2_000);</span>
+<span class="fc" id="L1162">	  			driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Event_Details_Modify_Event_Button&quot;))).click();</span>
+	  			 
+	  		  // Verify Header
+<span class="fc" id="L1165">				  assertEquals(header2,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_title&quot;))).getText());</span>
+<span class="fc" id="L1166">				  HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_title&quot;))));</span>
+				  //Verify Labels							 					
+<span class="fc" id="L1168">				    assertEquals(label2,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_eventname_label&quot;))).getText());</span>
+<span class="fc" id="L1169">				    HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_eventname_label&quot;))));</span>
+<span class="fc" id="L1170">		  			assertEquals(label3,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_eventdate_label&quot;))).getText());</span>
+<span class="fc" id="L1171">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_eventdate_label&quot;))));</span>
+<span class="fc" id="L1172">		  			assertEquals(label4,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_startime_label&quot;))).getText());</span>
+<span class="fc" id="L1173">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_startime_label&quot;))));</span>
+<span class="fc" id="L1174">		  			assertEquals(label5,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_duration_label&quot;))).getText());</span>
+<span class="fc" id="L1175">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_duration_label&quot;))));</span>
+<span class="fc" id="L1176">		  			assertEquals(label6,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_location_label&quot;))).getText());</span>
+<span class="fc" id="L1177">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_location_label&quot;))));</span>
+<span class="fc" id="L1178">		  			assertEquals(label7,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_numberofattendees_label&quot;))).getText());</span>
+<span class="fc" id="L1179">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_numberofattendees_label&quot;))));</span>
+<span class="fc" id="L1180">		  			assertEquals(label8,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_capacity_label&quot;))).getText());</span>
+<span class="fc" id="L1181">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_capacity_label&quot;))));</span>
+<span class="fc" id="L1182">		  			assertEquals(label9,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_eventcoordinator_label&quot;))).getText());</span>
+<span class="fc" id="L1183">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_eventcoordinator_label&quot;))));</span>
+<span class="fc" id="L1184">		  			assertEquals(label10,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_type_label&quot;))).getText());</span>
+<span class="fc" id="L1185">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_type_label&quot;))));</span>
+<span class="fc" id="L1186">		  			assertEquals(label11,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_estattendees_label&quot;))).getText());</span>
+<span class="fc" id="L1187">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_estattendees_label&quot;))));</span>
+		  	
+		  			
+		  			//Verify Data  Manager_modify_duration_input_field Manager_modify_eventcoordinator_input_field Manager_modify_type_input_field
+		 
+<span class="fc" id="L1192">		  			assertEquals(data2,new Select(driver.findElement(By.xpath(prop.getProperty((&quot;Manager_modify_eventname_input_field&quot;))))).getFirstSelectedOption().getText());</span>
+<span class="fc" id="L1193">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_eventname_input_field&quot;))));</span>
+<span class="fc" id="L1194">		  			assertEquals(data3,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_eventdate_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1195">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_eventdate_input_field&quot;))));</span>
+<span class="fc" id="L1196">		  			assertEquals(data4,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_startime_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1197">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_startime_input_field&quot;))));</span>
+<span class="fc" id="L1198">		  			assertEquals(data5,new Select(driver.findElement(By.xpath(prop.getProperty((&quot;Manager_modify_duration_input_field&quot;))))).getFirstSelectedOption().getText());</span>
+<span class="fc" id="L1199">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_duration_input_field&quot;))));</span>
+<span class="fc" id="L1200">		  			assertEquals(data6,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_location_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1201">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_location_input_field&quot;))));</span>
+<span class="fc" id="L1202">		  			assertEquals(data7,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_numberofattendees_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1203">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_numberofattendees_input_field&quot;))));</span>
+<span class="fc" id="L1204">		  			assertEquals(data8,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_capacity_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1205">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_capacity_input_field&quot;))));</span>
+<span class="fc" id="L1206">		  			assertEquals(data9,new Select(driver.findElement(By.xpath(prop.getProperty((&quot;Manager_modify_eventcoordinator_input_field&quot;))))).getFirstSelectedOption().getText());</span>
+<span class="fc" id="L1207">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_eventcoordinator_input_field&quot;))));</span>
+<span class="fc" id="L1208">		  			assertEquals(data10,new Select(driver.findElement(By.xpath(prop.getProperty((&quot;Manager_modify_type_input_field&quot;))))).getFirstSelectedOption().getText());</span>
+<span class="fc" id="L1209">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_type_input_field&quot;))));</span>
+<span class="fc" id="L1210">		  			assertEquals(data11,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_estattendees_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1211">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_estattendees_input_field&quot;))));</span>
+	  			 
+		  		//Goback
+<span class="fc" id="L1214">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Modify_Event_Back_Button&quot;))));</span>
+<span class="fc" id="L1215">	  			Thread.sleep(2_000);</span>
+<span class="fc" id="L1216">	  			driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Modify_Event_Back_Button&quot;))).click();</span>
+	  			
+	  			// Click on Assign Event Coordinator Button
+<span class="fc" id="L1219">	  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Event_Details_Assign_Coordinator_Button&quot;))));</span>
+<span class="fc" id="L1220">	  			driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Event_Details_Assign_Coordinator_Button&quot;))).click();</span>
+	  			 
+	  			
+	  		  // Verify Header
+<span class="fc" id="L1224">				  assertEquals(header3,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_title&quot;))).getText());</span>
+<span class="fc" id="L1225">				  HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_title&quot;))));</span>
+				  //Verify Labels							 					
+			
+<span class="fc" id="L1228">		  			assertEquals(label2,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_eventname_label&quot;))).getText());</span>
+<span class="fc" id="L1229">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_eventname_label&quot;))));</span>
+<span class="fc" id="L1230">		  			assertEquals(label3,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_eventdate_label&quot;))).getText());</span>
+<span class="fc" id="L1231">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_eventdate_label&quot;))));</span>
+<span class="fc" id="L1232">		  			assertEquals(label4,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_startime_label&quot;))).getText());</span>
+<span class="fc" id="L1233">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_startime_label&quot;))));</span>
+<span class="fc" id="L1234">		  			assertEquals(label5,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_duration_label&quot;))).getText());</span>
+<span class="fc" id="L1235">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_duration_label&quot;))));</span>
+<span class="fc" id="L1236">		  			assertEquals(label6,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_location_label&quot;))).getText());</span>
+<span class="fc" id="L1237">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_location_label&quot;))));</span>
+<span class="fc" id="L1238">		  			assertEquals(label7,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_numberofattendees_label&quot;))).getText());</span>
+<span class="fc" id="L1239">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_numberofattendees_label&quot;))));</span>
+<span class="fc" id="L1240">		  			assertEquals(label8,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_capacity_label&quot;))).getText());</span>
+<span class="fc" id="L1241">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_capacity_label&quot;))));</span>
+<span class="fc" id="L1242">		  			assertEquals(label9,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_EventCoordinator_label&quot;))).getText());</span>
+<span class="fc" id="L1243">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_EventCoordinator_label&quot;))));</span>
+<span class="fc" id="L1244">		  			assertEquals(label10,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_type_label&quot;))).getText());</span>
+<span class="fc" id="L1245">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_type_label&quot;))));</span>
+<span class="fc" id="L1246">		  			assertEquals(label11,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_estattendees_label&quot;))).getText());</span>
+<span class="fc" id="L1247">		  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_estattendees_label&quot;))));</span>
+		  			
+		  			//Verify Data 
+		  		
+<span class="fc" id="L1251">		  			assertEquals(data2,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_eventname_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1252">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_eventname_input_field&quot;))));</span>
+<span class="fc" id="L1253">		  			assertEquals(data3,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_eventdate_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1254">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_eventdate_input_field&quot;))));</span>
+<span class="fc" id="L1255">		  			assertEquals(data4,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_startime_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1256">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_startime_input_field&quot;))));</span>
+<span class="fc" id="L1257">		  			assertEquals(data5,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_duration_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1258">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_duration_input_field&quot;))));</span>
+<span class="fc" id="L1259">		  			assertEquals(data6,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_location_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1260">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_location_input_field&quot;))));</span>
+<span class="fc" id="L1261">		  			assertEquals(data7,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_numberofattendees_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1262">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_numberofattendees_input_field&quot;))));</span>
+<span class="fc" id="L1263">		  			assertEquals(data8,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_capacity_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1264">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_capacity_input_field&quot;))));</span>
+<span class="fc" id="L1265">		  			assertEquals(data9,new Select(driver.findElement(By.xpath(prop.getProperty((&quot;Manager_AssignCoordinator_eventcoordinator_input_field&quot;))))).getFirstSelectedOption().getText());</span>
+<span class="fc" id="L1266">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_eventcoordinator_input_field&quot;))));</span>
+<span class="fc" id="L1267">		  			assertEquals(data10,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_type_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1268">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_type_input_field&quot;))));</span>
+<span class="fc" id="L1269">		  			assertEquals(data11,driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_estattendees_input_field&quot;))).getAttribute(&quot;value&quot;));</span>
+<span class="fc" id="L1270">		  			 HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_AssignCoordinator_estattendees_input_field&quot;))));</span>
+		  			
+		  			//Goback
+<span class="fc" id="L1273">			  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_Back_Button&quot;))));</span>
+<span class="fc" id="L1274">			  			Thread.sleep(2_000);</span>
+<span class="fc" id="L1275">			  			driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Assign_Coordinator_Back_Button&quot;))).click();</span>
+			  			
+			  			//Goback
+<span class="fc" id="L1278">			  			HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Event_Details_Go_Back&quot;))));</span>
+<span class="fc" id="L1279">			  			driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Event_Details_Go_Back&quot;))).click();</span>
+		  			 
+	  			
+		 }
+
+<span class="fc" id="L1284">		 		HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_goback_link_for_events_summary&quot;))));</span>
+<span class="fc" id="L1285">		 		driver.findElement(By.xpath(prop.getProperty(&quot;Manager_goback_link_for_events_summary&quot;))).click();</span>
+<span class="fc" id="L1286">		 		HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Logout&quot;))));</span>
+<span class="fc" id="L1287">		 		driver.findElement(By.xpath(prop.getProperty(&quot;Manager_Logout&quot;))).click();</span>
+<span class="fc" id="L1288">		 		assertEquals(welcomepage_header_expected, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Welcome_Title&quot;))).getText());</span>
+<span class="fc" id="L1289">		 		HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Passenger_Welcome_Title&quot;))));</span>
+<span class="fc" id="L1290">		 		Thread.sleep(2_000);</span>
+<span class="fc" id="L1291">}</span>
+	  
+	  
+	  public void Manager_Modify_Event(WebDriver driver, String eventname, String eventdate, String eventtime, String duration,
+			  String location, String numberofattendees, String capacity, String eventcoordinator,String eventtype, String estattendees, String snapShotName) throws InterruptedException {
+		  try {
+<span class="fc" id="L1297">			Thread.sleep(1000);</span>
+<span class="pc" id="L1298">		} catch (InterruptedException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L1300">			e.printStackTrace();</span>
+		}
+		  
+		    
+<span class="fc" id="L1304">		  	new Select(driver.findElement(By.xpath(prop.getProperty((&quot;Manager_modify_eventname_input_field&quot;))))).selectByVisibleText(eventname);</span>
+<span class="fc" id="L1305">		  	driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_eventdate_input_field&quot;))).clear();</span>
+<span class="fc" id="L1306">		  	driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_eventdate_input_field&quot;))).sendKeys(eventdate);</span>
+<span class="fc" id="L1307">		  	driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_startime_input_field&quot;))).clear();</span>
+<span class="fc" id="L1308">  			driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_startime_input_field&quot;))).sendKeys(eventtime);</span>
+<span class="fc" id="L1309">  			new Select(driver.findElement(By.xpath(prop.getProperty((&quot;Manager_modify_duration_input_field&quot;))))).selectByVisibleText(duration);</span>
+<span class="fc" id="L1310">  			driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_location_input_field&quot;))).clear();</span>
+<span class="fc" id="L1311">  			driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_location_input_field&quot;))).sendKeys(location);</span>
+<span class="fc" id="L1312">  			driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_numberofattendees_input_field&quot;))).clear();</span>
+<span class="fc" id="L1313">  			driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_numberofattendees_input_field&quot;))).sendKeys(numberofattendees);</span>
+<span class="fc" id="L1314">  			driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_capacity_input_field&quot;))).clear();</span>
+<span class="fc" id="L1315">  			driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_capacity_input_field&quot;))).sendKeys(capacity);</span>
+<span class="fc" id="L1316">  			new Select(driver.findElement(By.xpath(prop.getProperty((&quot;Manager_modify_eventcoordinator_input_field&quot;))))).selectByVisibleText(eventcoordinator);</span>
+<span class="fc" id="L1317">  			new Select(driver.findElement(By.xpath(prop.getProperty((&quot;Manager_modify_type_input_field&quot;))))).selectByVisibleText(eventtype);</span>
+<span class="fc" id="L1318">  			driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_estattendees_input_field&quot;))).clear();</span>
+<span class="fc" id="L1319">  			driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_estattendees_input_field&quot;))).sendKeys(estattendees);</span>
+<span class="fc" id="L1320">  			takeScreenShot(driver,snapShotName);</span>
+<span class="fc" id="L1321">		    HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_submit_button&quot;))));</span>
+<span class="fc" id="L1322">		    driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_submit_button&quot;))).click(); //click on insertCompany button</span>
+<span class="fc" id="L1323">		    Alert alertPopUp = driver.switchTo().alert();</span>
+<span class="fc" id="L1324">		    assertEquals(&quot;Are you sure you want to Modify the Event?&quot;,alertPopUp.getText());</span>
+<span class="fc" id="L1325">		    Thread.sleep(2_000);</span>
+<span class="fc" id="L1326">		    alertPopUp.accept();</span>
+<span class="fc" id="L1327">		    Thread.sleep(10_000);</span>
+
+		  
+<span class="fc" id="L1330">	}</span>
+
+
+	  public void Manager_Modify_Error_Msgs(WebDriver driver,  String eventdateerrormsg, String eventtimeerrormsg, String durationerrormsg,
+			  String locationerrormsg, String numberofattendeeserrormsg, String capacityerrormsg, String estattendeeserrormsg, String snapShotName) {
+<span class="fc" id="L1335">		  System.out.println(&quot;WebErromsgs&quot;);</span>
+		
+<span class="fc" id="L1337">		  System.out.println(eventdateerrormsg);</span>
+<span class="fc" id="L1338">		  System.out.println(eventtimeerrormsg);</span>
+<span class="fc" id="L1339">		  System.out.println(durationerrormsg);</span>
+<span class="fc" id="L1340">		  System.out.println(numberofattendeeserrormsg);</span>
+<span class="fc" id="L1341">		  System.out.println(capacityerrormsg);</span>
+<span class="fc" id="L1342">		  System.out.println(estattendeeserrormsg);</span>
+		  
+<span class="fc" id="L1344">		  	assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_eventdate_errormsgs&quot;))).getText().equals(eventdateerrormsg));</span>
+<span class="fc" id="L1345">		  	assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_eventtime_errormsgs&quot;))).getText().equals(eventtimeerrormsg));</span>
+<span class="fc" id="L1346">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_duration_errormsgs&quot;))).getText().equals(durationerrormsg));</span>
+<span class="fc" id="L1347">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_location_errormsgs&quot;))).getText().equals(locationerrormsg));</span>
+<span class="fc" id="L1348">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_Numberofattendees_errormsgs&quot;))).getText().equals(numberofattendeeserrormsg));</span>
+<span class="fc" id="L1349">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_Capacity_errormsgs&quot;))).getText().equals(capacityerrormsg));</span>
+<span class="fc" id="L1350">			assertTrue(driver.findElement(By.xpath(prop.getProperty(&quot;Manager_modify_event_estattandees_errormsgs&quot;))).getText().equals(estattendeeserrormsg));</span>
+			
+	
+
+<span class="fc" id="L1354">			takeScreenShot(driver,snapShotName);</span>
+		
+		  
+<span class="fc" id="L1357">	  }</span>
+	  
+	  // Custom Methods
+	  	public char GetRandomCharacters()
+	  	{
+<span class="fc" id="L1362">	  		char random = 0 ;</span>
+<span class="fc" id="L1363">	    String alphabet = &quot;abcdefghijklmnopqrstxyz&quot;;</span>
+<span class="fc bfc" id="L1364" title="All 2 branches covered.">	    for (int i = 0; i &lt; 50; i++) {</span>
+<span class="fc" id="L1365">	         random = alphabet.charAt(rand.nextInt(alphabet.length()));</span>
+	    } 
+	    
+<span class="fc" id="L1368">	    return random;</span>
+	    
+}
+		public void HighLight(WebDriver driver, WebElement element){
+<span class="fc" id="L1372">			JavascriptExecutor js = (JavascriptExecutor) driver;</span>
+<span class="fc" id="L1373">			js.executeScript(&quot;arguments[0].setAttribute('style', 'background: #00FF00;');&quot;, element);</span>
+			//Thread.sleep((long) 0.8_000);
+			
+//			try {
+//				Thread.sleep((long) 1_000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+<span class="fc" id="L1382">		}</span>
+		
+
+		
+	
+		
+		public void RemoveHighLight(WebDriver driver, WebElement element){
+<span class="nc" id="L1389">			JavascriptExecutor js = (JavascriptExecutor) driver;</span>
+<span class="nc" id="L1390">			js.executeScript(&quot;arguments[0].removeAttribute('style', 'background: #00FF00;');&quot;, element);</span>
+<span class="nc" id="L1391">		}  </span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>Merged (Dec 7, 2020 8:22:40 PM)</div></body></html>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Conversions.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 7, 2020 8:22:40 PM)</a> &gt; <a href="../../index.html" class="el_group">CSAC_02</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">util</a> &gt; <span class="el_source">Conversions.java</span></div><h1>Conversions.java</h1><pre class="source lang-java linenums">package util;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+<span class="fc" id="L9">public class Conversions {</span>
+	
+<span class="fc" id="L11">    private DateFormat dateformat = new SimpleDateFormat(&quot;MM/dd/yyyy&quot;);</span>
+<span class="fc" id="L12">	private DateFormat timeformat = new SimpleDateFormat(&quot;HH:mm:ss&quot;);</span>
+<span class="fc" id="L13">	private String currentDate = new SimpleDateFormat(&quot;MM/dd/yyyy&quot;).format(Calendar.getInstance().getTime());</span>
+<span class="fc" id="L14">	private	String currentTime = new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(Calendar.getInstance().getTime());</span>
+	
+	
+	public Date ConvertedStartTimeLimit()
+	{
+		
+<span class="fc" id="L20">		Date StartTimeLimit = null;</span>
+		try {
+<span class="fc" id="L22">			StartTimeLimit = timeformat.parse(&quot;07:00:00&quot;);</span>
+<span class="pc" id="L23">		} catch (ParseException e) {} </span>
+<span class="fc" id="L24">		return StartTimeLimit;</span>
+	}
+	
+	public Date ConvertedEndTimeLimit()
+	{
+		
+<span class="fc" id="L30">		Date EndTimeLimit = null;</span>
+		try {
+<span class="fc" id="L32">			EndTimeLimit = timeformat.parse(&quot;22:00:00&quot;);</span>
+<span class="pc" id="L33">		} catch (ParseException e) {} </span>
+<span class="fc" id="L34">		return EndTimeLimit;</span>
+	}
+	
+	
+	
+	public Date ConvertedEnteredDate(String Entereddate)
+	{
+		
+<span class="fc" id="L42">		Date EnteredDate = null;</span>
+		try {
+<span class="fc" id="L44">			EnteredDate = dateformat.parse(Entereddate);</span>
+<span class="pc" id="L45">		} catch (ParseException e) {} </span>
+<span class="fc" id="L46">		return EnteredDate;</span>
+	}
+	
+	public Date ConvertedCurrentDate()
+	{
+		
+<span class="fc" id="L52">		String Currentdate = currentDate;</span>
+		
+<span class="fc" id="L54">		Date CurrentDate = null;</span>
+		try {
+<span class="fc" id="L56">			CurrentDate = dateformat.parse(Currentdate);</span>
+<span class="pc" id="L57">		} catch (ParseException e) {} </span>
+<span class="fc" id="L58">		return CurrentDate;</span>
+	}
+	
+	public Date ConvertedEnteredTime(String Enteredtime)
+	{
+		
+<span class="fc" id="L64">		Date EnteredTime = null;</span>
+		try {
+<span class="fc" id="L66">			EnteredTime = timeformat.parse(Enteredtime);</span>
+<span class="pc" id="L67">		} catch (ParseException e) {} </span>
+<span class="fc" id="L68">		return EnteredTime;</span>
+	}
+	
+
+	public Date ConvertedCurrentTime()
+	{
+		
+<span class="fc" id="L75">		String Currenttime= currentTime;</span>
+		
+<span class="fc" id="L77">		Date CurrentTime = null;</span>
+		try {
+<span class="fc" id="L79">			CurrentTime = timeformat.parse(Currenttime);</span>
+<span class="pc" id="L80">		} catch (ParseException e) {} </span>
+<span class="fc" id="L81">		return CurrentTime;</span>
+	}
+	
+
+	
+	public Date CalculateEndTime(String starttime, String duration)
+	{
+		
+<span class="fc" id="L89">		Date EndTime = null;</span>
+	
+<span class="fc" id="L91">		int starttimehour= Integer.parseInt(starttime.substring(0,2));</span>
+		
+<span class="fc" id="L93">		int starttimeminute= Integer.parseInt(starttime.substring(3,5));</span>
+		
+<span class="fc" id="L95">		int starttimesecond= Integer.parseInt(starttime.substring(6,8));</span>
+
+<span class="fc" id="L97">		int durationhour= Integer.parseInt(duration.substring(0,2));</span>
+
+<span class="fc" id="L99">		int durationminute= Integer.parseInt(duration.substring(3,5));</span>
+		
+<span class="fc" id="L101">		int durationsecond= Integer.parseInt(duration.substring(6,8));</span>
+		
+<span class="fc" id="L103">		int endtimehour = starttimehour + durationhour;</span>
+<span class="fc" id="L104">		int endtimeminute = starttimeminute + durationminute;</span>
+<span class="fc" id="L105">		int endtimesecond = starttimesecond + durationsecond;</span>
+		
+<span class="fc" id="L107">		String EndTimeHour = Integer.toString(endtimehour);</span>
+<span class="fc" id="L108">		String EndTimeMinute = Integer.toString(endtimeminute);</span>
+<span class="fc" id="L109">		String EndTimeSecond = Integer.toString(endtimesecond);</span>
+		
+<span class="fc" id="L111">		String endtime = EndTimeHour+&quot;:&quot;+EndTimeMinute+&quot;:&quot;+EndTimeSecond;</span>
+		
+		
+	
+		try {
+<span class="fc" id="L116">			EndTime = timeformat.parse(endtime);</span>
+<span class="pc" id="L117">		} catch (ParseException e) {} </span>
+		
+<span class="fc" id="L119">		return EndTime;</span>
+		
+		
+	}
+	
+	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>Merged (Dec 7, 2020 8:22:40 PM)</div></body></html>

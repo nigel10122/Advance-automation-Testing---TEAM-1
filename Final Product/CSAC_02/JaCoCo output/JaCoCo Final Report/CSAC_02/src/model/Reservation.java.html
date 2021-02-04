@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Reservation.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 7, 2020 8:22:40 PM)</a> &gt; <a href="../../index.html" class="el_group">CSAC_02</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">Reservation.java</span></div><h1>Reservation.java</h1><pre class="source lang-java linenums">package model;
+
+import data.ReservationDAO;
+
+
+public class Reservation {
+	
+	 int eventid;
+	 String eventname;
+	 String eventdate;
+	 String starttime;
+	 String duration;
+	 String location;
+	 String numberofattendees;
+	 String capacity;
+	 String eventcoordinator;
+	 String type;
+	 String estattendees;
+	 String firstname;
+	 String lastname;
+	 String number;
+	 String email;
+
+<span class="fc" id="L24">	 public Reservation(){</span>
+		 
+<span class="fc" id="L26">	 }</span>
+	 
+<span class="fc" id="L28">	   public Reservation(String eventname,String eventdate, String starttime, </span>
+			   			  String duration , String location, String numberofattendees, 
+			   			  String capacity, String eventcoordinator, String type, String estattendees,
+			   			  String firstname, String lastname, String number, String email) {
+<span class="fc" id="L32">	        this.eventname = eventname;</span>
+<span class="fc" id="L33">	        this.eventdate = eventdate;</span>
+<span class="fc" id="L34">	        this.starttime = starttime;</span>
+<span class="fc" id="L35">	        this.duration = duration;</span>
+<span class="fc" id="L36">	        this.location = location;</span>
+<span class="fc" id="L37">	        this.numberofattendees = numberofattendees;</span>
+<span class="fc" id="L38">	        this.capacity = capacity;</span>
+<span class="fc" id="L39">	        this.eventcoordinator = eventcoordinator;</span>
+<span class="fc" id="L40">	        this.type = type;</span>
+<span class="fc" id="L41">	        this.estattendees = estattendees;</span>
+<span class="fc" id="L42">	        this.firstname = firstname;</span>
+<span class="fc" id="L43">	        this.lastname = lastname;</span>
+<span class="fc" id="L44">	        this.number = number;</span>
+<span class="fc" id="L45">	        this.email = email;</span>
+<span class="fc" id="L46">	    }</span>
+	 
+		public void SetEvent(int eventid, String eventname, String eventdate, String starttime, String duration,
+				String location, String numberofattendees, String capacity, String eventcoordinator, String type,
+				String estattendees) {
+<span class="fc" id="L51">			setEventid(eventid);</span>
+<span class="fc" id="L52">			setEventname(eventname);</span>
+<span class="fc" id="L53">			setEventdate(eventdate);</span>
+<span class="fc" id="L54">			setStarttime(starttime);</span>
+<span class="fc" id="L55">			setDuration(duration);</span>
+<span class="fc" id="L56">			setLocation(location);</span>
+<span class="fc" id="L57">			setNumberofattendees(numberofattendees);</span>
+<span class="fc" id="L58">			setCapacity(capacity);</span>
+<span class="fc" id="L59">			setEventcoordinator(eventcoordinator);</span>
+<span class="fc" id="L60">			setType(type);</span>
+<span class="fc" id="L61">			setEstattendees(estattendees);</span>
+			
+<span class="fc" id="L63">		}</span>
+
+
+    public int getEventid() {
+<span class="fc" id="L67">        return eventid;</span>
+    }
+
+    public void setEventid(int eventid) {
+<span class="fc" id="L71">        this.eventid = eventid;</span>
+<span class="fc" id="L72">    }</span>
+
+    public String getEventname() {
+<span class="fc" id="L75">		return eventname;</span>
+	}
+	public void setEventname(String eventname) {
+<span class="fc" id="L78">		this.eventname = eventname;</span>
+<span class="fc" id="L79">	}</span>
+	
+	public String getEventdate() {
+<span class="fc" id="L82">		return eventdate;</span>
+	}
+	public void setEventdate(String eventdate) {
+<span class="fc" id="L85">		this.eventdate = eventdate;</span>
+<span class="fc" id="L86">	}</span>
+	
+	public String getStarttime() {
+<span class="fc" id="L89">		return starttime;</span>
+	}
+	public void setStarttime(String starttime) {
+<span class="fc" id="L92">		this.starttime = starttime;</span>
+<span class="fc" id="L93">	}</span>
+	
+	public String getDuration() {
+<span class="fc" id="L96">		return duration;</span>
+	}
+	public void setDuration(String duration) {
+<span class="fc" id="L99">		this.duration = duration;</span>
+<span class="fc" id="L100">	}</span>
+	
+	public String getLocation() {
+<span class="fc" id="L103">		return location;</span>
+	}
+	public void setLocation(String location) {
+<span class="fc" id="L106">		this.location = location;</span>
+<span class="fc" id="L107">	}</span>
+	
+	public String getNumberofattendees() {
+<span class="fc" id="L110">		return numberofattendees;</span>
+	}
+	public void setNumberofattendees(String numberofattendees) {
+<span class="fc" id="L113">		this.numberofattendees = numberofattendees;</span>
+<span class="fc" id="L114">	}</span>
+
+	public String getCapacity() {
+<span class="fc" id="L117">		return capacity;</span>
+	}
+	public void setCapacity(String capacity) {
+<span class="fc" id="L120">        this.capacity = capacity;</span>
+<span class="fc" id="L121">	}</span>
+
+	public String getEventcoordinator() {
+<span class="fc" id="L124">		return eventcoordinator;</span>
+	}
+	public void setEventcoordinator(String eventcoordinator) {
+<span class="fc" id="L127">        this.eventcoordinator = eventcoordinator;</span>
+<span class="fc" id="L128">	}</span>
+
+	public String getType() {
+<span class="fc" id="L131">		return type;</span>
+	}
+	public void setType(String type) {
+<span class="fc" id="L134">        this.type = type;</span>
+<span class="fc" id="L135">	}</span>
+	
+	public String getEstattendees() {
+<span class="fc" id="L138">		return estattendees;</span>
+	}
+	public void setEstattendees(String estattendees) {
+<span class="fc" id="L141">        this.estattendees = estattendees;</span>
+<span class="fc" id="L142">	}</span>
+    
+
+	public String getLastname() {
+<span class="fc" id="L146">		return lastname;</span>
+	}
+	public void setLastname(String lastname) {
+<span class="fc" id="L149">		this.lastname = lastname;</span>
+<span class="fc" id="L150">	}</span>
+	
+	public String getFirstname() {
+<span class="fc" id="L153">		return firstname;</span>
+	}
+	public void setFirstname(String firstname) {
+<span class="fc" id="L156">		this.firstname = firstname;</span>
+<span class="fc" id="L157">	}</span>
+	
+	public String getEmail() {
+<span class="fc" id="L160">		return email;</span>
+	}
+
+	public void setEmail(String email) {
+<span class="fc" id="L164">		this.email = email;</span>
+<span class="fc" id="L165">	}</span>
+
+	public String getNumber() {
+<span class="fc" id="L168">		return number;</span>
+	}
+	
+	public void setNumber(String number) {
+<span class="fc" id="L172">        this.number = number;</span>
+<span class="fc" id="L173">	}</span>
+
+	
+	public String getCountShowTypeModel(String type, String eventdate, String firstname, String lastname) {
+	
+<span class="fc" id="L178">		int count=0;</span>
+<span class="fc" id="L179">		count = ReservationDAO.getCountShowType(type,eventdate,firstname,lastname);</span>
+<span class="fc" id="L180">		String msgg=&quot;&quot;;</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">		if(type.equalsIgnoreCase(&quot;Show&quot;)) {</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">		if(count==1) {</span>
+<span class="fc" id="L183">			msgg=&quot;already one show event has been reserved.&quot;;</span>
+<span class="fc" id="L184">		}}else {</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">			if(count==2) {</span>
+<span class="fc" id="L186">				msgg=&quot;already two athletic events have been reserved.&quot;;</span>
+
+			}
+		}
+<span class="fc" id="L190">		return msgg;</span>
+	}
+	
+    
+
+
+
+
+	
+	
+	public void validateReservation(Reservation reservation, ReservationErrorMsgs errorMsgs)
+	{
+<span class="fc" id="L202">		errorMsgs.setEventTypeCountError(getCountShowTypeModel(reservation.getType(),reservation.getEventdate(),reservation.getFirstname(),reservation.getLastname()));</span>
+<span class="fc" id="L203">		errorMsgs.setErrorMsg();</span>
+		
+<span class="fc" id="L205">	}</span>
+	
+
+	
+
+	
+    
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>Merged (Dec 7, 2020 8:22:40 PM)</div></body></html>

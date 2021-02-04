@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SeleniumTC05.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 7, 2020 8:22:40 PM)</a> &gt; <a href="../../index.html" class="el_group">CSAC_02</a> &gt; <a href="../index.html" class="el_bundle">test</a> &gt; <a href="index.source.html" class="el_package">selenium</a> &gt; <span class="el_source">SeleniumTC05.java</span></div><h1>SeleniumTC05.java</h1><pre class="source lang-java linenums">package selenium;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
+import java.io.FileInputStream;
+import java.sql.SQLException;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebElement;
+import data.EventDAO;
+import functions.CSAC_02Functions;
+import junitparams.FileParameters;
+import junitparams.JUnitParamsRunner;
+import util.ConnectionPro;
+import util.Conversions;
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@RunWith(JUnitParamsRunner.class)
+<span class="fc" id="L28">public class SeleniumTC05 extends CSAC_02Functions{</span>
+	
+	
+<span class="fc" id="L31">	private StringBuffer verificationErrors = new StringBuffer();</span>
+	public String sAppURL,sSharedUIMapPath, testDelay ;
+	private String username, password, eventdate, starttime,eventtype;
+	
+<span class="fc" id="L35">	EventDAO eventmodel = new EventDAO(ConnectionPro.getConnection());</span>
+
+<span class="fc" id="L37">	Conversions conversions = new Conversions();</span>
+	  
+	  @Before
+	  public void setUp() throws Exception {
+		  	// Drivers
+<span class="fc" id="L42">		    driver = invokeCorrectBrowser();</span>
+<span class="fc" id="L43">		    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);</span>
+<span class="fc" id="L44">		    Dimension d = new Dimension(1280,1280);</span>
+<span class="fc" id="L45">		    driver.manage().window().setSize(d);;</span>
+		    // Load Properties
+<span class="fc" id="L47">		    prop = new Properties();	</span>
+<span class="fc" id="L48">		    prop.load(new FileInputStream(&quot;./User/Passenger.properties&quot;));</span>
+<span class="fc" id="L49">			username = prop.getProperty(&quot;username&quot;);</span>
+<span class="fc" id="L50">			password = prop.getProperty(&quot;password&quot;);</span>
+<span class="fc" id="L51">			eventdate = prop.getProperty(&quot;eventdate&quot;);</span>
+<span class="fc" id="L52">			starttime = prop.getProperty(&quot;starttime&quot;);</span>
+<span class="fc" id="L53">			eventtype = prop.getProperty(&quot;eventtype&quot;);</span>
+<span class="fc" id="L54">		    prop.load(new FileInputStream(&quot;./Configuration/Configuration.properties&quot;));</span>
+<span class="fc" id="L55">		    sAppURL = prop.getProperty(&quot;sAppURL&quot;);</span>
+<span class="fc" id="L56">			sSharedUIMapPath = prop.getProperty(&quot;SharedUIMap&quot;);</span>
+<span class="fc" id="L57">			prop.load(new FileInputStream(sSharedUIMapPath));</span>
+<span class="fc" id="L58">			testDelay=prop.getProperty(&quot;testDelay&quot;);</span>
+			
+<span class="fc" id="L60">}</span>
+	  
+	  private String [][] getTableContentsFromPage(int listSize) { // this method gets the list company table contents from the web page
+<span class="fc" id="L63">		  String [][] eventArray = new String[listSize-1][6];</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">		  for (int i=1; i&lt;=listSize-1; i++) {</span>
+<span class="fc" id="L65">			eventArray[i-1][0]=  driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L66">									prop.getProperty(&quot;listevent_EventTableEventnameCol&quot;))).getText();</span>
+<span class="fc" id="L67">			 HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L68">														  prop.getProperty(&quot;listevent_EventTableEventnameCol&quot;))));</span>
+			
+<span class="fc" id="L70">			eventArray[i-1][1] = driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L71">									prop.getProperty(&quot;listevent_EventTableEventdateCol&quot;))).getText();</span>
+<span class="fc" id="L72">			HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L73">					  prop.getProperty(&quot;listevent_EventTableEventdateCol&quot;))));</span>
+			
+			
+<span class="fc" id="L76">			eventArray[i-1][2] = driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L77">									prop.getProperty(&quot;listevent_EventTableEventstarttimeCol&quot;))).getText();</span>
+<span class="fc" id="L78">			HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L79">					  prop.getProperty(&quot;listevent_EventTableEventstarttimeCol&quot;))));</span>
+			
+<span class="fc" id="L81">			eventArray[i-1][3] = driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L82">									prop.getProperty(&quot;listevent_EventTableDurationCol&quot;))).getText();</span>
+<span class="fc" id="L83">			HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L84">					  prop.getProperty(&quot;listevent_EventTableDurationCol&quot;))));</span>
+			
+<span class="fc" id="L86">			eventArray[i-1][4] = driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L87">					prop.getProperty(&quot;listevent_EventTableLocationCol&quot;))).getText();</span>
+<span class="fc" id="L88">			HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L89">					  prop.getProperty(&quot;listevent_EventTableLocationCol&quot;))));</span>
+			
+<span class="fc" id="L91">			eventArray[i-1][5] = driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L92">					prop.getProperty(&quot;listevent_EventTableEstattendeesCol&quot;))).getText();</span>
+<span class="fc" id="L93">			HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+(i+1)+</span>
+<span class="fc" id="L94">					  prop.getProperty(&quot;listevent_EventTableEstattendeesCol&quot;))));</span>
+			
+		  }
+<span class="fc" id="L97">		  return eventArray;</span>
+	  }
+	  
+
+	  
+	  private Boolean arraysDiff (String [][] array1, String [][] array2) { // this method compares the contents of the two tables
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">		  Boolean diff=false || (array1.length!=array2.length);</span>
+<span class="pc bpc" id="L104" title="1 of 4 branches missed.">		  for (int i=0;i&lt;array1.length &amp;&amp; !diff;i++) {</span>
+<span class="pc bpc" id="L105" title="2 of 4 branches missed.">			 diff  = !array1[i][0].equals(array2[i][0]) || !array1[i][1].equals(array2[i][1]) || </span>
+<span class="pc bpc" id="L106" title="2 of 4 branches missed.">					 !array1[i][2].equals(array2[i][2]) || !array1[i][3].equals(array2[i][3]) ||</span>
+<span class="pc bpc" id="L107" title="2 of 4 branches missed.">					 !array1[i][4].equals(array2[i][4]) || !array1[i][5].equals(array2[i][5]);</span>
+		  }
+<span class="fc" id="L109">		  return diff;</span>
+	  }
+	  
+	  
+	  
+	@Test
+	@FileParameters(&quot;test/excel/Selenium_TC05a_test_cases.csv&quot;)
+	public void TC05A(int testcasenumber,String eventdate, String eventtime, String eventtype, String eventdateErrormsg, String starttimeErrormsg) throws Exception {
+<span class="fc" id="L117">		String methodName= new Throwable().getStackTrace()[0].getMethodName();</span>
+<span class="fc" id="L118">		driver.get(sAppURL);</span>
+<span class="fc" id="L119">		login_function(driver, username, password, methodName+&quot; loginInputData TC &quot;+testcasenumber);</span>
+<span class="fc" id="L120">		PassengerSearchEvents(driver, eventdate, eventtime, eventtype,  methodName+&quot; PassengerSearchEvents TC &quot;+testcasenumber);</span>
+<span class="fc" id="L121">		verifyPassengerEventDateTimeErrormsgs(driver, eventdateErrormsg, starttimeErrormsg, methodName+&quot; PassengerSearchEventsErrormsg TC &quot;+testcasenumber);</span>
+<span class="fc" id="L122">		Thread.sleep(2_000);</span>
+<span class="fc" id="L123">	}</span>
+
+	  
+	  @Test
+	  @FileParameters(&quot;test/excel/Selenium_TC05b_test_cases.csv&quot;)
+	  public void TC05B(int testCaseNumber, String header1, String header2, String header3, String header4, String header5, String header6, String header7, String header8) throws Exception {
+<span class="fc" id="L129">		String methodName= new Throwable().getStackTrace()[0].getMethodName();</span>
+<span class="fc" id="L130">	    driver.get(sAppURL);</span>
+<span class="fc" id="L131">	    login_function(driver, username, password, methodName+&quot; loginInputData TC &quot;+testCaseNumber);</span>
+<span class="fc" id="L132">	    PassengerSearchEvents(driver, eventdate, starttime, eventtype,  methodName+&quot; PassengerSearchEvents TC &quot;+testCaseNumber);</span>
+		
+<span class="fc" id="L134">		  verifyHeaders(driver,&quot;Passenger_Available_Events_Title&quot;,header1,</span>
+<span class="fc" id="L135">		  &quot;listevent_EventTableHeaders1&quot;,header2,</span>
+<span class="fc" id="L136">		  &quot;listevent_EventTableHeaders2&quot;,header3,</span>
+<span class="fc" id="L137">		  &quot;listevent_EventTableHeaders3&quot;,header4,</span>
+<span class="fc" id="L138">		  &quot;listevent_EventTableHeaders4&quot;,header5,</span>
+<span class="fc" id="L139">		  &quot;listevent_EventTableHeaders5&quot;,header6,</span>
+<span class="fc" id="L140">		  &quot;listevent_EventTableHeaders6&quot;,header7,</span>
+<span class="fc" id="L141">		  &quot;listevent_EventTableHeaders7&quot;,header8,</span>
+<span class="fc" id="L142">		  methodName+&quot; VerifyHeadersListAllEvents TC &quot;+testCaseNumber);</span>
+		  
+<span class="fc" id="L144">		  WebElement eventTable = driver.findElement(By.xpath(prop.getProperty(&quot;listevent_EventTable&quot;))); </span>
+<span class="fc" id="L145">		  int rows = eventTable.findElements(By.tagName(&quot;tr&quot;)).size();</span>
+<span class="fc" id="L146">		  System.out.println(rows);</span>
+<span class="fc" id="L147">		  assertFalse(arraysDiff(getpartialEventListFromDB(eventdate,starttime,eventtype,rows),getTableContentsFromPage(rows)));</span>
+		 
+<span class="fc" id="L149">	  }</span>
+	  
+	  
+	  @Test
+	  @FileParameters(&quot;test/excel/Selenium_TC05c_test_cases.csv&quot;)
+	  public void TC05C(int testcasenumber, int row_number, String eventdate, String eventtime, String eventtype, String Reservationmessage) throws SQLException {
+<span class="fc" id="L155">		  String methodName= new Throwable().getStackTrace()[0].getMethodName();</span>
+<span class="fc" id="L156">		  driver.get(sAppURL);</span>
+<span class="fc" id="L157">		  login_function(driver, username, password, methodName+&quot; loginInputData TC &quot;);</span>
+<span class="fc" id="L158">     	  PassengerSearchEvents(driver, eventdate, eventtime, eventtype,  methodName+&quot; PassengerSearchEvents TC &quot;);</span>
+<span class="fc" id="L159">     	  HighLight(driver, driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+row_number+</span>
+<span class="fc" id="L160">				  prop.getProperty(&quot;listevent_View_Link&quot;))));</span>
+<span class="fc" id="L161">		  driver.findElement(By.xpath(prop.getProperty(&quot;listevent_prefixEventnameeventTable&quot;)+row_number+</span>
+<span class="fc" id="L162">				  prop.getProperty(&quot;listevent_View_Link&quot;))).click();</span>
+<span class="fc" id="L163">		  HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;Make_Reservation_Submit_Button&quot;))));</span>
+<span class="fc" id="L164">		  driver.findElement(By.xpath(prop.getProperty(&quot;Make_Reservation_Submit_Button&quot;))).click();</span>
+<span class="fc" id="L165">		  assertEquals(Reservationmessage,driver.findElement(By.xpath(prop.getProperty(&quot;Reservation_Message&quot;))).getText());</span>
+<span class="fc" id="L166">		  HighLight(driver,driver.findElement(By.xpath(prop.getProperty(&quot;Reservation_Message&quot;))));</span>
+		  
+<span class="fc" id="L168">	  }</span>
+	  
+	  
+	  @Test
+	  @FileParameters(&quot;test/excel/Selenium_TC05d_test_cases.csv&quot;)
+	  public void TC05D(int testCaseNumber, String welcomepage_header_expected,String header,String label1,String label2,
+			  	        String label3,String label4,String label5,String label6,String label7,String label8,String label9,
+			  	        String label10,String label11,String label12,String label13,String label14) throws SQLException {
+<span class="fc" id="L176">		  String methodName= new Throwable().getStackTrace()[0].getMethodName();</span>
+<span class="fc" id="L177">		  driver.get(sAppURL);</span>
+<span class="fc" id="L178">		  login_function(driver, username, password, methodName+&quot; loginInputData TC &quot;);</span>
+<span class="fc" id="L179">     	  PassengerSearchEvents(driver, eventdate, starttime, eventtype,  methodName+&quot; PassengerSearchEvents TC &quot;);</span>
+<span class="fc" id="L180">     	  WebElement eventTable = driver.findElement(By.xpath(prop.getProperty(&quot;listevent_EventTable&quot;))); </span>
+<span class="fc" id="L181">     	  int rows = eventTable.findElements(By.tagName(&quot;tr&quot;)).size();</span>
+<span class="fc" id="L182">     	  verifyMakeReservationLinksandData(driver,eventdate,starttime,eventtype,username,password,rows,welcomepage_header_expected,header,label1,label2,label3,</span>
+<span class="fc" id="L183">				  	 						label4,label5,label6,label7,label8,label9,label10,label11,label12,label13,label14,methodName+&quot;VerifyReservationLinksandData&quot;);</span>
+<span class="fc" id="L184">}</span>
+	  
+	  
+	  @After
+	  public void tearDown() throws Exception {
+<span class="fc" id="L189">	    driver.quit();</span>
+<span class="fc" id="L190">	    String verificationErrorString = verificationErrors.toString();</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">	    if (!&quot;&quot;.equals(verificationErrorString)) {</span>
+<span class="nc" id="L192">	      fail(verificationErrorString);</span>
+	    }
+<span class="fc" id="L194">	  }</span>
+}
+	  
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>Merged (Dec 7, 2020 8:22:40 PM)</div></body></html>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ModelTC07.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 7, 2020 8:22:40 PM)</a> &gt; <a href="../../index.html" class="el_group">CSAC_02</a> &gt; <a href="../index.html" class="el_bundle">test</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">ModelTC07.java</span></div><h1>ModelTC07.java</h1><pre class="source lang-java linenums">package model;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
+
+import org.junit.runner.RunWith;
+import junitparams.FileParameters;
+import junitparams.JUnitParamsRunner;
+
+	@RunWith(JUnitParamsRunner.class)
+<span class="fc" id="L15">	public class ModelTC07 { </span>
+		
+		Event event;
+		EventErrorMsgs eventerrormsg; 
+		
+		@Before
+		public void setUp() throws Exception {
+<span class="fc" id="L22">			event = new Event();</span>
+<span class="fc" id="L23">			eventerrormsg = new EventErrorMsgs();</span>
+<span class="fc" id="L24">		}	</span>
+
+		@Test
+		@FileParameters(&quot;test/excel/Model_TC07_test_cases.csv&quot;)
+		public void test(int tc, int eventid, String eventname,  String eventdate, String starttime, String duration, String location, 
+				         String numberofattendees, String capacity,String eventcoordinator, String type, String estattendees, 
+				         String eventdateError, String starttimeError, String durationError, String locationError, 
+				         String numberofattendeesError, String capacityError,String estattendeesError, String errorMsg) {
+
+<span class="fc" id="L33">			Event eventmodel= new Event(eventid, eventname, eventdate, starttime, duration, location, numberofattendees,capacity,eventcoordinator, type, estattendees);</span>
+			
+<span class="fc" id="L35">			event.getEventid();</span>
+<span class="fc" id="L36">			event.getEventname();</span>
+<span class="fc" id="L37">			event.setEventname(eventname);</span>
+<span class="fc" id="L38">			event.setEventdate(eventdate);</span>
+<span class="fc" id="L39">			event.setStarttime(starttime);</span>
+<span class="fc" id="L40">			event.setDuration(duration);</span>
+<span class="fc" id="L41">			event.setNumberofattendees(numberofattendees);</span>
+<span class="fc" id="L42">			event.setCapacity(capacity);</span>
+<span class="fc" id="L43">			event.getEventcoordinator();</span>
+<span class="fc" id="L44">			event.setEventcoordinator(eventcoordinator);</span>
+<span class="fc" id="L45">			event.setType(type);</span>
+<span class="fc" id="L46">			event.setLocation(location);</span>
+<span class="fc" id="L47">			event.getType();</span>
+<span class="fc" id="L48">			event.setEstattendees(estattendees);</span>
+			
+<span class="fc" id="L50">			event.SetEvent(eventid, eventname, eventdateError, starttimeError, durationError, locationError, numberofattendeesError, capacityError, eventcoordinator, type, estattendeesError);</span>
+<span class="fc" id="L51">			event.SetEvent_Summary(eventname, eventdateError, starttimeError, durationError, locationError, estattendeesError);</span>
+		
+		
+<span class="fc" id="L54">			eventmodel.validateModifyEvent(eventmodel, eventerrormsg);</span>
+<span class="fc" id="L55">			assertTrue(eventdateError.equals(eventerrormsg.getEventdateError()));</span>
+<span class="fc" id="L56">			assertTrue(starttimeError.equals(eventerrormsg.getStarttimeError()));</span>
+<span class="fc" id="L57">			assertTrue(durationError.equals(eventerrormsg.getDurationError()));</span>
+<span class="fc" id="L58">			assertTrue(locationError.equals(eventerrormsg.getLocationError()));</span>
+<span class="fc" id="L59">			assertTrue(numberofattendeesError.equals(eventerrormsg.getNumberofattendeesError()));</span>
+<span class="fc" id="L60">			assertTrue(capacityError.equals(eventerrormsg.getCapacityError()));</span>
+<span class="fc" id="L61">			assertTrue(estattendeesError.equals(eventerrormsg.getEstattendeesError()));</span>
+<span class="fc" id="L62">			assertTrue(errorMsg.equals(eventerrormsg.getErrorMsg()));</span>
+
+<span class="fc" id="L64">		}</span>
+	}
+
+	
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>Merged (Dec 7, 2020 8:22:40 PM)</div></body></html>
